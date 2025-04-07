@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <!--Google API-->
+    <script src="https://accounts.google.com/gsi/client"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body class="login-body">
+
+        <header class="main-header" id="up">
+            <div class="header-container">
+              <div  class="left-section">
+                <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+                <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+                <a href="#" class="brand-name">TaskCrowd</a>
+              </div>
+                <div class="right-section">
+                  <button class="btn"><a href="login.html">Login</a></button>
+                  <button class="btn btn-alt"><a href="register.html">Register</a></button>
+              </div>
+            </div>
+            
+        </header>
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+            <a href="#footer"><i class="fa-solid fa-phone"></i> Contact</a>
+            <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+            <a href="register.html"><i class="fa-solid fa-address-card"></i> Register</a>
+        </div>
+
+            <!---------------------------------------------LOGIN FORM--------------------------------------------------->
+
+            <div class="container">
+            
+            <div class="btns">
+            <button class="open-btn" onclick="openForm('form11')">Business</button>
+            <button class="open-btn" onclick="openForm('form22')">Freelancer</button>
+            <button class="open-btn" onclick="openForm('form33')">Admin</button>
+            </div>
+        
+            <div id="form11" class="form-popup">
+                <form action="/action_page.php" class="form-container">
+                <h1>Business Login</h1>
+
+                
+                <input type="text" placeholder="Enter Email" name="email" required>
+            
+                <input type="password" placeholder="Enter Password" name="psw" required>
+            
+                <button type="submit" class="btn">Login</button> 
+
+                <label>
+                    <input type="checkbox" checked="checked" class="check">     <pre> Remember me</pre>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;
+                     <a href="#" class="forgot">Forgot Password?</a>
+                  </label>
+
+                  <hr>
+
+                  <div class="social-media">
+
+                    <button class="gsi-material-button">
+                        <div class="gsi-material-button-state"></div>
+                        <div class="gsi-material-button-content-wrapper">
+                          <div class="gsi-material-button-icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                              <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                          </div>
+                          <span class="gsi-material-button-contents">Sign in with Google</span>
+                          <span style="display: none;">Sign in with Google</span>
+                        </div>
+                      </button>
+
+                  </div>
+                  <div class="social-media">
+                    <button class="fb-material-button">
+                      <div class="fb-material-button-state"></div>
+                      <div class="fb-material-button-content-wrapper">
+                        <div class="fb-material-button-icon">
+                          <!-- Facebook SVG Icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
+                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
+                          </svg>
+                        </div>
+                        <span class="fb-material-button-contents">Sign in with Facebook</span>
+                        <span style="display: none;">Sign in with Facebook</span>
+                      </div>
+                    </button>
+                  </div>
+
+                  <div class="or">
+                    <p>or</p>
+                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
+                    </div>
+
+                </form>
+            </div>
+        
+            <div id="form22" class="form-popup">
+                <form action="/action_page.php" class="form-container">
+                <h1>Freelancer Login</h1>
+
+              
+                <input type="text" placeholder="Enter Email" name="email" required>
+            
+                <input type="password" placeholder="Enter Password" name="psw" required>
+            
+                <button type="submit" class="btn">Login</button>
+
+                <label>
+                    <input type="checkbox" checked="checked" class="check">     <pre> Remember me</pre>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;
+                     <a href="#" class="forgot">Forgot Password?</a>
+                  </label>
+
+                  <hr>
+
+                  <div class="social-media">
+
+                    <button class="gsi-material-button">
+                        <div class="gsi-material-button-state"></div>
+                        <div class="gsi-material-button-content-wrapper">
+                          <div class="gsi-material-button-icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                              <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                          </div>
+                          <span class="gsi-material-button-contents">Sign in with Google</span>
+                          <span style="display: none;">Sign in with Google</span>
+                        </div>
+                      </button>
+
+                  </div>
+                  <div class="social-media">
+                    <button class="fb-material-button">
+                      <div class="fb-material-button-state"></div>
+                      <div class="fb-material-button-content-wrapper">
+                        <div class="fb-material-button-icon">
+                          <!-- Facebook SVG Icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
+                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
+                          </svg>
+                        </div>
+                        <span class="fb-material-button-contents">Sign in with Facebook</span>
+                        <span style="display: none;">Sign in with Facebook</span>
+                      </div>
+                    </button>
+                  </div>
+                  <div class="or">
+                    <p>or</p>
+                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
+                    </div>
+
+                </form>
+            </div>
+
+            <div id="form33" class="form-popup">
+                <form action="/action_page.php" class="form-container">
+                <h1>Admin Login</h1>
+
+                <input type="text" placeholder="Enter Email" name="email" required>
+             
+                <input type="password" placeholder="Enter Password" name="psw" required>
+            
+                <button type="submit" class="btn">Login</button>
+
+                <label>
+                    <input type="checkbox" checked="checked" class="check">
+                    <pre> Remember me</pre>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <a href="#" class="forgot">Forgot Password?</a>
+                  </label>
+
+                  <hr>
+
+                  <div class="social-media">
+
+                    <button class="gsi-material-button">
+                        <div class="gsi-material-button-state"></div>
+                        <div class="gsi-material-button-content-wrapper">
+                          <div class="gsi-material-button-icon">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                              <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                          </div>
+                          <span class="gsi-material-button-contents">Sign in with Google</span>
+                          <span style="display: none;">Sign in with Google</span>
+                          <div id="g_id_onload"
+                          data-client_id="214889972007-tgag4r142dmn6ooa47q0tovd0h3rfbno.apps.googleusercontent.com"
+                          data-callback="handleGoogleSignIn">
+                     </div>
+                     <div class="g_id_signin" data-type="standard"></div>
+                        </div>
+                      </button>
+
+                  </div>
+                  <div class="social-media">
+                    <button class="fb-material-button">
+                      <div class="fb-material-button-state"></div>
+                      <div class="fb-material-button-content-wrapper">
+                        <div class="fb-material-button-icon">
+                          <!-- Facebook SVG Icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
+                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
+                          </svg>
+                        </div>
+                        <span class="fb-material-button-contents">Sign in with Facebook</span>
+                        <span style="display: none;">Sign in with Facebook</span>
+                      </div>
+                    </button>
+                  </div>
+                  
+
+                  <div class="or">
+                    <p>or</p>
+                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
+                    </div>
+                
+                    
+                    
+
+                </form>
+            </div>
+
+        </div>
+
+        
+
+            <!---------------------------------------------SCRIPTS--------------------------------------------------->
+        
+        
+            <script src="index.js" async defer></script>
+
+    </body>
+</html>        

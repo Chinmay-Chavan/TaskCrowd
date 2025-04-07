@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        <!-- Firebase App (core) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    </head>
+    <body>
+        <button onclick="signInWithGoogle()">Sign in with Google</button>
+        
+        <script>
+
+            // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    appId: "YOUR_APP_ID"
+  };    
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+
+
+            const auth = firebase.auth();
+            const provider = new firebase.auth.GoogleAuthProvider();
+          
+            function signInWithGoogle() {
+              auth.signInWithPopup(provider)
+                .then((result) => {
+                  const user = result.user;
+                  console.log("Signed in user:", user);
+                  // You can store user info in your DB or show on UI
+                })
+                .catch((error) => {
+                  console.error("Error during sign in:", error);
+                });
+            }
+          </script>
+    </body>
+</html>
