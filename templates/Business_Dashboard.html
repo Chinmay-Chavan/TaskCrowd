@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+    </style>
+
+     <!-----------------Font Awesome------------------>
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+      <!----------------------------------------------------->
+
+    <link rel="stylesheet" href="/static/css/index.css">
+    
+
+  
+    
+
+</head>
+<body class="Business-Dashboard">
+
+     <!---------------------------------------------HEADER--------------------------------------------------->
+
+     <header class="main-header" id="up">
+        <div class="header-container">
+          <div  class="left-section">
+            <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+            <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+            <a href="#" class="brand-name">TaskCrowd</a>
+          </div>
+            <div class="right-section">
+              <button class="btn"><a href="">Logout</a></button>
+             
+          </div>
+        </div>
+        
+    </header>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href=""><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+        <a href=""><i class="fa-solid fa-list-check"></i> Manage Task</a>
+        <a href=""><i class="fa-solid fa-clipboard-check"></i> Task Submissions</a>
+        <a href=""><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+       
+    </div>
+
+
+    <!-------------------------------------------------------------------------------------------->
+    
+
+    <nav class="navbar">
+        <div class="dashboard-title">Business Dashboard</div>
+        <div class="navbar-buttons">
+            <button class="btnd btnd-primary">Post a New Task</button>
+            <button class="btnd btnd-secondary">Review Submissions</button>
+        </div>
+    </nav>
+    
+    <div class="container-d">
+        <div class="stats-grid-d">
+            <div class="card-d stat-card-d">
+                <div>
+                    <div class="stat-title-d">Active Tasks</div>
+                    <div class="stat-value-d">12</div>
+                </div>
+                <div class="stat-icon-d icon-blue">📋</div>
+            </div>
+            
+            <div class="card-d stat-card-d">
+                <div>
+                    <div class="stat-title-d">Pending Reviews</div>
+                    <div class="stat-value-d">5</div>
+                </div>
+                <div class="stat-icon-d icon-orange">🕒</div>
+            </div>
+            
+            <div class="card-d stat-card-d">
+                <div>
+                    <div class="stat-title-d">Completed Tasks</div>
+                    <div class="stat-value-d">28</div>
+                </div>
+                <div class="stat-icon-d icon-green">✓</div>
+            </div>
+            
+            <div class="card-d stat-card-d">
+                <div>
+                    <div class="stat-title-d">Total Spent</div>
+                    <div class="stat-value-d">₹1,240</div>
+                </div>
+                <div class="stat-icon-d icon-blue">₹</div>
+            </div>
+        </div>
+        
+        <div class="detail-grid">
+            <div class="card-d">
+                <div class="card-title">Recent Activity</div>
+                <div class="card-subtitle">Your latest tasks and updates</div>
+                
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <h3>Logo Design</h3>
+                        <p>2 days ago</p>
+                    </div>
+                    <span class="status-tag status-completed">Completed</span>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <h3>Content Writing</h3>
+                        <p>1 week ago</p>
+                    </div>
+                    <span class="status-tag status-progress">In Progress</span>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <h3>Web Development</h3>
+                        <p>3 days ago</p>
+                    </div>
+                    <span class="status-tag status-pending">Pending Review</span>
+                </div>
+            </div>
+            
+            <div class="card-d">
+                <div class="card-title">Performance Overview</div>
+                <div class="card-subtitle">Your activity summary for the past 30 days</div>
+                
+                <div class="chart-container" id="performanceChart" >
+                    <!-- Chart bars will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/static/js/index.js" defer></script>
+
+   
+    
+</body>
+</html>

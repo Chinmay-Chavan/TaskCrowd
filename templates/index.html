@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <!-----------------Font Awesome------------------>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+     <!----------------------------------------------------->
+
+    <!----------------Google API----------------------->
+
+    <script src="https://accounts.google.com/gsi/client"></script>
+    
+    <!------------------------------------------------------------------------------------->
+    
+    <link href="/static/css/index.css" rel="stylesheet">
+
+
+
+  </head>
+  <body >
+ 
+  <!---------------------------------------------HEADER--------------------------------------------------->
+
+    <header class="main-header" id="up">
+      <div class="header-container">
+        <div  class="left-section">
+          <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+          <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+          <a href="#" class="brand-name">TaskCrowd</a>
+        </div>
+          <div class="right-section">
+            <button type="button" class="btn"><a href="login.html">Login</a></button>
+            <button type="button" class="btn btn-alt"><a href="register.html">Register</a></button>
+        </div>
+        
+      </div>
+      
+  </header>
+  
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+      <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+      <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+      <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+      <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+      <a href="register.html"><i class="fa-solid fa-address-card"></i> Register</a>
+     
+  </div>
+
+
+      <!--------------------------------------------------Hero section------------------------------------------------------------------->
+
+      <section class="hero">
+        <video autoplay loop muted playsinline>
+          <source src="/static/video/hero.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+      </video>
+        <div class="hero-content">
+            <h1>Welcome to TaskCrowd Where Talent Meets Opportunity!</h1>
+            <h3>Find Your Next Gig</h3>
+            <p>The platform that connects businesses with talented freelancers</p>
+            <div class="buttons" >
+                <button class="btn primary"  ><a href="register.html">Get Started</a></button>
+                <button class="btn secondary"><a href="about.html">Learn More</a></button>
+                
+            </div>
+        </div>
+    </section>  
+      
+<!-----------------------------------------------------CARDS------------------------------------------------------------->   
+<section class="card-section">
+
+<div class="row">
+  <div class="column">
+    <div class="card">
+     <h2 class="c-head">For Business</h2>
+     <p class="txt">Post tasks and find talented freelancers</p>
+     <p class="txt2">Post your tasks, set your budget, and 
+      get quality work delivered on time.</p>
+      <button class="btnc cd-1">Post a Task</button>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <h2 class="c-head">For Freelancer</h2>
+     <p class="txt">Find tasks that match your skills</p>
+     <p class="txt2">Browse available tasks, submit your work, and get paid for your skills, Any Time .</p>
+      <button class="btnc cd-2">Find a Task</button>
+    </div>
+  </div>
+  
+  <div class="column">
+    <div class="card">
+      <h2 class="c-head">How It Works</h2>
+      <p class="txt">Simple, secure, and efficient</p>
+      <p class="txt2">Our platform makes it easy to connect, collaborate, and complete tasks with confidence.</p>
+       <button class="btnc cd-3" id="three" >Learn More</button>
+    </div>
+  </div>
+</div>
+
+</section>
+
+
+<!--------------------------------------------------------More Info----------------------------------------------------------------->
+
+
+<section class="info">
+
+      
+  <div class="info-content">
+      
+      <h1 class="info-title">
+          <span class="highlight">Turn Ideas into Reality</span>
+          <span class="subtitle">with TaskCrowd</span>
+      </h1>
+      
+      <div class="info-container">
+          <div class="icard card-1">
+              <h2>Find Top Talent</h2>
+              <p>Browse through a vast pool of skilled professionals, check their portfolios, and pick the best fit for your project.</p>
+          </div>
+          
+          <div class="icard card-2">
+              <h2>Find Top Talent</h2>
+              <p>Browse through a vast pool of skilled professionals, check their portfolios, and pick the best fit for your project.</p>
+          </div>
+          
+          <div class="icard card-3">
+              <h2>Find Top Talent</h2>
+              <p>Browse through a vast pool of skilled professionals, check their portfolios, and pick the best fit for your project.</p>
+          </div>
+      </div>
+      
+      <a href="login.html" class="icta-button">Get Started Now →</a>
+  </div>
+</section>
+  
+<!-----------------------------------------------------FOOTER------------------------------------------------------------->
+<footer class="footer" id="footer">
+  <div class="footer-container">
+      <div class="footer-content">
+          <h3>Company Name</h3>
+          <p>Connecting the world with technology. Follow us on social media.</p>
+          <div class="social-icons">
+            
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener" title="Visit our Facebook page"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener" title="Visit our Instagram page"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener" title="Visit our Linkedin page"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.twitter.com/" target="_blank" rel="noopener" title="Visit our Twitter page"><i class="fab fa-twitter"></i></a>
+          </div>
+      </div>
+      <div class="footer-links">
+          <a href="about.html">About Us</a>
+          <a href="login.html">Login</a>
+          <a href="register.html">Register</a>
+          <a href="contact.html">Contact Us</a>
+      </div>
+          <p class="copyright">© 2025 Company Name. All rights reserved.</p>
+      </div>
+      
+     
+  </footer>
+
+
+    </div>
+
+    <!-----------------------------------------------------SCRIPTS----------------------------------------------------------->
+
+    <script src="/static/js/index.js" async defer></script>
+
+  </body>
+</html>
