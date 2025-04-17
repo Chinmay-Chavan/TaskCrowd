@@ -406,149 +406,25 @@ if (categoryFilter) {
   }, 2000);
 });
 
-/*------------------------------------------------------ Profile -----------------------------------------------------------------------
 
-const tabLinks = document.querySelectorAll('.account-settings-links .list-group-item');
-  const tabPanes = document.querySelectorAll('.tab-pane');
-  
-  // Function to activate a tab
-  function activateTab(tabId) {
-    // Hide all tab panes
-    tabPanes.forEach(pane => {
-      pane.classList.remove('active', 'show');
-    });
-    
-    // Remove active class from all tab links
-    tabLinks.forEach(link => {
-      link.classList.remove('active');
-    });
-    
-    // Activate the selected tab and its content
-    const selectedTab = document.getElementById(tabId);
-    const selectedLink = document.querySelector(`[href="#${tabId}"]`);
-    
-    if (selectedTab) {
-      selectedTab.classList.add('active', 'show');
-    }
-    
-    if (selectedLink) {
-      selectedLink.classList.add('active');
-    }
+
+/*------------------------------------------------------ Profile -----------------------------------------------------------------------*/
+
+
+document.getElementById("uploadBtn").addEventListener("click", function () {
+  const input = document.getElementById("imageInput");
+  const file = input.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const svgImage = document.getElementById("svgImage");
+      svgImage.setAttribute("href", e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    alert("Please select an image file first.");
   }
-  
-  // Add click event listeners to all tab links
-  tabLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetTabId = this.getAttribute('href').substring(1);
-      activateTab(targetTabId);
-    });
-  });
-  
-  // File input handling for profile photo upload
-  const fileInput = document.querySelector('.account-settings-fileinput');
-  const fileLabel = document.querySelector('label.btn-outline-primary');
-  
-  if (fileInput && fileLabel) {
-    fileInput.addEventListener('change', function() {
-      if (this.files.length > 0) {
-        const fileName = this.files[0].name;
-        // Optional: You could display the filename somewhere
-        console.log('File selected:', fileName);
-        
-        // You could update an image preview here
-        if (this.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const profileImage = document.querySelector('.ui-w-80');
-            if (profileImage) {
-              profileImage.src = e.target.result;
-            }
-          };
-          reader.readAsDataURL(this.files[0]);
-        }
-      }
-    });
-  }
-  
-  // Reset button functionality
-  const resetButton = document.querySelector('.btn-default.md-btn-flat');
-  const defaultProfileImage = 'https://bootdey.com/img/Content/avatar/avatar1.png';
-  
-  if (resetButton) {
-    resetButton.addEventListener('click', function() {
-      // Reset the profile image to default
-      const profileImage = document.querySelector('.ui-w-80');
-      if (profileImage) {
-        profileImage.src = defaultProfileImage;
-      }
-      
-      // Clear file input
-      if (fileInput) {
-        fileInput.value = '';
-      }
-    });
-  }
-  
-  // Save changes button functionality
-  const saveButton = document.querySelector('.btn-primary');
-  
-  if (saveButton) {
-    saveButton.addEventListener('click', function() {
-      // Collect form data from active tab
-      const activeTabId = document.querySelector('.tab-pane.active').id;
-      let formData = {};
-      
-      // Get all inputs from the active tab
-      const inputs = document.querySelector(`#${activeTabId}`).querySelectorAll('input, textarea, select');
-      
-      inputs.forEach(input => {
-        if (input.name) {
-          formData[input.name] = input.value;
-        } else {
-          // If name attribute is missing, use id or another identifier
-          const identifier = input.id || `field-${inputs.indexOf(input)}`;
-          formData[identifier] = input.value;
-        }
-      });
-      
-      // Here you would typically send this data to the server
-      console.log('Saved data:', formData);
-      
-      // Show success message (you can customize this)
-      alert('Changes saved successfully!');
-    });
-  }
-  
-  // Cancel button functionality
-  const cancelButton = document.querySelector('.btn-default:not(.md-btn-flat)');
-  
-  if (cancelButton) {
-    cancelButton.addEventListener('click', function() {
-      // Reload the page to discard changes or redirect
-      if (confirm('Discard changes?')) {
-        window.location.reload();
-      }
-    });
-  }
-  
-  // Resend confirmation email functionality
-  const resendConfirmationLink = document.querySelector('.alert-warning a');
-  
-  if (resendConfirmationLink) {
-    resendConfirmationLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Here you would typically call an API to resend the confirmation
-      
-      // Show temporary message
-      const alertElement = this.closest('.alert-warning');
-      const originalText = alertElement.innerHTML;
-      
-      alertElement.innerHTML = 'Confirmation email sent! Please check your inbox.';
-      
-      // Restore original text after 3 seconds
-      setTimeout(() => {
-        alertElement.innerHTML = originalText;
-      }, 3000);
-    });
-  }*/
+});
