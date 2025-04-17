@@ -242,141 +242,159 @@ function checkLoginState() {
 
 
 /*-------------------------------------Browse Tasks Listing and Filtering-------------------------------------------------------------*/ 
-const allTasks = [
-   {
-      title: "Build a Portfolio Website",
-      category: "Web Development",
-      budget: 200,
-      duration: "1 Week",
-      description: "Looking for a web developer to build a responsive portfolio website using HTML, CSS, and JavaScript.",
-      tags: ["HTML", "CSS", "JavaScript"]
-  },
-  {
-      title: "Translate English to Spanish",
-      category: "Writing & Translation",
-      budget: 100,
-      duration: "2 Days",
-      description: "Need someone fluent in Spanish to translate documents from English to Spanish.",
-      tags: ["Translation", "Spanish"]
-  },
-  {
-      title: "Logo Design for Startup",
-      category: "Design & Creative",
-      budget: 150,
-      duration: "3 Days",
-      description: "Creative logo designer needed for a new tech startup.",
-      tags: ["Logo Design", "Branding"]
-  },
-  {
-      title: "Data Entry Assistant",
-      category: "Admin Support",
-      budget: 80,
-      duration: "5 Days",
-      description: "Looking for someone to help with data entry tasks including spreadsheets and organizing files.",
-      tags: ["Excel", "Data Entry"]
-  }
-];
 
-function renderTasks(tasks) {
-  const container = document.getElementById('tasksContainer');
-  if (!container) return;
-  container.innerHTML = '';
 
-  if (tasks.length === 0) {
-      container.innerHTML = '<p>No tasks found.</p>';
-      return;
-  }
-
-  tasks.forEach(task => {
-      container.innerHTML += `
-          <div class="card task-card p-3">
-              <div class="d-flex justify-content-between">
-                  <h5>${task.title}</h5>
-                  <span class="badge bg-secondary">${task.category}</span>
-              </div>
-              <p class="text-muted">$${task.budget} • ${task.duration}</p>
-              <p>${task.description}</p>
-              <div class="mb-2">
-                  ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-              </div>
-              <button class="btn btn-dark">Apply for Task</button>
-          </div>
-      `;
-  });
-}
-
-function filterTasks() {
-  const searchInput = document.getElementById('searchInput');
-  const categoryFilter = document.getElementById('categoryFilter');
-  
-  const search = searchInput ? searchInput.value.toLowerCase() : '';
-  const category = categoryFilter ? categoryFilter.value : '';
-  
-  const filtered = allTasks.filter(task => {
-      const matchCategory = !category || task.category === category;
-      const matchSearch = task.title.toLowerCase().includes(search) || task.description.toLowerCase().includes(search);
-      return matchCategory && matchSearch;
-  });
-  renderTasks(filtered);
-}
-
-// Initialize tasks
-renderTasks(allTasks);
-
-// Set up event listeners for task filtering
-const searchForm = document.getElementById('searchForm');
-if (searchForm) {
-  searchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      filterTasks();
-  });
-}
-
+/*const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
-if (categoryFilter) {
-  categoryFilter.addEventListener('change', () => {
-      filterTasks();
+
+function renderTasks(filter = {}) {
+  const { search = '', category = '' } = filter;
+  tasksContainer.innerHTML = '';
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  const filtered = tasks.filter(task => {
+    const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
+                          task.description.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = !category || task.category === category;
+    return matchesSearch && matchesCategory;
   });
+
+  if (filtered.length === 0) {
+    tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
+    return;
+  }
+
+  filtered.forEach(task => {
+    const taskHTML = `
+      <div class="card task-card p-3 mb-3">
+        <div class="d-flex justify-content-between">
+          <h5>${task.title}</h5>
+          <span class="badge bg-secondary">${task.category}</span>
+        </div>
+        <p class="text-muted">₹${task.budget} • ${task.deadline}</p>
+        <p>${task.description}</p>
+        <div class="mb-2">
+          ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+        </div>
+        ${task.fileName ? `<p><strong>Attachment:</strong> ${task.fileName}</p>` : ''}
+        <button class="btn btn-dark">Apply for Task</button>
+      </div>`;
+    tasksContainer.innerHTML += taskHTML;
+  });
+
 }
+
+// Initial load
+renderTasks();
+
+searchInput.addEventListener('input', () => {
+  renderTasks({ search: searchInput.value, category: categoryFilter.value });
+});
+
+categoryFilter.addEventListener('change', () => {
+  renderTasks({ search: searchInput.value, category: categoryFilter.value });
+});*/
+
+
+// ============ BROWSE TASK LOGIC (for browse_task.html) ============
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const tasksContainer = document.getElementById('tasksContainer');
+
+function renderTasks(filter = {}) {
+    const { search = '', category = '' } = filter;
+    if (!tasksContainer) return;
+
+    tasksContainer.innerHTML = '';
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    const filtered = tasks.filter(task => {
+        const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
+                              task.description.toLowerCase().includes(search.toLowerCase());
+        const matchesCategory = !category || task.category === category;
+        return matchesSearch && matchesCategory;
+    });
+
+    if (filtered.length === 0) {
+        tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
+        return;
+    }
+
+    filtered.forEach(task => {
+        const taskHTML = `
+            <div class="card task-card p-3 mb-3">
+                <div class="d-flex justify-content-between">
+                    <h5>${task.title}</h5>
+                    <span class="badge bg-secondary">${task.category}</span>
+                </div>
+                <p class="text-muted">₹${task.budget} • ${task.deadline}</p>
+                <p>${task.description}</p>
+                <div class="mb-2">
+                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                </div>
+                <button class="btn btn-dark">Apply for Task</button>
+            </div>
+        `;
+        tasksContainer.innerHTML += taskHTML;
+    });
+}
+
+// If on browse page, auto-render tasks
+if (tasksContainer) {
+    renderTasks();
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            renderTasks({ search: searchInput.value, category: categoryFilter.value });
+        });
+    }
+
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            renderTasks({ search: searchInput.value, category: categoryFilter.value });
+        });
+    }
+}
+
+
+
+
 
  /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
 
 
- const taskForm = document.getElementById('taskForm');
- if (taskForm) {
-     taskForm.addEventListener('submit', function(e) {
-         e.preventDefault();
-         
-         const titleInput = document.getElementById('title');
-         const categoryInput = document.getElementById('category');
-         const descriptionInput = document.getElementById('description');
-         const budgetInput = document.getElementById('budget');
-         const deadlineInput = document.getElementById('deadline');
-         const skillsInput = document.getElementById('skills');
-         
-         if (titleInput && categoryInput && descriptionInput && budgetInput && deadlineInput && skillsInput) {
-             const taskData = {
-                 title: titleInput.value,
-                 category: categoryInput.value,
-                 description: descriptionInput.value,
-                 budget: budgetInput.value,
-                 deadline: deadlineInput.value,
-                 skills: skillsInput.value.split(',').map(skill => skill.trim()),
-             };
-             
-             console.log('Task Posted:', taskData);
-             alert('Task has been posted!');
-             this.reset();
-             
-             // You could add the new task to allTasks array and re-render here
-             // Example:
-             // allTasks.push({...taskData, tags: taskData.skills, duration: taskData.deadline});
-             // renderTasks(allTasks);
-         } else {
-             console.error('One or more form elements could not be found');
-         }
-     });
- }
+ // ============ POST TASK LOGIC (for post_task.html) =============
+const taskForm = document.getElementById('taskForm');
+if (taskForm) {
+    taskForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+        const budget = document.getElementById('budget').value;
+        const deadline = document.getElementById('deadline').value;
+        const skills = document.getElementById('skills').value.split(',').map(s => s.trim());
+
+        const task = {
+            title,
+            category,
+            description,
+            budget,
+            deadline,
+            skills
+        };
+
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        alert('Task has been posted!');
+        taskForm.reset();
+    });
+}
+
+
 
 
  /*------------------------------------------------------ Contact Us -----------------------------------------------------------------------*/
