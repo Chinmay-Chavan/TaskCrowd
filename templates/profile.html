@@ -30,7 +30,7 @@
       <div  class="left-section">
         <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
         <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
-        <a href="#" class="brand-name">TaskCrowd</a>
+        <a href="#" class="brand-name" style="text-decoration: none; color: #ffffff; ">TaskCrowd</a>
       </div>
         <div class="right-section">
           <button class="btn"><a href="">Logout</a></button>
@@ -58,18 +58,16 @@
 
 <!-------------------------------------------------------------------------------------------->
 
-    <div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4">
+    <div class="container light-style flex-grow-1 container-p-y mt-0">
+        <h2 class="font-weight-bold py-2 " >
             Account settings
-        </h4>
-        <div class="card-profile overflow-hidden">
-            <div class="row no-gutters row-bordered row-border-light">
+        </h2>
+        <div class="card-profile overflow-hidden" style="padding-right: 10rem;" >
+            <div class="row no-gutters row-bordered " >
                 <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">
+                    <div class="list-group list-group-flush account-settings-links">    
                         <a class="list-group-item list-group-item-action active" data-toggle="list"
                             href="#account-general">General</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Change password</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
                             href="#account-info">Info</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
@@ -80,15 +78,14 @@
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="account-general">
                             <div class="card-body media align-items-center">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Profile avatar"
-                                    class="d-block ui-w-80">
+                                <svg id="imageSvg" width="100" height="100" style="border: 1px solid #ccc;">
+                                    <image id="svgImage" href="" width="100" height="100" />
+                                  </svg>
                                 <div class="media-body ml-4">
-                                    <label class="btn btn-outline-primary">
-                                        Upload new photo
-                                        <input type="file" class="account-settings-fileinput">
-                                    </label> &nbsp;
-                                    <button type="button" class="btn btn-default md-btn-flat">Reset</button>
-                                    <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                    <input type="file" id="imageInput" accept="image/*">
+                                    <button id="uploadBtn">Upload</button>
+                                    
+                                 
                                 </div>
                             </div>
                             <hr class="border-light m-0">
@@ -104,10 +101,6 @@
                                 <div class="form-group">
                                     <label class="form-label">E-mail</label>
                                     <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
-                                    <div class="alert alert-warning mt-3">
-                                        Your email is not confirmed. Please check your inbox.<br>
-                                        <a href="javascript:void(0)">Resend confirmation</a>
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Company</label>
@@ -115,32 +108,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="account-change-password">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">Current password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">New password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Repeat new password</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="tab-pane fade" id="account-info">
-                            <div class="card-body pb-2">
+                            <div class="card-body pb-0">
                                 <div class="form-group">
                                     <label class="form-label">Bio</label>
-                                    <textarea class="form-control"
-                                        rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
+                                    <textarea class="form-control " placeholder="Tell something about yourself" cols="50"></textarea>
+                                     
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Birthday</label>
-                                    <input type="text" class="form-control" value="May 3, 1995">
+                                    <input type="date" class="form-control" value="1995-05-03">
+
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Country</label>
@@ -153,9 +132,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body pb-2">
-                                <h6 class="mb-4">Contacts</h6>
+                            <div class="card-body pb-2 pt-0">
                                 <div class="form-group">
                                     <label class="form-label">Phone</label>
                                     <input type="text" class="form-control" value="+0 (123) 456 7891">
@@ -170,7 +147,7 @@
                             <div class="card-body pb-2">
                                 <div class="form-group">
                                     <label class="form-label">Twitter</label>
-                                    <input type="text" class="form-control" value="https://twitter.com/user">
+                                    <input type="text" class="form-control " size="40" value="https://twitter.com/user">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Facebook</label>
@@ -192,11 +169,14 @@
                         </div>
                     </div>
                 </div>
+                <form method="POST" action="/update-profile">
+                    <!-- All your inputs here -->
+                    <div class="text-right ">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="reset" class="btn btn-default">Cancel</button>
+                    </div>
+                  </form>
             </div>
-        </div>
-        <div class="text-right mt-3">
-            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-            <button type="button" class="btn btn-default">Cancel</button>
         </div>
     </div>
 
