@@ -65,19 +65,20 @@
                 </div>
             
                 <div id="form1" class="form-popup">
-                    <form action="/action_page.php" class="form-container-R">
+                    <form action="/submit" method="post" class="form-container-R">
                     <h1>Business Registration</h1>
+                    <input type="hidden" name="role" value="business">
                     <pre>Create your account to post tasks</pre>
                         
-                    <input type="text" placeholder="Enter Name" name="name" required>
+                    <input type="text" placeholder="Enter Name" name="username" required>
 
-                    <input type="text" placeholder="Enter Last Name" name="last name" required>
+                    <input type="text" placeholder="Enter Last Name" name="lusername" required>
                     
                     <input type="text" placeholder="Enter Email" name="email" required>
                 
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" placeholder="Enter Password" name="password" required>
                     
-                    <input type="password" placeholder="Confirm Password" name="Confirm psw" required>
+                    <input type="password" placeholder="Confirm Password" name="password" required>
 
                     <label>
                       <input type="checkbox" checked="checked" class="check-R"> <pre> I agree to the terms of service and privacy policy</pre>
@@ -128,19 +129,20 @@
                 </div>
             
                 <div id="form2" class="form-popup">
-                    <form action="/action_page.php" class="form-container-R">
+                    <form action="/submit" method="post" class="form-container-R">
                     <h1>Freelancer Registration</h1>
+                    <input type="hidden" name="role" value="freelancer">
                     <pre>Create your account to find work</pre>
     
-                    <input type="text" placeholder="Enter Name" name="email" required>
+                    <input type="text" placeholder="Enter Name" name="username" required>
 
-                    <input type="text" placeholder="Enter Last Name" name="email" required>
+                    <input type="text" placeholder="Enter Last Name" name="lusername" required>
 
                     <input type="text" placeholder="Enter Email" name="email" required>
                 
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" placeholder="Enter Password" name="password" required>
 
-                    <input type="password" placeholder="Confirm Password" name="Confirm psw" required>
+                    <input type="password" placeholder="Confirm Password" name="password" required>
 
                       
                     <input type="text" placeholder="Skills (comma separated)" name="text" required>

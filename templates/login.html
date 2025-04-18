@@ -57,13 +57,13 @@
             </div>
         
             <div id="form11" class="form-popup">
-                <form action="/action_page.php" class="form-container">
+                <form action="/login" method="post" class="form-container">
                 <h1>Business Login</h1>
 
                 
-                <input type="text" placeholder="Enter Email" name="email" required>
+                <input type="text" placeholder="Enter Email" name="username" required>
             
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" placeholder="Enter Password" name="password" required>
             
                 <button type="submit" class="btn">Login</button> 
 
@@ -111,13 +111,13 @@
             </div>
         
             <div id="form22" class="form-popup">
-                <form action="/action_page.php" class="form-container">
+                <form action="/login" method="post" class="form-container">
                 <h1>Freelancer Login</h1>
 
               
-                <input type="text" placeholder="Enter Email" name="email" required>
+                <input type="text" placeholder="Enter Email" name="username" required>
             
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" placeholder="Enter Password" name="password" required>
             
                 <button type="submit" class="btn">Login</button>
 
@@ -227,6 +227,9 @@
                     
 
                 </form>
+                {% if message %}
+                <div class="error">{{ message }}</div>
+                {% endif %}
             </div>
 
         </div>
