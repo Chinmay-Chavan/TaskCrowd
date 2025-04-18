@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Manage Tasks</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .manage-body {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+        } 
+        .h2-col {
+            color: #000000;
+            font-weight: bold;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="manage-body">
+    <div class="container my-5">
+        <h2 class="h2-col">Manage Your Draft Tasks</h2>
+        <div id="taskContainers"></div>
+    </div>
+
+    <!-- Inline script just for debugging -->
+    <script >
+        const taskContainers = document.getElementById('taskContainers');
+
+if (taskContainers) {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    if (tasks.length === 0) {
+        taskContainers.innerHTML = '<p>No tasks available.</p>';
+    } else {
+        tasks.forEach((task) => {
+            const card = document.createElement('div');
+            card.className = 'card mb-3';
+
+            card.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${task.title}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">${task.category}</h6>
+                    <p class="card-text">${task.description}</p>
+                    <p><strong>Budget:</strong> ₹${task.budget}</p>
+                    <p><strong>Deadline:</strong> ${task.deadline}</p>
+                    <p><strong>Skills:</strong> ${task.skills.join(', ')}</p>
+                </div>
+            `;
+
+            taskContainers.appendChild(card);
+        });
+    }
+}
+
+
+    </script>
+</body>
+</html>
