@@ -1,5 +1,6 @@
 // Wait for DOM to be fully loaded before manipulating elements
 document.addEventListener('DOMContentLoaded', function() {
+
   /*-------------------------Sidebar-------------------------------------------*/
   window.openSidebar = function() { 
       document.getElementById("sidebar").style.width = "250px";
@@ -216,7 +217,7 @@ function checkLoginState() {
   } else {
       console.error('Chart container not found');
   }
-});
+
 
 
 /*-----------------------------------------------Freelance Dashboard-------------------------------------------------------------*/ 
@@ -224,14 +225,14 @@ function checkLoginState() {
   const overviewData = [20, 100, 45, 60, 40, 50, 35];
 
   // Generate the chart bars
-  const chartContainer = document.getElementById('overviewChart');
+  const overviewChartContainer = document.getElementById('overviewChart');
   
-  if (chartContainer) {
+  if (overviewChartContainer) {
       overviewData.forEach(value => {
           const bar = document.createElement('div');
           bar.className = 'chart-bar';
           bar.style.height = `${value}%`;
-          chartContainer.appendChild(bar);
+          overviewChartContainer.appendChild(bar);
       });
   } else {
       console.error('Chart container not found');
@@ -244,59 +245,8 @@ function checkLoginState() {
 /*-------------------------------------Browse Tasks Listing and Filtering-------------------------------------------------------------*/ 
 
 
-/*const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
-
-function renderTasks(filter = {}) {
-  const { search = '', category = '' } = filter;
-  tasksContainer.innerHTML = '';
-  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-  const filtered = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
-                          task.description.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = !category || task.category === category;
-    return matchesSearch && matchesCategory;
-  });
-
-  if (filtered.length === 0) {
-    tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
-    return;
-  }
-
-  filtered.forEach(task => {
-    const taskHTML = `
-      <div class="card task-card p-3 mb-3">
-        <div class="d-flex justify-content-between">
-          <h5>${task.title}</h5>
-          <span class="badge bg-secondary">${task.category}</span>
-        </div>
-        <p class="text-muted">₹${task.budget} • ${task.deadline}</p>
-        <p>${task.description}</p>
-        <div class="mb-2">
-          ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
-        </div>
-        ${task.fileName ? `<p><strong>Attachment:</strong> ${task.fileName}</p>` : ''}
-        <button class="btn btn-dark">Apply for Task</button>
-      </div>`;
-    tasksContainer.innerHTML += taskHTML;
-  });
-
-}
-
-// Initial load
-renderTasks();
-
-searchInput.addEventListener('input', () => {
-  renderTasks({ search: searchInput.value, category: categoryFilter.value });
-});
-
-categoryFilter.addEventListener('change', () => {
-  renderTasks({ search: searchInput.value, category: categoryFilter.value });
-});*/
-
-
 // ============ BROWSE TASK LOGIC (for browse_task.html) ============
+
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const tasksContainer = document.getElementById('tasksContainer');
@@ -358,12 +308,11 @@ if (tasksContainer) {
 
 
 
-
-
  /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
 
 
  // ============ POST TASK LOGIC (for post_task.html) =============
+
 const taskForm = document.getElementById('taskForm');
 if (taskForm) {
     taskForm.addEventListener('submit', function (e) {
@@ -445,4 +394,13 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
   } else {
     alert("Please select an image file first.");
   }
+});
+
+
+
+
+
+
+
+  
 });
