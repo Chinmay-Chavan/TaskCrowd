@@ -405,8 +405,23 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
     alert("Please select an image file first.");
   }
 });
-
-
-
-  
 });
+
+
+/*------------------------------------------------------register-popup---------------------------------------------------------------------*/
+window.addEventListener("DOMContentLoaded", function () {
+  const message = document.body.dataset.message;
+  if (message && message.trim() !== "") {
+    alert(message); // Show alert
+  }
+});
+
+/*-----------------------------------------------Login-popup---------------------------------------------------------------------*/
+
+window.addEventListener("DOMContentLoaded", function () {
+  const message = document.body.dataset.message;
+  if (message && message.trim() !== "") {
+      alert(message); // You can style this later or use a toast instead
+  }
+});
+
