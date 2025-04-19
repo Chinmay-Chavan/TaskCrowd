@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, Form, Request, Response, Depends, HTTPException, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -22,6 +23,7 @@ app.include_router(freelancer.router)
 
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 templates = Jinja2Templates(directory="templates")
 
 Base.metadata.create_all(bind=engine)
@@ -80,29 +82,36 @@ async def contact(request: Request):
 async def admin_dashboard(request: Request):
     return templates.TemplateResponse("Admin_Dashboard.html", {"request": request})
 
+# Route for Freelancer Dashboard
 @app.get("/Freelancer_Dashboard.html", response_class=HTMLResponse)
 async def freelancer_dashboard(request: Request):
     return templates.TemplateResponse("Freelancer_Dashboard.html", {"request": request})
 
+# Route for Business Dashboard
 @app.get("/Business_Dashboard.html", response_class=HTMLResponse)
 async def business_dashboard(request: Request):
     return templates.TemplateResponse("Business_Dashboard.html", {"request": request})
 
+# Route for Browse Task page
 @app.get("/Browse_Task.html", response_class=HTMLResponse)
 async def browse_task(request: Request):
     return templates.TemplateResponse("Browse_Task.html", {"request": request})
 
+# Route for post task page
 @app.get("/post_task.html", response_class=HTMLResponse)
 async def post_task(request: Request):
     return templates.TemplateResponse("post_task.html", {"request": request})
 
+# Route for manage task page
 @app.get("/manage_task.html", response_class=HTMLResponse)
 async def manage_task(request: Request):
     return templates.TemplateResponse("manage_task.html", {"request": request})
 
+# Route for profile page
 @app.get("/profile.html", response_class=HTMLResponse)
 async def profile(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
+
 
 @app.get("/forgot-password.html", response_class=HTMLResponse)
 async def forgot_password_get(request: Request):
