@@ -382,16 +382,16 @@ p {
 }
 /*---------------------------------Card--------------------------------------*/
 
-.card-section {
+.card-section-home {
     
-overflow: hidden;
+ overflow: hidden;
  background-color: #000000;
  
   
 }
 
  /* Float four columns side by side */
-.column {
+.column-home {
     float: left;
     width: 30%;
     padding: 0 20px;
@@ -399,14 +399,14 @@ overflow: hidden;
   }
   
   /* Remove extra left and right margins, due to padding */
-  .row {
+  .row-home {
     margin: 50px -5px;
     margin-left: 8vw;
     
 }
   
   /* Clear floats after the columns */
-  .row:after {
+  .row-home:after {
     content: "";
     display: table;
     clear: both;
@@ -416,7 +416,7 @@ overflow: hidden;
   
   
   /* Style the counter cards */
-  .card {
+  .card-home {
     box-shadow: 0 10px 15px 0 rgba(157, 50, 186, 1);
     padding: 30px;
     text-align: left;
@@ -427,7 +427,7 @@ overflow: hidden;
    
     
   }
-  .card:hover {
+  .card-home:hover {
     box-shadow: 0 20px 20px 0 rgba(98, 15, 95, 0.5);
     transform: scale(1.05);
     transition: all 0.3s ease;
@@ -476,14 +476,14 @@ overflow: hidden;
     background-color: white;
     color: black;
   }
-
+  
   /* Laptop Screens (769px - 1024px) */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-  .column {
+  .column-home {
     width: 40%;
   }
   
-  .row {
+  .row-home {
     margin-left: 10vw;
   }
   
@@ -494,11 +494,11 @@ overflow: hidden;
 
 /* Tablet Screens (601px - 768px) */
 @media screen and (min-width: 601px) and (max-width: 768px) {
-  .column {
+  .column-home {
     width: 45%;
   }
   
-  .row {
+  .row-home {
     margin-left: 4vw;
   }
   
@@ -514,21 +514,21 @@ overflow: hidden;
     font-size: 17px;
   }
   
-  .card {
+  .card-home {
     padding: 25px;
   }
 }
 
 /* Mobile Screens (481px - 600px) */
 @media screen and (min-width: 481px) and (max-width: 600px) {
-  .column {
+  .column-home {
     width: 100%;
     display: block;
     margin-bottom: 20px;
     padding: 0 15px;
   }
   
-  .row {
+  .row-home {
     margin-left: 0;
     margin: 30px 10px;
   }
@@ -536,14 +536,14 @@ overflow: hidden;
 
 /* Small Mobile Screens (480px and below) */
 @media screen and (max-width: 480px) {
-  .column {
+  .column-home {
     width: 100%;
     display: block;
     margin-bottom: 20px;
     padding: 0 10px;
   }
   
-  .row {
+  .row-home {
     margin-left: 0;
     margin: 20px 5px;
   }
@@ -560,7 +560,7 @@ overflow: hidden;
     font-size: 16px;
   }
   
-  .card {
+  .card-home {
     padding: 20px;
   }
   
