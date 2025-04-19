@@ -24,8 +24,7 @@
         
       
     </head>
-    <body class="register-body">
-       
+    <body class="register-body" class="register-body" data-message="{{message}}">
 
       <!---------------------------------------------HEADER--------------------------------------------------->
 
@@ -66,6 +65,7 @@
             
                 <div id="form1" class="form-popup">
                     <form action="/submit" method="post" class="form-container-R">
+
                     <h1>Business Registration</h1>
                     <input type="hidden" name="role" value="business">
                     <pre>Create your account to post tasks</pre>
@@ -130,6 +130,7 @@
             
                 <div id="form2" class="form-popup">
                     <form action="/submit" method="post" class="form-container-R">
+
                     <h1>Freelancer Registration</h1>
                     <input type="hidden" name="role" value="freelancer">
                     <pre>Create your account to find work</pre>

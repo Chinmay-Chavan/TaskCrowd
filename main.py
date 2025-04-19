@@ -7,6 +7,9 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from routers import auth, business, freelancer
 from sqlalchemy.orm import Session
+import smtplib 
+from email.mime.text import MIMEText
+from jose import JWTError
 from database import Base, SessionLocal, engine, User
 
 # ---------- App Setup ----------
@@ -101,6 +104,22 @@ async def manage_task(request: Request):
 async def profile(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
 
+@app.get("/forgot-password.html", response_class=HTMLResponse)
+async def forgot_password_get(request: Request):
+    return templates.TemplateResponse("forgot-password.html", {"request": request})
+
+# show form, verifying token first
+@app.get("/reset_password.html", response_class=HTMLResponse)
+async def reset_password_get(request: Request, token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return templates.TemplateResponse("reset_password.html", {
+            "request": request, "token": token
+        })
+    except JWTError:
+        return templates.TemplateResponse("reset_password.html", {
+            "request": request, "error": "Invalid or expired token."
+        })
 # ---------- Registration ----------
 @app.post("/submit", response_class=HTMLResponse)
 async def handle_form(
@@ -173,3 +192,65 @@ async def login_user(
         max_age=1800
     )
     return response
+
+#--------------Forgot-password------------------
+
+@app.post("/forgot-password", response_class=HTMLResponse)
+async def forgot_password_post(
+    request: Request,
+    email: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter_by(email=email).first()
+    # Never reveal existence:
+    msg = "If that email is registered, you’ll receive a link."
+    if user:
+        # Create a 1‑hour reset token
+        token = create_access_token(
+            data={"sub": user.email},
+            expires_delta=timedelta(hours=1)
+        )
+        reset_link = f"{request.url.scheme}://{request.url.hostname}/reset-password.html?token={token}"
+        send_reset_email(user.email, reset_link)
+
+    return templates.TemplateResponse("forgot-password.html", {
+        "request": request,
+        "message": msg
+    })
+
+def send_reset_email(to_email: str, link: str):
+    try:
+        msg = MIMEText(f"Click to reset: {link}")
+        msg["Subject"] = "Reset link"
+        msg["From"] = "no-reply@taskcrowd.com"
+        msg["To"] = to_email
+
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=5) as smtp:
+            smtp.starttls()
+            smtp.login("smtp_user", "smtp_pass")
+            smtp.send_message(msg)
+    except Exception as e:
+        print("⚠️ send_reset_email failed:", e)
+
+# handle new password
+@app.post("/reset-password", response_class=HTMLResponse)
+async def reset_password_post(
+    request: Request,
+    token: str = Form(...),
+    new_password: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        user = db.query(User).filter_by(email=email).first()
+        if not user:
+            raise JWTError()
+    except JWTError:
+        return templates.TemplateResponse("reset_password.html", {
+            "request": request, "error": "Invalid or expired token."
+        })
+
+    user.password = get_password_hash(new_password)
+    db.commit()
+    return RedirectResponse("/login.html?reset=success", status_code=303)
