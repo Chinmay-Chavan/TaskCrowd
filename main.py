@@ -1,139 +1,175 @@
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, Response, Depends, HTTPException, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from passlib.context import CryptContext
+from jose import JWTError, jwt
+from datetime import datetime, timedelta
+from routers import auth, business, freelancer
+from sqlalchemy.orm import Session
+from database import Base, SessionLocal, engine, User
 
+# ---------- App Setup ----------
 app = FastAPI()
 
-# Mount static files (CSS, JS, Images, Video)
+# Routers
+app.include_router(auth.router)
+app.include_router(business.router)
+app.include_router(freelancer.router)
+
+# Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
-# Set up templates directory
 templates = Jinja2Templates(directory="templates")
 
-# Database setup
-DATABASE_URL = "mysql+pymysql://root:root@localhost/mydb"
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
-# Define User table
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(100))
-    password = Column(String(100))
-    lusername = Column(String(100))
-    email = Column(String(100))
-    role = Column(String(100))
-
-# Create tables if they do not exist
 Base.metadata.create_all(bind=engine)
 
-# Route for index.html
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+# ---------- Password Hashing ----------
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+# ---------- JWT Config ----------
+SECRET_KEY = "MpdpKskAi4f7v489-bqjhYJpqf6oGbsb0yPWEBqwvtc"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# ---------- Routes ----------
+@app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-# Route for about.html
 @app.get("/about.html", response_class=HTMLResponse)
 async def about(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
 
-# Route for login.html
 @app.get("/login.html", response_class=HTMLResponse)
 async def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-# Route for register.html
 @app.get("/register.html", response_class=HTMLResponse)
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-# Route for contact.html
 @app.get("/contact.html", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
 
-# Route for Admin Dashboard
 @app.get("/Admin_Dashboard.html", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
-    return templates.TemplateResponse("Admin_DashBoard.html", {"request": request})
+    return templates.TemplateResponse("Admin_Dashboard.html", {"request": request})
 
-# Route for Freelancer Dashboard
 @app.get("/Freelancer_Dashboard.html", response_class=HTMLResponse)
 async def freelancer_dashboard(request: Request):
-    return templates.TemplateResponse("Freelancer_DashBoard.html", {"request": request})
+    return templates.TemplateResponse("Freelancer_Dashboard.html", {"request": request})
 
-# Route for Business Dashboard
 @app.get("/Business_Dashboard.html", response_class=HTMLResponse)
 async def business_dashboard(request: Request):
-    return templates.TemplateResponse("Business_DashBoard.html", {"request": request})
+    return templates.TemplateResponse("Business_Dashboard.html", {"request": request})
 
-# Route for Browse Task page
 @app.get("/Browse_Task.html", response_class=HTMLResponse)
 async def browse_task(request: Request):
     return templates.TemplateResponse("Browse_Task.html", {"request": request})
 
-# Route for post task page
 @app.get("/post_task.html", response_class=HTMLResponse)
 async def post_task(request: Request):
     return templates.TemplateResponse("post_task.html", {"request": request})
 
-# Route for manage task page
 @app.get("/manage_task.html", response_class=HTMLResponse)
 async def manage_task(request: Request):
     return templates.TemplateResponse("manage_task.html", {"request": request})
 
-# Route for profile page
 @app.get("/profile.html", response_class=HTMLResponse)
 async def profile(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
 
-# Route for handling user registration form submission
-@app.post("/submit", response_class=RedirectResponse)
-async def handle_form(username: str = Form(...), email: str = Form(...), password: str = Form(...), lusername: str = Form(...),role: str = Form(...)):
-    db = SessionLocal()
-    # Create a new user instance
-    new_user = User(username=username, email=email, password=password, lusername=lusername, role=role)
-    # Add the new user to the database
+# ---------- Registration ----------
+@app.post("/submit", response_class=HTMLResponse)
+async def handle_form(
+    request: Request,
+    username: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    lusername: str = Form(...),
+    role: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    existing_user = db.query(User).filter_by(email=email).first()
+    
+    if existing_user:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "message": "Email already registered. Please login."
+        })
+
+    hashed_password = get_password_hash(password)
+    new_user = User(username=username, email=email, password=hashed_password, lusername=lusername, role=role)
     db.add(new_user)
     db.commit()
-    db.close()
 
-    #Redirect based on role
-    if role == "freelancer":
-        return RedirectResponse("/Freelancer_Dashboard.html", status_code=303)
-    elif role == "business":
-        return RedirectResponse("/Business_Dashboard.html", status_code=303)
-    else:
-    # Redirect back to the index page after form submission
-        return RedirectResponse("/", status_code=303)
+    # After successful registration, generate JWT and redirect to respective dashboard
+    token_data = {"sub": new_user.email, "role": new_user.role}
+    access_token = create_access_token(data=token_data)
 
-# Check if the user already exists
+    response = RedirectResponse(
+        url=f"/{new_user.role.capitalize()}_Dashboard.html", status_code=303
+    )
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,  # change to True in production with HTTPS
+        samesite="lax",
+        max_age=1800
+    )
+    return response
+
+# ---------- Login ----------
 @app.post("/login", response_class=HTMLResponse)
-async def login_user(request: Request, username: str = Form(...), password: str = Form(...)):
-    # Create a new session for the DB query
-    db = SessionLocal()
-    
-    # Query the user by username and password
-    user = db.query(User).filter_by(username=username, password=password).first()
-    db.close()
-    
-    if user and user.password == password:
-        # Check the user's role and redirect accordingly
-        if user.role == "freelancer":
-            return RedirectResponse("/Freelancer_Dashboard.html", status_code=303)
-        elif user.role == "business":
-            return RedirectResponse("/Business_Dashboard.html", status_code=303)
-        else:
-            return templates.TemplateResponse("login.html", {"request": request, "message": "Unknown user role"})
-    else:
-        # If the user doesn't exist or credentials are incorrect
+async def login_user(
+    request: Request,
+    response: Response,
+    email: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter_by(email=email).first()
+
+    if not user or not verify_password(password, user.password):
         return templates.TemplateResponse("login.html", {"request": request, "message": "Invalid credentials"})
+
+    # Generate JWT
+    token_data = {"sub": user.email, "role": user.role}
+    access_token = create_access_token(data=token_data)
+
+    # Set JWT in cookie
+    response = RedirectResponse(
+        url=f"/{user.role.capitalize()}_Dashboard.html", status_code=303
+    )
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,  # change to True in production with HTTPS
+        samesite="lax",
+        max_age=1800
+    )
+    return response
