@@ -277,17 +277,23 @@ function renderTasks(filter = {}) {
                     <h5>${task.title}</h5>
                     <span class="badge bg-secondary">${task.category}</span>
                 </div>
-                <p class="text-muted">₹${task.budget} • ${task.deadline}</p>
+               
+                <p><strong>Budget:</strong> ₹${task.budget}</p>
+                <p><strong>Deadline:</strong> ${task.deadline}</p>
+
                 <p>${task.description}</p>
                 <div class="mb-2">
                     ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
                 </div>
                 <button class="btn btn-dark">Apply for Task</button>
+                
             </div>
         `;
         tasksContainer.innerHTML += taskHTML;
     });
 }
+
+  
 
 // If on browse page, auto-render tasks
 if (tasksContainer) {
@@ -305,6 +311,8 @@ if (tasksContainer) {
         });
     }
 }
+
+
 
 
 
@@ -338,7 +346,9 @@ if (taskForm) {
         tasks.push(task);
         localStorage.setItem('tasks', JSON.stringify(tasks));
 
-        alert('Task has been posted!');
+       
+
+        alert('Task has been posted!'); 
         taskForm.reset();
     });
 }
@@ -395,24 +405,23 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
     alert("Please select an image file first.");
   }
 });
-});
+
 
 
 /*------------------------------------------------------register-popup---------------------------------------------------------------------*/
-window.addEventListener("DOMContentLoaded", function () {
+
   const message = document.body.dataset.message;
   if (message && message.trim() !== "") {
     alert(message); // Show alert
   }
-});
+
 
 /*-----------------------------------------------Login-popup---------------------------------------------------------------------*/
 
-window.addEventListener("DOMContentLoaded", function () {
-  const message = document.body.dataset.message;
-  if (message && message.trim() !== "") {
+  
+  const message1 = document.body.dataset.message;
+  if (message1 && message.trim() !== "") {
       alert(message); // You can style this later or use a toast instead
   }
 });
-
 
