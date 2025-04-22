@@ -242,116 +242,145 @@ function checkLoginState() {
 
 
 
-/*-------------------------------------Browse Tasks Listing and Filtering-------------------------------------------------------------*/ 
+/*------------------------------------- Browse and Post Tasks -------------------------------------------------------------*/
 
-
-// ============ BROWSE TASK LOGIC (for browse_task.html) ============
-
-const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
-const tasksContainer = document.getElementById('tasksContainer');
-
-function renderTasks(filter = {}) {
-    const { search = '', category = '' } = filter;
-    if (!tasksContainer) return;
-
-    tasksContainer.innerHTML = '';
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-    const filtered = tasks.filter(task => {
-        const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
-                              task.description.toLowerCase().includes(search.toLowerCase());
-        const matchesCategory = !category || task.category === category;
-        return matchesSearch && matchesCategory;
-    });
-
-    if (filtered.length === 0) {
-        tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
-        return;
-    }
-
-    filtered.forEach(task => {
-        const taskHTML = `
-            <div class="card task-card p-3 mb-3">
-                <div class="d-flex justify-content-between">
-                    <h5>${task.title}</h5>
-                    <span class="badge bg-secondary">${task.category}</span>
-                </div>
-               
-                <p><strong>Budget:</strong> ₹${task.budget}</p>
-                <p><strong>Deadline:</strong> ${task.deadline}</p>
-
-                <p>${task.description}</p>
-                <div class="mb-2">
-                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
-                </div>
-                <button class="btn btn-dark">Apply for Task</button>
-                
-            </div>
-        `;
-        tasksContainer.innerHTML += taskHTML;
-    });
-}
-
-  
-
-// If on browse page, auto-render tasks
-if (tasksContainer) {
-    renderTasks();
-
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            renderTasks({ search: searchInput.value, category: categoryFilter.value });
-        });
-    }
-
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', () => {
-            renderTasks({ search: searchInput.value, category: categoryFilter.value });
-        });
-    }
-}
-
-
-
-
-
- /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
-
-
- // ============ POST TASK LOGIC (for post_task.html) =============
+// ============ POST TASK LOGIC (for post_task.html) ============
 
 const taskForm = document.getElementById('taskForm');
 if (taskForm) {
     taskForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const title = document.getElementById('title').value;
-        const category = document.getElementById('category').value;
-        const description = document.getElementById('description').value;
-        const budget = document.getElementById('budget').value;
-        const deadline = document.getElementById('deadline').value;
-        const skills = document.getElementById('skills').value.split(',').map(s => s.trim());
+        // Get form values
+        const title = document.getElementById('title').value.trim();
+        const category = document.getElementById('category').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const budget = document.getElementById('budget').value.trim();
+        const deadline = document.getElementById('deadline').value.trim();
+        const skills = document.getElementById('skills').value.trim();
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput ? fileInput.files[0] : null;
 
-        const task = {
-            title,
-            category,
-            description,
-            budget,
-            deadline,
-            skills
-        };
+        // Validate fields
+        if (!title || !category || !description || !budget || !deadline || !skills) {
+            alert('Please fill in all fields.');
+            return;
+        }
 
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        tasks.push(task);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('description', description);
+        formData.append('budget', budget);
+        formData.append('deadline', deadline);
+        formData.append('skills', skills);
+        if (file) {
+            formData.append('file', file);
+        }
 
-       
-
-        alert('Task has been posted!'); 
-        taskForm.reset();
+        // Send data to /post-task endpoint
+        fetch('/post-task', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                return response.text().then(text => {
+                    console.error("Post failed:", text);
+                    alert("There was an error posting your task.");
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error posting your task.');
+        });
     });
 }
+
+// ============ BROWSE TASK LOGIC (for browse_task.html) ============
+
+const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const tasksContainer = document.getElementById('tasksContainer');
+
+        let allTasks = [];
+
+        // Function to render tasks to the page
+        function renderTasks(filter = {}) {
+            const { search = '', category = '' } = filter;
+
+            if (!tasksContainer) return;
+            tasksContainer.innerHTML = '';  // Clear the container before re-rendering
+
+            const filteredTasks = allTasks.filter(task => {
+                const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
+                                      task.description.toLowerCase().includes(search.toLowerCase());
+                const matchesCategory = !category || task.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            if (filteredTasks.length === 0) {
+                tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
+                return;
+            }
+
+            filteredTasks.forEach(task => {
+                const fileLink = task.file_path ? `
+                    <a href="/static/uploaded_files/${task.file_path}" download class="btn btn-sm btn-outline-primary mb-2">
+                        Download File
+                    </a>` : '';
+
+                const taskHTML = `
+                    <div class="card task-card p-3 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <h5>${task.title}</h5>
+                            <span class="badge bg-secondary">${task.category}</span>
+                        </div>
+                        <p><strong>Budget:</strong> ₹${task.budget}</p>
+                        <p><strong>Deadline:</strong> ${task.deadline}</p>
+                        <p>${task.description}</p>
+                        <div class="mb-2">
+                            ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                        </div>
+                        ${fileLink}
+                        <button class="btn btn-dark">Apply for Task</button>
+                    </div>
+                `;
+                tasksContainer.innerHTML += taskHTML;  // Add the task to the container
+            });
+        }
+
+        // Fetch tasks from the backend API and render them
+        if (tasksContainer) {
+            fetch('/api/tasks')
+                .then(res => res.json())
+                .then(data => {
+                    allTasks = data;
+                    renderTasks();  // Render the tasks once data is loaded
+                })
+                .catch(err => {
+                    console.error("Failed to fetch tasks:", err);
+                    tasksContainer.innerHTML = '<p class="text-danger">Failed to load tasks.</p>';
+                });
+
+            // Event listener for search input
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    renderTasks({ search: searchInput.value, category: categoryFilter?.value });
+                });
+            }
+
+            // Event listener for category filter change
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', () => {
+                    renderTasks({ search: searchInput?.value, category: categoryFilter.value });
+                });
+            }
+        }
 
 
 
@@ -423,5 +452,129 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
   if (message1 && message.trim() !== "") {
       alert(message); // You can style this later or use a toast instead
   }
-});
 
+
+/*Toast message for invalid credentials-----------------------*/
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hidden");
+  }, 4000);
+}
+
+
+// static/js/index.js
+function openSidebar() {
+  document.getElementById("sidebar").style.width = "250px";
+}
+
+function closeSidebar() {
+  document.getElementById("sidebar").style.width = "0";
+}
+});
+//Business Dashboard Js
+/*const businessTasksContainer = document.getElementById('businessTasksContainer');
+    
+    if (businessTasksContainer) {
+        fetch('/api/business/tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    businessTasksContainer.innerHTML = '<p>You have not posted any tasks yet.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary me-2" onclick="editTask(${task.id})">
+                                        Edit Task
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">
+                                        Delete Task
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    businessTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                businessTasksContainer.innerHTML = '<p class="text-danger">Failed to load your tasks. Please try again later.</p>';
+            });
+    }
+
+    //Freelancer Dashboard Js
+    const availableTasksContainer = document.getElementById('availableTasksContainer');
+    
+    if (availableTasksContainer) {
+            fetch('/api/freelancer/available-tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    availableTasksContainer.innerHTML = '<p>No tasks available at the moment.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="mb-2">
+                                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                                </div>
+                                <button class="btn btn-primary" onclick="applyToTask(${task.id})">
+                                    Apply for Task
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    availableTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                availableTasksContainer.innerHTML = '<p class="text-danger">Failed to load available tasks. Please try again later.</p>';
+            });
+    }
+
+*/
