@@ -206,15 +206,15 @@
 <body>
 <div class="container my-5">
   <h2 class="mb-4">Post a New Task</h2>
-  <form id="taskForm" class="form-section">
+  <form action="/post-task" method="post" id ="taskForm" class="form-section" enctype="multipart/form-data">
     <div class="mb-3">
       <label for="title" class="form-label">Task Title</label>
-      <input type="text" class="form-control" id="title" placeholder="E.g., Logo Design for Tech Startup" required>
+      <input type="text" name="title" class="form-control" id="title" placeholder="E.g., Logo Design for Tech Startup" required>
     </div>
 
     <div class="mb-3">
       <label for="category" class="form-label">Category</label>
-      <select id="category" class="form-select" required>
+      <select id="category" name="category" class="form-select" required>
         <option value="">Select a category</option>
         <option value="Web Development">Web Development</option>
         <option value="Design & Creative">Design & Creative</option>
@@ -225,30 +225,30 @@
 
     <div class="mb-3">
       <label for="description" class="form-label">Task Description</label>
-      <textarea id="description" class="form-control" rows="4" placeholder="Provide a detailed description of what you need..." required></textarea>
+      <textarea id="description" name="description" class="form-control" rows="4" placeholder="Provide a detailed description of what you need..." required></textarea>
     </div>
 
     <div class="d-flex mb-3 gap-3">
       <div>
         <label for="budget" class="form-label">Budget (₹)</label>
-        <input type="number" class="form-control" id="budget" placeholder="E.g., 100" required>
+        <input type="number" name="budget" class="form-control" id="budget" placeholder="E.g., 100" required>
       </div>
       <div>
         <label for="deadline" class="form-label">Deadline</label>
-        <input type="date" class="form-control" id="deadline" required>
+        <input type="date" name="deadline" class="form-control" id="deadline" required>
       </div>
     </div>
     
 
     <div class="mb-3">
-      <label for="skills" class="form-label">Required Skills</label>
-      <input type="text" class="form-control" id="skills" placeholder="E.g., Photoshop, Illustrator, Logo Design" required>
+      <label for="skills"  class="form-label">Required Skills</label>
+      <input type="text" name="skills" class="form-control" id="skills" placeholder="E.g., Photoshop, Illustrator, Logo Design" required>
       <div class="form-text">Separate skills with commas</div>
     </div>
 
     <div class="mb-3">
       <label for="attachment" class="form-label">Attachments</label>
-      <input type="file" class="form-control" id="attachment" multiple>
+      <input type="file" name="file" class="form-control" id="fileInput" accept=".pdf,.docx,.zip,.png,.jpg,.jpeg" multiple>
       <div class="form-text">Upload any reference files or documents (Max 5MB each)</div>
     </div>
 
