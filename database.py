@@ -19,3 +19,11 @@ class User(Base):
     lusername = Column(String(100))
     email = Column(String(100))
     role = Column(String(100))
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

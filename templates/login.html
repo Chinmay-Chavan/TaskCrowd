@@ -8,18 +8,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!----------------------------------FontAwesome--------------------------------------------------------->
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
         <!---------------------------------------------------------------------------------------->
-
-
         <link rel="stylesheet" href="/static/css/index.css">
 
-
+        <!-- Google Sign-In API Script - Move this to the head -->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
-    <body class="login-body" data-message="{{ message | default('') }}">
+    <body class="login-body" data-message1="{{message1 if message1 else ''}}">
       <div id="fb-root"></div>
         <header class="main-header" id="up">
             <div class="header-container">
@@ -71,35 +69,24 @@
                     <input type="checkbox" checked="checked" class="check">     <pre> Remember me</pre>
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;
-                     <p><a href="/forgot-password.html" class="forgot">Forgot Password?</a></p>
+                     <a href="/forgot-password.html" class="forgot">Forgot Password?</a>
                   </label>
 
                   <hr>
 
-                  <div class="social-media">
-
-                    <div id="g_id_onload"
-                    data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
-                    data-callback="handleBusinessGoogleSignIn">
+                  <!-- For Business login -->
+                  <div id="g_id_onload"
+                       data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
+                       data-callback="handleBusinessGoogleSignIn"
+                       data-context="signin">
                   </div>
-
-                  <div class="g_id_signin" data-type="standard"></div>
-
-                  </div>
-                  <div class="social-media">
-                    <button class="fb-material-button">
-                      <div class="fb-material-button-state"></div>
-                      <div class="fb-material-button-content-wrapper">
-                        <div class="fb-material-button-icon">
-                          <!-- Facebook SVG Icon -->
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
-                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
-                          </svg>
-                        </div>
-                        <span class="fb-material-button-contents">Sign in with Facebook</span>
-                        <span style="display: none;">Sign in with Facebook</span>
-                      </div>
-                    </button>
+                  <div class="g_id_signin" 
+                       data-type="standard"
+                       data-size="large"
+                       data-text="sign_in_with"
+                       data-shape="rectangular"
+                       data-theme="outline"
+                       data-logo_alignment="left">
                   </div>
 
                   <div class="or">
@@ -127,39 +114,28 @@
                     &nbsp;
                      <a href="#" class="forgot">Forgot Password?</a>
                   </label>
-
                   <hr>
-
-                  <div class="social-media">
-
-                    <div id="g_id_onload"
-                      data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
-                      data-callback="handleFreelancerGoogleSignIn">
+                    <div class="social-media">
+                    <!-- For Freelancer login - Fixed attributes to match business version -->
+                    <div id="freelancer_g_id_onload"
+                         data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
+                         data-callback="handleFreelancerGoogleSignIn"
+                         data-context="signin">
                     </div>
-
-                    <div class="g_id_signin" data-type="standard"></div>
-
+                    <div class="g_id_signin" 
+                         data-type="standard"
+                         data-size="large"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-logo_alignment="left">
+                    </div>
                   </div>
-                  <div class="social-media">
-                    <button class="fb-material-button">
-                      <div class="fb-material-button-state"></div>
-                      <div class="fb-material-button-content-wrapper">
-                        <div class="fb-material-button-icon">
-                          <!-- Facebook SVG Icon -->
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
-                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
-                          </svg>
-                        </div>
-                        <span class="fb-material-button-contents">Sign in with Facebook</span>
-                        <span style="display: none;">Sign in with Facebook</span>
-                      </div>
-                    </button>
-                  </div>
+                  
                   <div class="or">
                     <p>or</p>
-                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
-                    </div>
-
+                    <pre>Don't have an account? <a href="register.html">Sign up</a></pre>
+                  </div>
                 </form>
             </div>
 
@@ -184,14 +160,20 @@
                   <hr>
 
                   <div class="social-media">
-
-                    <div id="g_id_onload"
-                      data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
-                      data-callback="handleAdminGoogleSignIn">
+                    <!-- For Admin login - Fixed attributes -->
+                    <div id="admin_g_id_onload"
+                         data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
+                         data-callback="handleAdminGoogleSignIn"
+                         data-context="signin">
                     </div>
-
-                    <div class="g_id_signin" data-type="standard"></div>
-
+                    <div class="g_id_signin" 
+                         data-type="standard"
+                         data-size="large"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-logo_alignment="left">
+                    </div>
                   </div>
 
                   <div class="social-media">
@@ -209,23 +191,13 @@
                       </div>
                     </button>
 
-                    
-
-                    
-
-
                   </div>
                   
-
                   <div class="or">
                     <p>or</p>
-                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
+                    <pre>Don't have an account? <a href="register.html">Sign up</a></pre>
                     </div>
                 
-
-                    
-                    
-
                 </form>
                 {% if message %}
                 <div class="error">{{ message }}</div>
@@ -236,15 +208,8 @@
 
         
         <div id="toast" class="custom-toast hidden" data-message="{{ message | default('') }}"></div>
-            <!---------------------------------------------SCRIPTS--------------------------------------------------->
-        
-            <!--------------------------Google API--------------------------------->
-       <script src="https://accounts.google.com/gsi/client"></script>
-
-       <!--------------------------------------------------------------------->
-      
-        
-            <script src="/static/js/index.js" defer></script>
-            <!--Toast message for invalid credentials----------------------->
+            
+        <!-- JavaScript at the end of the body -->
+        <script src="/static/js/index.js" defer></script>
     </body>
-</html>        
+</html>
