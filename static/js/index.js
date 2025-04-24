@@ -195,19 +195,19 @@ function signOutGoogle() {
   } else {
       console.error('Chart container not found');
   }
+  
+
+ /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
 
 
+ // ============ POST TASK LOGIC (for post_task.html) =============
 
-
-
-/*------------------------------------- Browse and Post Tasks -------------------------------------------------------------*/
-
-// ============ POST TASK LOGIC (for post_task.html) ============
 
 const taskForm = document.getElementById('taskForm');
 if (taskForm) {
     taskForm.addEventListener('submit', function (e) {
         e.preventDefault();
+
 
         // Get form values
         const title = document.getElementById('title').value.trim();
@@ -256,6 +256,9 @@ if (taskForm) {
             console.error('Error:', error);
             alert('There was an error posting your task.');
         });
+
+       
+
     });
 }
 
@@ -443,6 +446,7 @@ const businessTasksContainer = document.getElementById('businessTasksContainer')
             });
     }
 
+
     //Freelancer Dashboard Js
     const availableTasksContainer = document.getElementById('availableTasksContainer');
     
@@ -490,5 +494,3 @@ const businessTasksContainer = document.getElementById('businessTasksContainer')
                 availableTasksContainer.innerHTML = '<p class="text-danger">Failed to load available tasks. Please try again later.</p>';
             });
     }
-
-  });
