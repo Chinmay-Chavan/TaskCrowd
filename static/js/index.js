@@ -237,86 +237,7 @@ function checkLoginState() {
   } else {
       console.error('Chart container not found');
   }
-
-
-
-
-
-/*------------------------------------- Browse and Post Tasks -------------------------------------------------------------*/
-
-
-// ============ POST TASK LOGIC (for post_task.html) ============
-
-// ============ BROWSE TASK LOGIC (for browse_task.html) ============
-
-const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
-const tasksContainer = document.getElementById('tasksContainer');
-
-function renderTasks(filter = {}) {
-    const { search = '', category = '' } = filter;
-    if (!tasksContainer) return;
-
-    tasksContainer.innerHTML = '';
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-    const filtered = tasks.filter(task => {
-        const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
-                              task.description.toLowerCase().includes(search.toLowerCase());
-        const matchesCategory = !category || task.category === category;
-        return matchesSearch && matchesCategory;
-    });
-
-    if (filtered.length === 0) {
-        tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
-        return;
-    }
-
-    filtered.forEach(task => {
-        const taskHTML = `
-            <div class="card task-card p-3 mb-3">
-                <div class="d-flex justify-content-between">
-                    <h5>${task.title}</h5>
-                    <span class="badge bg-secondary">${task.category}</span>
-                </div>
-               
-                <p><strong>Budget:</strong> ₹${task.budget}</p>
-                <p><strong>Deadline:</strong> ${task.deadline}</p>
-
-                <p>${task.description}</p>
-                <div class="mb-2">
-                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
-                </div>
-                <button class="btn btn-dark">Apply for Task</button>
-                
-            </div>
-        `;
-        tasksContainer.innerHTML += taskHTML;
-    });
-}
-
   
-
-// If on browse page, auto-render tasks
-if (tasksContainer) {
-    renderTasks();
-
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            renderTasks({ search: searchInput.value, category: categoryFilter.value });
-        });
-    }
-
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', () => {
-            renderTasks({ search: searchInput.value, category: categoryFilter.value });
-        });
-    }
-}
-
-
-
-
 
  /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
 
@@ -378,30 +299,7 @@ if (taskForm) {
             alert('There was an error posting your task.');
         });
 
-        const title = document.getElementById('title').value;
-        const category = document.getElementById('category').value;
-        const description = document.getElementById('description').value;
-        const budget = document.getElementById('budget').value;
-        const deadline = document.getElementById('deadline').value;
-        const skills = document.getElementById('skills').value.split(',').map(s => s.trim());
-
-        const task = {
-            title,
-            category,
-            description,
-            budget,
-            deadline,
-            skills
-        };
-
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        tasks.push(task);
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-
        
-
-        alert('Task has been posted!'); 
-        taskForm.reset();
 
     });
 }

@@ -7,8 +7,8 @@ from fastapi import FastAPI, Form, Request, Response, Depends, HTTPException, st
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
-from passlib.context import CryptContext
-from jose import JWTError, jwt
+from passlib.context import CryptContext # type: ignore
+from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
 from routers import auth, business, freelancer
 from sqlalchemy.orm import Session
@@ -35,7 +35,7 @@ app.include_router(freelancer.router)
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.mount("/uploaded_files", StaticFiles(directory="uploaded_files"), name="uploaded_files")
+
 
 templates = Jinja2Templates(directory="templates")
 
@@ -107,9 +107,9 @@ async def business_dashboard(request: Request):
 
 
 # Route for Browse Task page
-@app.get("/Browse_Task.html", response_class=HTMLResponse)
+@app.get("/request.html", response_class=HTMLResponse)
 async def browse_task(request: Request):
-    return templates.TemplateResponse("Browse_Task.html", {"request": request})
+    return templates.TemplateResponse("request.html", {"request": request})
 
 # Route for post task page
 @app.get("/post_task.html", response_class=HTMLResponse)
