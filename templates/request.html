@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Request Page</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-----------------Font Awesome------------------>
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+      <!----------------------------------------------------->
+
+        <link rel="stylesheet" href="/static/css/index.css">
+
+    </head>
+
+    <body class="body-rqequest">
+
+
+          <!---------------------------------------------HEADER--------------------------------------------------->
+
+     <header class="main-header" id="up">
+        <div class="header-container">
+          <div  class="left-section">
+            <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+            <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+            <a href="#" class="brand-name">TaskCrowd</a>
+          </div>
+            <div class="right-section">
+              <button class="btn"><a href="/logout">Logout</a></button>
+             
+          </div>
+        </div>
+        
+    </header>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href=""><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+        <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+        <a href="request.html"><i class="fa-solid fa-bell"></i> Request</a>
+        <a href=""><i class="fa-solid fa-clipboard-check"></i> Task Review</a>
+        <a href=""><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+       
+    </div>
+
+
+    <!-------------------------------------------------------------------------------------------->
+
+        <div class="container-rqequest">
+            <div class="card-rqequest">
+                <div class="worker-info-rqequest">
+                    <h3 class="worker-name-rqequest">Sarah Johnson <span class="worker-email-rqequest">sarah.j@example.com</span></h3>
+                    <div class="worker-skills-rqequest">
+                        <span class="skill-tag-rqequest">JavaScript</span>
+                        <span class="skill-tag-rqequest">React</span>
+                        <span class="skill-tag-rqequest">UI/UX Design</span>
+                    </div>
+                </div>
+                
+                <div class="task-details-rqequest">
+                    <h4 class="task-title-rqequest">E-commerce Website Redesign</h4>
+                    <div class="task-meta-rqequest">
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Category:</span>
+                            <span class="task-meta-value-rqequest category-tag-rqequest">Web Development</span>
+                        </div>
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Budget:</span>
+                            <span class="task-meta-value-rqequest">$1,500</span>
+                        </div>
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Deadline:</span>
+                            <span class="task-meta-value-rqequest">May 15, 2025</span>
+                        </div>
+                    </div>
+                    
+                    <p class="task-description-rqequest">Redesign our existing e-commerce platform to improve user experience and conversion rates. The project includes updating the product catalog, checkout process, and implementing responsive design.</p>
+                    
+                    <div class="required-skills-rqequest">
+                        <div class="required-skills-label-rqequest">Required Skills:</div>
+                        <div class="worker-skills-rqequest">
+                            <span class="skill-tag-rqequest">JavaScript</span>
+                            <span class="skill-tag-rqequest">React</span>
+                            <span class="skill-tag-rqequest">UI/UX Design</span>
+                            <span class="skill-tag-rqequest">CSS</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons-rqequest">
+                    <button class="btn-rqequest btn-accept-rqequest">Accept</button>
+                    <button class="btn-rqequest btn-reject-rqequest">Reject</button>
+                </div>
+            </div>
+    
+            <div class="card-rqequest">
+                <div class="worker-info-rqequest">
+                    <h3 class="worker-name-rqequest">Michael Chen <span class="worker-email-rqequest">m.chen@example.com</span></h3>
+                    <div class="worker-skills-rqequest">
+                        <span class="skill-tag-rqequest">Python</span>
+                        <span class="skill-tag-rqequest">Data Analysis</span>
+                        <span class="skill-tag-rqequest">Machine Learning</span>
+                    </div>
+                </div>
+                
+                <div class="task-details-rqequest">
+                    <h4 class="task-title-rqequest">Sales Data Analysis & Dashboard</h4>
+                    <div class="task-meta-rqequest">
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Category:</span>
+                            <span class="task-meta-value-rqequest category-tag-rqequest">Data Science</span>
+                        </div>
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Budget:</span>
+                            <span class="task-meta-value-rqequest">$1,200</span>
+                        </div>
+                        <div class="task-meta-item-rqequest">
+                            <span class="task-meta-label-rqequest">Deadline:</span>
+                            <span class="task-meta-value-rqequest deadline-soon-rqequest">April 30, 2025</span>
+                        </div>
+                    </div>
+                    
+                    <p class="task-description-rqequest">Analyze our quarterly sales data and create an interactive dashboard to identify trends and growth opportunities. The final deliverable should include the analysis report and a web-based dashboard.</p>
+                    
+                    <div class="required-skills-rqequest">
+                        <div class="required-skills-label-rqequest">Required Skills:</div>
+                        <div class="worker-skills-rqequest">
+                            <span class="skill-tag-rqequest">Python</span>
+                            <span class="skill-tag-rqequest">Data Visualization</span>
+                            <span class="skill-tag-rqequest">SQL</span>
+                            <span class="skill-tag-rqequest">Tableau</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons-rqequest">
+                    <button class="btn-rqequest btn-accept-rqequest">Accept</button>
+                    <button class="btn-rqequest btn-reject-rqequest">Reject</button>
+                </div>
+            </div>
+    
+            
+    
+            
+    
+            
+            
+        </div>
+
+        <script src="/static/js/index.js"></script>
+    </body>
+</html>
