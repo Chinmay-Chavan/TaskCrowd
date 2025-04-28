@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 # DATABASE_URL = "mysql+pymysql://remote_user:root@192.168.1.8/mydb"
 
-DATABASE_URL = "mysql+pymysql://remote_user:root@192.168.1.8/mydb"
+DATABASE_URL = "mysql+pymysql://remote_user:root@192.168.1.2/mydb"
 
 
 
