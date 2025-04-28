@@ -397,83 +397,149 @@ if (taskForm) {
 // ============ BROWSE TASK LOGIC (for browse_task.html) ============
 
 const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const tasksContainer = document.getElementById('tasksContainer');
+const categoryFilter = document.getElementById('categoryFilter');
+const tasksContainer = document.getElementById('tasksContainer');
 
-        let allTasks = [];
+let allTasks = [];
 
-        // Function to render tasks to the page
-        function renderTasks(filter = {}) {
-            const { search = '', category = '' } = filter;
+// Function to render tasks to the page
+function renderTasks(filter = {}) {
+    const { search = '', category = '' } = filter;
 
-            if (!tasksContainer) return;
-            tasksContainer.innerHTML = '';  // Clear the container before re-rendering
+    if (!tasksContainer) return;
+    tasksContainer.innerHTML = '';  // Clear the container before re-rendering
 
-            const filteredTasks = allTasks.filter(task => {
-                const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
-                                      task.description.toLowerCase().includes(search.toLowerCase());
-                const matchesCategory = !category || task.category === category;
-                return matchesSearch && matchesCategory;
-            });
+    const filteredTasks = allTasks.filter(task => {
+        const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
+                              task.description.toLowerCase().includes(search.toLowerCase());
+        const matchesCategory = !category || task.category === category;
+        return matchesSearch && matchesCategory;
+    });
 
-            if (filteredTasks.length === 0) {
-                tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
-                return;
-            }
+    if (filteredTasks.length === 0) {
+        tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
+        return;
+    }
 
-            filteredTasks.forEach(task => {
-                const fileLink = task.file_path ? `
-                    <a href="/static/uploaded_files/${task.file_path}" download class="btn btn-sm btn-outline-primary mb-2">
-                        Download File
-                    </a>` : '';
+    filteredTasks.forEach(task => {
+        const fileLink = task.file_path ? `
+            <a href="/static/uploaded_files/${task.file_path}" download class="btn btn-sm btn-outline-primary mb-2">
+                Download File
+            </a>` : '';
 
-                const taskHTML = `
-                    <div class="card task-card p-3 mb-3">
-                        <div class="d-flex justify-content-between">
-                            <h5>${task.title}</h5>
-                            <span class="badge bg-secondary">${task.category}</span>
-                        </div>
-                        <p><strong>Budget:</strong> ₹${task.budget}</p>
-                        <p><strong>Deadline:</strong> ${task.deadline}</p>
-                        <p>${task.description}</p>
-                        <div class="mb-2">
-                            ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
-                        </div>
-                        ${fileLink}
-                        <button class="btn btn-dark">Apply for Task</button>
-                    </div>
-                `;
-                tasksContainer.innerHTML += taskHTML;  // Add the task to the container
-            });
+        const taskHTML = `
+            <div class="card task-card p-3 mb-3">
+                <div class="d-flex justify-content-between">
+                    <h5>${task.title}</h5>
+                    <span class="badge bg-secondary">${task.category}</span>
+                </div>
+                <p><strong>Budget:</strong> ₹${task.budget}</p>
+                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                <p>${task.description}</p>
+                <div class="mb-2">
+                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                </div>
+                ${fileLink}
+                <form action="/applications/apply/${task.id}" method="POST" class="apply-task-form">
+                   <button type="submit" class="btn btn-dark apply-task-btn">Apply for Task</button>
+                </form>
+            </div>
+        `;
+        tasksContainer.innerHTML += taskHTML;  // Add the task to the container
+    });
+    
+    // Attach event listeners to apply buttons after they've been added to the DOM
+    attachApplyButtonListeners();
+}
+
+// Function to attach event listeners to apply buttons
+function attachApplyButtonListeners() {
+    document.querySelectorAll('.apply-task-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            applyForTask(taskId);
+        });
+    });
+}
+
+function applyForTask(taskId) {
+    console.log("TaskId received:", taskId);
+
+    if (taskId === undefined) {
+        alert("Invalid task ID.");
+        return;
+    }
+
+    fetch('/applications/apply/' + taskId, {
+        method: 'POST',
+        credentials: 'include'  // Include cookies for authentication
+    })
+    .then(async response => {
+        // Read the response as text first
+        const responseText = await response.text();
+        
+        // Try to parse as JSON
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (e) {
+            // If not valid JSON, use the text directly
+            data = { error: responseText };
         }
 
-        // Fetch tasks from the backend API and render them
-        if (tasksContainer) {
-            fetch('/api/tasks')
-                .then(res => res.json())
-                .then(data => {
-                    allTasks = data;
-                    renderTasks();  // Render the tasks once data is loaded
-                })
-                .catch(err => {
-                    console.error("Failed to fetch tasks:", err);
-                    tasksContainer.innerHTML = '<p class="text-danger">Failed to load tasks.</p>';
-                });
+        if (response.ok) {
+            //alert('Application submitted successfully!');
+            window.location.href = '/Browse_Task.html';
+        } else {
+            console.error('Server Error:', data);
 
-            // Event listener for search input
-            if (searchInput) {
-                searchInput.addEventListener('input', () => {
-                    renderTasks({ search: searchInput.value, category: categoryFilter?.value });
-                });
-            }
-
-            // Event listener for category filter change
-            if (categoryFilter) {
-                categoryFilter.addEventListener('change', () => {
-                    renderTasks({ search: searchInput?.value, category: categoryFilter.value });
-                });
-            }
+            // Display the error message from the server as an alert
+            if (data && data.error) {
+                alert(data.error);
+                
+                // Handle redirects based on status codes
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                } else {
+                    // For other errors like "already applied", go back to the task list
+                    window.location.href = '/Browse_Task.html';
+                }
+            } 
         }
+    })
+    .catch(error => {
+        console.error("Error applying for task:", error);
+        alert("There was an error applying for this task. Please try again.");
+    });
+}
+
+// Fetch tasks from the backend API and render them
+if (tasksContainer) {
+    fetch('/api/tasks')
+        .then(res => res.json())
+        .then(data => {
+            allTasks = data;
+            renderTasks();  // Render the tasks once data is loaded
+        })
+        .catch(err => {
+            console.error("Failed to fetch tasks:", err);
+            tasksContainer.innerHTML = '<p class="text-danger">Failed to load tasks.</p>';
+        });
+
+    // Event listener for search input
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            renderTasks({ search: searchInput.value, category: categoryFilter?.value });
+        });
+    }
+
+    // Event listener for category filter change
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            renderTasks({ search: searchInput?.value, category: categoryFilter.value });
+        });
+    }
+}
 
 
 
