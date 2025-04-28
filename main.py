@@ -1,16 +1,13 @@
-
 from fastapi import FastAPI, Form, UploadFile, File, Request, Response, Depends, HTTPException, status
-
-
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import FastAPI, Form, Request, Response, Depends, HTTPException, status
-
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext # type: ignore
 from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
-from routers import auth, business, freelancer
+from routers import auth, business, freelancer, applications
 from sqlalchemy.orm import Session
 import smtplib 
 from email.mime.text import MIMEText
@@ -34,7 +31,7 @@ app.include_router(freelancer.router)
 app.include_router(business.router, prefix="/business", tags=["business"])
 app.include_router(freelancer.router, prefix="/freelancer", tags=["freelancer"])
 app.include_router(google_auth_router)
-
+app.include_router(applications.router)
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -101,10 +98,10 @@ async def business_dashboard(request: Request):
     return templates.TemplateResponse("Business_Dashboard.html", {"request": request})
 
 
-# Route for request Task page
-@app.get("/request.html", response_class=HTMLResponse)
+# Route for Browse Task page
+@app.get("/requests.html", response_class=HTMLResponse)
 async def browse_task(request: Request):
-    return templates.TemplateResponse("request.html", {"request": request})
+    return templates.TemplateResponse("requests.html", {"request": request})
 
 # Route for post task page
 @app.get("/post_task.html", response_class=HTMLResponse)
@@ -154,6 +151,23 @@ async def reset_password_get(request: Request, token: str):
             "request": request, "error": "Invalid or expired token."
         })
 
+#---------- API to fetch tasks ----------
+@app.get("/api/tasks")
+async def get_tasks(db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()  # Fetch all tasks from the database
+    
+    task_data = [{
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "budget": task.budget,
+        "category": task.category,
+        "deadline": task.deadline.isoformat() if isinstance(task.deadline, date) else str(task.deadline),  # Ensure date is serialized
+        "skills": task.skills.split(",") if task.skills else [],
+        "file_path": task.file_path
+    } for task in tasks]
+
+    return JSONResponse(content=task_data)
 # ---------- Logout ----------
 @app.get("/logout")
 def logout():
@@ -201,6 +215,7 @@ async def handle_form(
     return response
 
 # ---------- Login ----------
+
 @app.post("/login", response_class=HTMLResponse)
 async def login_user(
     request: Request,
@@ -216,22 +231,24 @@ async def login_user(
             "message1": "Invalid credentials"
         })
 
-    token_data = {"sub": user.email, "role": user.role}
-    access_token = create_access_token(data=token_data)
+    token_data = {"sub": user.id, "email": user.email, "role": user.role}
+    access_token = create_access_token(data=token_data, expires_delta=timedelta(hours=1))
 
     response = RedirectResponse(
         url=f"/{user.role.capitalize()}_Dashboard.html", status_code=303
     )
+
+    # Set user_id cookie separately (for cookie-based parts like apply task)
     response.set_cookie(
-        key="access_token",
-        value=access_token,
+        key="user_id",
+        value=str(user.id),
         httponly=True,
         secure=False,
         samesite="lax",
-        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        path="/",
+        max_age=3600
     )
     return response
-
 # ---------- Forgot Password ----------
 @app.post("/forgot-password", response_class=HTMLResponse)
 async def forgot_password_post(
@@ -371,18 +388,4 @@ async def post_task_submit(
             "message": "There was an error posting your task."
         })
 
-@app.get("/api/tasks")
-async def get_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(Task).all()  # Fetch all tasks from the database
-    
-    task_data = [{
-        "title": task.title,
-        "description": task.description,
-        "budget": task.budget,
-        "category": task.category,
-        "deadline": task.deadline.isoformat() if isinstance(task.deadline, date) else str(task.deadline),  # Ensure date is serialized
-        "skills": task.skills.split(",") if task.skills else [],
-        "file_path": task.file_path
-    } for task in tasks]
 
-    return JSONResponse(content=task_data)

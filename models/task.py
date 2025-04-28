@@ -16,5 +16,9 @@ class Task(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     file_path = Column(String(255), nullable=True)
         
-    # Add this field to track which business posted the task
+    # Foreign key to users table using email (not id)
     business_email = Column(String, ForeignKey("users.email"))
+
+    # Relationships with simplified paths
+    applications = relationship("models.application.Application", back_populates="task")
+    business = relationship("models.user.User", back_populates="tasks_created", foreign_keys=[business_email])
