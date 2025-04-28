@@ -321,42 +321,12 @@ function signOutGoogle() {
 }
 
 /*-----------------------------------------------Business Dashboard-------------------------------------------------------------*/ 
-  // Sample data for the performance chart
-  const performanceData = [20, 100, 45, 60, 40, 50, 35];
-
-  // Generate the chart bars
-  const chartContainer = document.getElementById('performanceChart');
-  
-  if (chartContainer) {
-      performanceData.forEach(value => {
-          const bar = document.createElement('div');
-          bar.className = 'chart-bar';
-          bar.style.height = `${value}%`;
-          chartContainer.appendChild(bar);
-      });
-  } else {
-      console.error('Chart container not found');
-  }
+ 
 
 
 
 /*-----------------------------------------------Freelance Dashboard-------------------------------------------------------------*/ 
-  // Sample data for the performance chart
-  const overviewData = [20, 100, 45, 60, 40, 50, 35];
-
-  // Generate the chart bars
-  const overviewChartContainer = document.getElementById('overviewChart');
   
-  if (overviewChartContainer) {
-      overviewData.forEach(value => {
-          const bar = document.createElement('div');
-          bar.className = 'chart-bar';
-          bar.style.height = `${value}%`;
-          overviewChartContainer.appendChild(bar);
-      });
-  } else {
-      console.error('Chart container not found');
-  }
   
 
  /*-----------------------------------------------Post Task Form-------------------------------------------------------------*/ 
@@ -594,13 +564,9 @@ function showToast(message) {
 }
 
 
+/*---------------------------------------------------------------------------------------------------------------------------------- */
 
-
-
-
-
-
-
+/*-----------------------------------------------------Submit Work-------------------------------------------------------------------- */
 
 
 
