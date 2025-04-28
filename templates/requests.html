@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Task Requests</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-----------------Font Awesome------------------>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!----------------------------------------------------->
+
+        <link rel="stylesheet" href="/static/css/index.css">
+        <style>
+                .no-requests-message {
+                color: black;
+                text-align: center;
+                margin-top: 2rem;
+        }
+        </style>    
+    </head>
+
+    <body class="body-rqequest">
+        <!---------------------------------------------HEADER--------------------------------------------------->
+        <header class="main-header" id="up">
+            <div class="header-container">
+                <div class="left-section">
+                    <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+                    <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+                    <a href="#" class="brand-name">TaskCrowd</a>
+                </div>
+                <div class="right-section">
+                    <button class="btn"><a href="/logout">Logout</a></button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+            <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+            <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+            <a href="/applications/requests.html"><i class="fa-solid fa-bell"></i> Request</a>
+            <a href="task_review.html"><i class="fa-solid fa-clipboard-check"></i> Task Review</a>
+            <a href="payments.html"><i class="fa-solid fa-credit-card"></i> Payments</a>
+            <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+            <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+        </div>
+
+        <!-------------------------------------------------------------------------------------------->
+
+        <div class="container-rqequest">
+            {% if applications %}
+                {% for app in applications %}
+                <div class="card-rqequest">
+                    <div class="worker-info-rqequest">
+                        <h3 class="worker-name-rqequest">{{ app.freelancer.username }} <span class="worker-email-rqequest">{{ app.freelancer.email }}</span></h3>
+                        <div class="worker-skills-rqequest">
+                            {% for skill in app.freelancer.skills %}
+                            <span class="skill-tag-rqequest">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="task-details-rqequest">
+                        <h4 class="task-title-rqequest">{{ app.task.title }}</h4>
+                        <div class="task-meta-rqequest">
+                            <div class="task-meta-item-rqequest">
+                                <span class="task-meta-label-rqequest">Category:</span>
+                                <span class="task-meta-value-rqequest category-tag-rqequest">{{ app.task.category }}</span>
+                            </div>
+                            <div class="task-meta-item-rqequest">
+                                <span class="task-meta-label-rqequest">Budget:</span>
+                                <span class="task-meta-value-rqequest">₹{{ app.task.budget }}</span>
+                            </div>
+                            <div class="task-meta-item-rqequest">
+                                <span class="task-meta-label-rqequest">Deadline:</span>
+                                <span class="task-meta-value-rqequest {% if app.task.deadline|string < now|string %}deadline-soon-rqequest{% endif %}">
+                                    {{ app.task.deadline.strftime('%B %d, %Y') }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <p class="task-description-rqequest">{{ app.task.description }}</p>
+                        
+                        <div class="required-skills-rqequest">
+                            <div class="required-skills-label-rqequest">Required Skills:</div>
+                            <div class="worker-skills-rqequest">
+                                {% for skill in app.task.required_skills %}
+                                <span class="skill-tag-rqequest">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons-rqequest">
+                        {% if app.status == 'pending' %}
+                        <form action="/requests/{{ app.id }}/update" method="post" class="d-inline">
+                            <input type="hidden" name="status" value="accepted">
+                            <button type="submit" class="btn-rqequest btn-accept-rqequest">Accept</button>
+                        </form>
+                        <form action="/requests/{{ app.id }}/update" method="post" class="d-inline">
+                            <input type="hidden" name="status" value="rejected">
+                            <button type="submit" class="btn-rqequest btn-reject-rqequest">Reject</button>
+                        </form>
+
+                        
+                        {% elif app.status == 'accepted' %}
+                        <button class="btn-rqequest btn-accepted-rqequest" disabled>Accepted</button>
+                        {% elif app.status == 'rejected' %}
+                        <button class="btn-rqequest btn-rejected-rqequest" disabled>Rejected</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-requests-message">
+                    <h3>No applications yet</h3>
+                    <p>When freelancers apply to your tasks, their applications will appear here.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <script src="/static/js/index.js"></script>
+    </body>
+</html>
