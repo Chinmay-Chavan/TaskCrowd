@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>Login - TaskCrowd</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
@@ -17,8 +18,17 @@
         <!-- Google Sign-In API Script - Move this to the head -->
         <script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
+
+    <body class="login-body" data-message="{{ message | default('') }}">
+
+    <!-- particles.js container --> 
+    <div id="particles-js"></div>
+      
+  
+
     <body class="login-body" data-message1="{{message1 if message1 else ''}}">
       <div id="fb-root"></div>
+
         <header class="main-header" id="up">
             <div class="header-container">
               <div  class="left-section">
@@ -27,7 +37,7 @@
                 <a href="#" class="brand-name">TaskCrowd</a>
               </div>
                 <div class="right-section">
-                  <button class="btn"><a href="login.html">Login</a></button>
+                
                   <button class="btn btn-alt"><a href="register.html">Register</a></button>
               </div>
             </div>
@@ -50,8 +60,8 @@
             
             <div class="btns">
             <button class="open-btn" onclick="openForm('form11')">Business</button>
-            <button class="open-btn" onclick="openForm('form22')">Freelancer</button>
-            <button class="open-btn" onclick="openForm('form33')">Admin</button>
+            <button class="open-btn1" onclick="openForm('form22')">Freelancer</button>
+            
             </div>
         
             <div id="form11" class="form-popup">
@@ -83,6 +93,15 @@
                        data-callback="handleBusinessGoogleSignIn"
                        data-context="signin">
                   </div>
+
+
+                  <div class="g_id_signin" data-type="standard"></div>
+
+                  </div>
+                 
+                  <br>
+                  
+
                   <div class="g_id_signin" 
                        data-type="standard"
                        data-size="large"
@@ -91,6 +110,7 @@
                        data-theme="outline"
                        data-logo_alignment="left">
                   </div>
+
 
                   <div class="or">
                     <p>or</p>
@@ -133,14 +153,25 @@
                          data-theme="outline"
                          data-logo_alignment="left">
                     </div>
+
+
+                    <div class="g_id_signin" data-type="standard"></div>
+
+                  </div>
+                  <br>
+
                   </div>
                   
+
                   <div class="or">
                     <p>or</p>
                     <pre>Don't have an account? <a href="register.html">Sign up</a></pre>
                   </div>
                 </form>
             </div>
+
+
+           
 
             <div id="form33" class="form-popup">
                 <form action="/action_page.php" class="form-container">
@@ -207,12 +238,37 @@
                 {% endif %}
             </div>
 
+
         </div>
 
         
+
+      
+            <!---------------------------------------------SCRIPTS--------------------------------------------------->
+        
+            <!--------------------------Google API--------------------------------->
+
+       <script src="https://accounts.google.com/gsi/client"></script>
+
+       <!--------------------------------------------------------------------->
+      
+          <!-- particles.js lib -->
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+
+        
+            
+        <script src="/static/js/index.js" defer></script>
+           
+
+
+
+            
+
         <div id="toast" class="custom-toast hidden" data-message="{{ message | default('') }}"></div>
             
         <!-- JavaScript at the end of the body -->
         <script src="/static/js/index.js" defer></script>
+
     </body>
 </html>
