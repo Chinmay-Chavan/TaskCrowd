@@ -1,0 +1,138 @@
+    <!DOCTYPE html>
+   
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Submit Work</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+             <!-----------------Font Awesome------------------>
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+      <!----------------------------------------------------->
+
+    <link rel="stylesheet" href="/static/css/index.css">
+
+
+
+        </head>
+        <body class="submit-task">
+
+             <!---------------------------------------------HEADER--------------------------------------------------->
+
+     <header class="main-header" id="up">
+        <div class="header-container">
+          <div  class="left-section">
+            <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+            <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+            <a href="#" class="brand-name">TaskCrowd</a>
+          </div>
+            <div class="right-section">
+              <button class="btn"><a href="">Logout</a></button>
+             
+          </div>
+        </div>
+        
+    </header>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href=""><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="Browse_Task.html"><i class="fa-solid fa-magnifying-glass"></i> Browse Task</a>
+        <a href="submit_work.html"><i class="fa-solid fa-arrow-up-from-bracket"></i> Submit Work</a>
+        <a href=""><i class="fa-solid fa-indian-rupee-sign"></i> Earnings</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+    </div>
+
+
+    <!-------------------------------------------------------------------------------------------->
+   
+            <div class="container-submit-task">
+                <h1 class="page-title-submit-task">Submit Your Work</h1>
+                
+                <div id="successMessage" class="success-message-submit-task">
+                    Your work has been submitted successfully! The client will be notified.
+                </div>
+                
+                <div id="errorMessage" class="error-message-submit-task">
+                    There was an error submitting your work. Please try again.
+                </div>
+        
+                
+        
+                <div class="submit-form-submit-task">
+        
+                    <h3>Project Details</h3>
+        
+                    <form id="workSubmissionForm" action="#" method="POST" enctype="multipart/form-data" class="form-submit-task">
+                       
+                        <div class="form-group-submit-task">
+                            <label for="projectTitle">Project Title</label>
+                            <input id="projectTitle" class="input1-submit-task" type="text" placeholder="Enter Project Title" required>
+                        </div>
+                        <div class="form-group-submit-task">
+                            <label for="clientName">Client Name</label>
+                            <input id="clientName" class="input2-label-submit-task" type="text" placeholder="Client Name" required>
+                        </div>
+                        <div class="form-group-submit-task">  
+                            <label for="submissionDate">Submission Date</label>
+                            <input id="submissionDate" class="input3-label-submit-task" type="date" required>
+                        </div>    
+                        
+                        <div class="form-group-submit-task">
+                            <label for="submissionTitle">Submission Title</label>
+                            <input type="text" id="submissionTitle" name="submissionTitle" placeholder="Enter a clear title for your submission" required>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="completionStatus">Completion Status</label>
+                            <select id="completionStatus" name="completionStatus" required>
+                                <option value="">Select status</option>
+                                <option value="complete">Complete</option>
+                                <option value="partial">Partial Completion</option>
+                                <option value="review">For Review</option>
+                            </select>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="submissionDescription">Description of Completed Work</label>
+                            <textarea id="submissionDescription" name="submissionDescription" placeholder="Provide details about what you've completed, any challenges encountered, and any other relevant information..." required></textarea>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label>Upload Files</label>
+                            <div class="file-upload-submit-task" id="dropArea">
+                                <div class="file-upload-icon-submit-task">📁</div>
+                                <p>Drag & drop files here or click to browse</p>
+                                <small>Accepted formats: PDF, ZIP, PNG, JPG, DOC, DOCX (Max 50MB per file)</small>
+                                <input type="file" id="fileInput-submit-task" multiple>
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="additionalNotes">Additional Notes for Client</label>
+                            <textarea id="additionalNotes" name="additionalNotes" placeholder="Any extra information you'd like to share with the client..."></textarea>
+                        </div>
+        
+                        <div class="actions">
+                            <button type="button" class="btn-submit-task btn-secondary-submit-task" id="saveAsDraft">Save as Draft</button>
+                            <button type="submit" class="btn-submit-task submit-btn-submit-task">Submit Work</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+         
+            
+            <script src="/static/js/index.js" async defer> </script>
+        </body>
+    </html>

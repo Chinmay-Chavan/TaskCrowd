@@ -17,7 +17,4 @@ class Task(Base):
     file_path = Column(String(255), nullable=True)
         
     # Add this field to track which business posted the task
-    #business_email = Column(String, ForeignKey("users.email"))
-    
-    # Optionally, add a relationship to the User model
-    #business = relationship("User", back_populates="posted_tasks")
+    business_email = Column(String, ForeignKey("users.email"))
