@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>Login - TaskCrowd</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
@@ -20,7 +21,11 @@
 
     </head>
     <body class="login-body" data-message="{{ message | default('') }}">
-      <div id="fb-root"></div>
+
+    <!-- particles.js container --> 
+    <div id="particles-js"></div>
+      
+  
         <header class="main-header" id="up">
             <div class="header-container">
               <div  class="left-section">
@@ -29,7 +34,7 @@
                 <a href="#" class="brand-name">TaskCrowd</a>
               </div>
                 <div class="right-section">
-                  <button class="btn"><a href="login.html">Login</a></button>
+                
                   <button class="btn btn-alt"><a href="register.html">Register</a></button>
               </div>
             </div>
@@ -52,8 +57,8 @@
             
             <div class="btns">
             <button class="open-btn" onclick="openForm('form11')">Business</button>
-            <button class="open-btn" onclick="openForm('form22')">Freelancer</button>
-            <button class="open-btn" onclick="openForm('form33')">Admin</button>
+            <button class="open-btn1" onclick="openForm('form22')">Freelancer</button>
+            
             </div>
         
             <div id="form11" class="form-popup">
@@ -86,22 +91,9 @@
                   <div class="g_id_signin" data-type="standard"></div>
 
                   </div>
-                  <div class="social-media">
-                    <button class="fb-material-button">
-                      <div class="fb-material-button-state"></div>
-                      <div class="fb-material-button-content-wrapper">
-                        <div class="fb-material-button-icon">
-                          <!-- Facebook SVG Icon -->
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
-                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
-                          </svg>
-                        </div>
-                        <span class="fb-material-button-contents">Sign in with Facebook</span>
-                        <span style="display: none;">Sign in with Facebook</span>
-                      </div>
-                    </button>
-                  </div>
-
+                 
+                  <br>
+                  
                   <div class="or">
                     <p>or</p>
                     <pre>Don't have an account? <a href="register.html">Sign up</a></pre>
@@ -140,21 +132,7 @@
                     <div class="g_id_signin" data-type="standard"></div>
 
                   </div>
-                  <div class="social-media">
-                    <button class="fb-material-button">
-                      <div class="fb-material-button-state"></div>
-                      <div class="fb-material-button-content-wrapper">
-                        <div class="fb-material-button-icon">
-                          <!-- Facebook SVG Icon -->
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
-                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
-                          </svg>
-                        </div>
-                        <span class="fb-material-button-contents">Sign in with Facebook</span>
-                        <span style="display: none;">Sign in with Facebook</span>
-                      </div>
-                    </button>
-                  </div>
+                  <br>
                   <div class="or">
                     <p>or</p>
                     <pre>Don't have an account? <a href="#">Sign up</a></pre>
@@ -163,88 +141,31 @@
                 </form>
             </div>
 
-            <div id="form33" class="form-popup">
-                <form action="/action_page.php" class="form-container">
-                <h1>Admin Login</h1>
-
-                <input type="text" placeholder="Enter Email" name="email" required>
-             
-                <input type="password" placeholder="Enter Password" name="psw" required>
-            
-                <button type="submit" class="btn">Login</button>
-
-                <label>
-                    <input type="checkbox" checked="checked" class="check">
-                    <pre> Remember me</pre>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <a href="#" class="forgot">Forgot Password?</a>
-                  </label>
-
-                  <hr>
-
-                  <div class="social-media">
-
-                    <div id="g_id_onload"
-                      data-client_id="214889972007-ho958972b5o6mngratfret3mh7dmnfpv.apps.googleusercontent.com"
-                      data-callback="handleAdminGoogleSignIn">
-                    </div>
-
-                    <div class="g_id_signin" data-type="standard"></div>
-
-                  </div>
-
-                  <div class="social-media">
-                    <button class="fb-material-button">
-                      <div class="fb-material-button-state"></div>
-                      <div class="fb-material-button-content-wrapper">
-                        <div class="fb-material-button-icon">
-                          <!-- Facebook SVG Icon -->
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style="display: block;">
-                            <path fill="#1877F2" d="M32 16.1C32 7.2 24.8 0 16 0S0 7.2 0 16.1c0 8 5.9 14.6 13.6 15.8V20.6h-4.1v-4.5h4.1v-3.5c0-4 2.4-6.2 6-6.2 1.7 0 3.5.3 3.5.3v3.9h-2c-2 0-2.6 1.2-2.6 2.5v3h4.5l-.7 4.5H18.5v11.2C26.1 30.7 32 24.1 32 16.1z"/>
-                          </svg>
-                        </div>
-                        <span class="fb-material-button-contents">Sign in with Facebook</span>
-                        <span style="display: none;">Sign in with Facebook</span>
-                      </div>
-                    </button>
-
-                    
-
-                    
-
-
-                  </div>
-                  
-
-                  <div class="or">
-                    <p>or</p>
-                    <pre>Don't have an account? <a href="#">Sign up</a></pre>
-                    </div>
-                
-
-                    
-                    
-
-                </form>
-                {% if message %}
-                <div class="error">{{ message }}</div>
-                {% endif %}
-            </div>
+           
 
         </div>
 
         
-        <div id="toast" class="custom-toast hidden" data-message="{{ message | default('') }}"></div>
+      
             <!---------------------------------------------SCRIPTS--------------------------------------------------->
         
             <!--------------------------Google API--------------------------------->
+
        <script src="https://accounts.google.com/gsi/client"></script>
 
        <!--------------------------------------------------------------------->
       
+          <!-- particles.js lib -->
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+
         
-            <script src="/static/js/index.js" defer></script>
-            <!--Toast message for invalid credentials----------------------->
+            
+        <script src="/static/js/index.js" defer></script>
+           
+
+
+
+            
     </body>
 </html>        

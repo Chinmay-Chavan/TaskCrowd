@@ -106,7 +106,7 @@ async def business_dashboard(request: Request):
     return templates.TemplateResponse("Business_Dashboard.html", {"request": request})
 
 
-# Route for Browse Task page
+# Route for request Task page
 @app.get("/request.html", response_class=HTMLResponse)
 async def browse_task(request: Request):
     return templates.TemplateResponse("request.html", {"request": request})
@@ -126,11 +126,17 @@ async def manage_task(request: Request):
 async def profile(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
 
+# Route for submit_work page
+@app.get("/submit_work.html", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("submit_work.html", {"request": request})
 
+# Route for forgot password page
 @app.get("/forgot-password.html", response_class=HTMLResponse)
 async def forgot_password_get(request: Request):
     return templates.TemplateResponse("forgot-password.html", {"request": request})
 
+# Route for Browse_Task page
 @app.get("/Browse_Task.html", response_class=HTMLResponse)
 async def browse_task(request: Request, db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
@@ -140,7 +146,7 @@ async def browse_task(request: Request, db: Session = Depends(get_db)):
         "file_base_url": "static/uploaded_files/"
     })
 
-
+# Route for reset password page
 @app.get("/reset_password.html", response_class=HTMLResponse)
 async def reset_password_get(request: Request, token: str):
     try:

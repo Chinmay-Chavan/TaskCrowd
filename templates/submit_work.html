@@ -1,0 +1,107 @@
+    <!DOCTYPE html>
+   
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <title>Submit Work</title>
+            <meta name="description" content="">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+            <link rel="stylesheet" href="/static/css/index.css">
+
+
+        </head>
+        <body class="submit-task">
+   
+
+            <div class="container-submit-task">
+                <h1 class="page-title-submit-task">Submit Your Work</h1>
+                
+                <div id="successMessage" class="success-message-submit-task">
+                    Your work has been submitted successfully! The client will be notified.
+                </div>
+                
+                <div id="errorMessage" class="error-message-submit-task">
+                    There was an error submitting your work. Please try again.
+                </div>
+        
+                <div class="project-info-submit-task">
+                    <h3>Project Details</h3>
+                    <div class="project-details-submit-task">
+                        <div class="detail-item-submit-task">
+                            <span class="detail-label-submit-task">Project Title:</span> 
+                           <input class="input1-submit-task" type="text" placeholder="Enter Project Title" required>
+                        </div>
+                        <div class="detail-item-submit-task">
+                            <span class="detail-label-submit-task">Client:</span> 
+                            <input class="input2-label-submit-task" type="text" placeholder="Client Name" required>
+                        </div>
+                        <div class="detail-item-submit-task">
+                            <span class="detail-label-submit-task">Submission Date:</span> 
+                            <input class="input3-label-submit-task" type="date"   required>
+                        </div>
+                        <div class="detail-item-submit-task">
+                            <span class="detail-label-submit-task">Status:</span> 
+                            <select id="completionStatus" name="completionStatus"  required>
+                                <option value="">Select status</option>
+                                <option value="complete">Complete</option>
+                                <option value="partial">Partial Completion</option>
+                                <option value="review">For Review</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="submit-form-submit-task">
+                    <form id="workSubmissionForm" action="#" method="POST" enctype="multipart/form-data" class="form-submit-task">
+                        <div class="form-group-submit-task">
+                            <label for="submissionTitle">Submission Title</label>
+                            <input type="text" id="submissionTitle" name="submissionTitle" placeholder="Enter a clear title for your submission" required>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="completionStatus">Completion Status</label>
+                            <select id="completionStatus" name="completionStatus" required>
+                                <option value="">Select status</option>
+                                <option value="complete">Complete</option>
+                                <option value="partial">Partial Completion</option>
+                                <option value="review">For Review</option>
+                            </select>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="submissionDescription">Description of Completed Work</label>
+                            <textarea id="submissionDescription" name="submissionDescription" placeholder="Provide details about what you've completed, any challenges encountered, and any other relevant information..." required></textarea>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label>Upload Files</label>
+                            <div class="file-upload-submit-task" id="dropArea">
+                                <div class="file-upload-icon-submit-task">📁</div>
+                                <p>Drag & drop files here or click to browse</p>
+                                <small>Accepted formats: PDF, ZIP, PNG, JPG, DOC, DOCX (Max 50MB per file)</small>
+                                <input type="file" id="fileInput" multiple>
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+        
+                        <div class="form-group-submit-task">
+                            <label for="additionalNotes">Additional Notes for Client</label>
+                            <textarea id="additionalNotes" name="additionalNotes" placeholder="Any extra information you'd like to share with the client..."></textarea>
+                        </div>
+        
+                        <div class="actions">
+                            <button type="button" class="btn-submit-task btn-secondary-submit-task" id="saveAsDraft">Save as Draft</button>
+                            <button type="submit" class="btn-submit-task submit-btn-submit-task">Submit Work</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+         
+            
+            <script src="/static/js/index.js" async defer> </script>
+        </body>
+    </html>
