@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Show the selected form
       document.getElementById(formId).style.display = 'block';
   }
+/*------------------------------------------------------register-alert---------------------------------------------------------------------*/
 
 
 
@@ -224,108 +225,99 @@ window.handleFreelancerGoogleSignIn = function(response) {
   const idToken = response.credential;
   console.log("Freelancer Google Sign-In, ID Token:", idToken);
   window.location.href = 'http://localhost:5500/Freelancer_Dashboard.html';
+=======
+const message = document.body.dataset.message;
+if (message && message.trim() !== "") {
+  alert(message); // Show alert
+
 }
 
-// Function for admin Google Sign-In
-window.handleAdminGoogleSignIn = function(response) {
-  const idToken = response.credential;
-  console.log("Admin Google Sign-In, ID Token:", idToken);
-  window.location.href = 'http://localhost:5500/Admin_Dashboard.html';
+
+/*-----------------------------------------------Login-alert---------------------------------------------------------------------*/
+
+
+const message1 = document.body.dataset.message1;
+if (message1 && message1.trim() !== "") {
+    alert(message1); // Show alert
 }
-
-/*------------------------------------------------------------------------------------------------*/
-
-
-
-  // Add click event listeners to all Facebook login buttons
-  const fbButtons = document.querySelectorAll('.fb-material-button');
-  fbButtons.forEach(button => {
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-      handleFacebookLogin();
+  /*----------------------------Login with google--------------------------------------------*/                 
+// Function for business Google Sign-In
+window.handleBusinessGoogleSignIn = function(response) {
+    // Get the ID token from the response
+    const idToken = response.credential;
+    console.log("Business Google Sign-In, ID Token:", idToken);
+    
+    // Send the token to your backend
+    fetch('/auth/google/business', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: idToken })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Authentication failed');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Save the token to localStorage for future API calls
+        localStorage.setItem('access_token', data.access_token);
+        // Only redirect after successful authentication
+        window.location.href = 'Business_Dashboard.html';
+    })
+    .catch(error => {
+        console.error('Error during Google authentication:', error);
+        alert('Authentication failed. Please try again.');
     });
-  });
-
-  
-
-/*----------------------------Facebook Login Integration--------------------------------------------*/
-// Initialize the Facebook SDK
-window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '2300712287046729', // Replace with your actual Facebook App ID
-    cookie     : true,
-    xfbml      : true,
-    version    : 'v18.0' // Use the latest version of the Graph API
-  });
-    
-  // Check login status on page load (optional)
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
-};
-
-// Load the SDK asynchronously
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "https://connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-// Handle the status change response
-function statusChangeCallback(response) {
-  if (response.status === 'connected') {
-    // User is logged in and has authenticated your app
-    console.log('Facebook login successful');
-    getUserInfo();
-  } else {
-    console.log('User not authenticated with Facebook');
-  }
 }
 
-// Get user information after successful login
-function getUserInfo() {
-  FB.api('/me', {fields: 'name,email'}, function(response) {
-    console.log('User name: ' + response.name);
-    console.log('User email: ' + response.email);
+// Function for freelancer Google Sign-In
+window.handleFreelancerGoogleSignIn = function(response) {
+    const idToken = response.credential;
+    console.log("Freelancer Google Sign-In, ID Token:", idToken);
     
-    // Here you can:
-    // 1. Store user data in local storage/session
-    // 2. Redirect to dashboard or home page
-    // 3. Send data to your backend for authentication
-  });
+    // Send the token to your backend
+    fetch('/auth/google/freelancer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: idToken })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Authentication failed');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Save the token to localStorage for future API calls
+        localStorage.setItem('access_token', data.access_token);
+        // Only redirect after successful authentication
+        window.location.href = 'Freelancer_Dashboard.html';
+    })
+    .catch(error => {
+        console.error('Error during Google authentication:', error);
+        alert('Authentication failed. Please try again.');
+    });
 }
-
-// Function to handle Facebook login button click
-function handleFacebookLogin() {
-  FB.login(function(response) {
-    if (response.authResponse) {
-      console.log('Facebook authentication successful');
-      // Get access token
-      const accessToken = response.authResponse.accessToken;
-      const userID = response.authResponse.userID;
-      
-      // Log the token (for debugging purposes)
-      console.log('Access Token:', accessToken);
-      
-      // You can send this token to your server
-      // sendTokenToServer(accessToken, userID);
-      
-      // Get user info
-      getUserInfo();
-    } else {
-      console.log('User cancelled login or did not fully authorize.');
+/*-----------------------------------------------Logout---------------------------------------------------------------------*/
+// Add this function to your JS
+function signOutGoogle() {
+    // Clear your application's session/token
+    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    
+    // Clear Google's session
+    google.accounts.id.disableAutoSelect();
+    
+    // Optional: Revoke Google's token
+    if (google.accounts.oauth2) {
+        google.accounts.oauth2.revoke(googleToken, () => {
+            console.log('Google token revoked');
+        });
     }
-  }, {scope: 'public_profile,email'});
-}
-
-// Add this to your existing Facebook code
-function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    console.log("FB login status:", response);
-    statusChangeCallback(response);
-  });
 }
 
 /*-----------------------------------------------Business Dashboard-------------------------------------------------------------*/ 
@@ -538,6 +530,7 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
 
 
 
+
 /*------------------------------------------------------register-popup---------------------------------------------------------------------*/
 
   const message = document.body.dataset.message;
@@ -586,5 +579,6 @@ function showToast(message) {
 
 
 });
+
 
 

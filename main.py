@@ -19,6 +19,8 @@ import shutil, os
 from models import Task
 from pydantic import BaseModel
 from typing import List, Optional
+from database import get_db
+from routers.google_auth import google_auth_router 
 
 # ---------- App Setup ----------
 app = FastAPI()
@@ -29,8 +31,9 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.include_router(auth.router)
 app.include_router(business.router)
 app.include_router(freelancer.router)
-#app.include_router(business.router, prefix="/business", tags=["business"])
-#app.include_router(freelancer.router, prefix="/freelancer", tags=["freelancer"])
+app.include_router(business.router, prefix="/business", tags=["business"])
+app.include_router(freelancer.router, prefix="/freelancer", tags=["freelancer"])
+app.include_router(google_auth_router)
 
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -60,14 +63,6 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # ---------- Routes ----------
 @app.get("/", response_class=HTMLResponse)
@@ -218,7 +213,7 @@ async def login_user(
     if not user or not verify_password(password, user.password):
         return templates.TemplateResponse("login.html", {
             "request": request,
-            "message": "Invalid credentials"
+            "message1": "Invalid credentials"
         })
 
     token_data = {"sub": user.email, "role": user.role}
@@ -311,7 +306,7 @@ async def post_task_submit(
     db: Session = Depends(get_db)
 ):
     # Get user from token(Business email fetching to store in db)
-    '''token = request.cookies.get("access_token")
+    token = request.cookies.get("access_token")
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub") 
@@ -325,7 +320,7 @@ async def post_task_submit(
         return templates.TemplateResponse("login.html", {
             "request": request,
             "message": "Please login first."
-        })'''
+        })
     try:
         # Ensure upload directory exists
         os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -363,7 +358,7 @@ async def post_task_submit(
             deadline=deadline,
             skills=skills,
             file_path=file_path,
-            #business_email=email  # Store the email of the user who posted the task
+            business_email=email  # Store the email of the user who posted the task
         )
         db.add(new_task)
         db.commit()
@@ -375,31 +370,6 @@ async def post_task_submit(
             "request": request,
             "message": "There was an error posting your task."
         })
-
-
-# ---------- Post Task via JavaScript (JSON) ----------
-'''class TaskCreate(BaseModel):
-    title: str
-    description: str
-    budget: float
-    category: str
-    deadline: str
-    skills: List[str]
-
-@app.post("/api/tasks")
-async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
-    new_task = Task(
-        title=task.title,
-        description=task.description,
-        budget=task.budget,
-        category=task.category,
-        deadline=task.deadline,
-        skills=",".join(task.skills)
-    )
-    db.add(new_task)
-    db.commit()
-    return {"message": "Task created successfully"}
-'''
 
 @app.get("/api/tasks")
 async def get_tasks(db: Session = Depends(get_db)):

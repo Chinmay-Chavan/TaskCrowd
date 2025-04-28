@@ -1,4 +1,4 @@
-'''from fastapi import APIRouter, Depends, Request, HTTPException
+from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from database import SessionLocal, get_db
@@ -61,4 +61,4 @@ async def get_available_tasks(
     return task_data
 
 # You can add more freelancer-specific endpoints below
-# For example: apply to task, view applied tasks, etc.'''
+# For example: apply to task, view applied tasks, etc.
