@@ -160,7 +160,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <h2 class="mb-4 text-center">Browse Available Tasks</h2>
-            <form id="searchForm" class="row mb-4 g-2">
+            <form id="searchForm" class="row mb-4 g-2" action="/browse-task" method="get">
                 <div class="col-md-9">
                     <div class="input-group">
                         <input type="text" id="searchInput" class="form-control" placeholder="Search tasks...">
@@ -176,10 +176,12 @@
                         <option value="Admin Support">Admin Support</option>
                     </select>
                 </div>
+                <!--<button class="btn-apply">Apply</button>-->
             </form>
 
             <!-- Tasks Container with File Download Link -->
             <div id="tasksContainer"></div>
+            </div>
     </div>
 </div>
 

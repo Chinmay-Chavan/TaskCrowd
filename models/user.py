@@ -8,7 +8,10 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String(255), nullable=False)
-    role = Column(String)  # "worker", "requester", "admin"
-    # In your User model
-    # Add this field to track which business posted the task
+    role = Column(String)
+    username = Column(String, nullable=True)  # "worker", "requester", "admin"
 
+    # Relationships with simplified paths
+    tasks_created = relationship("models.task.Task", back_populates="business", foreign_keys="models.task.Task.business_email")
+    business_applications = relationship("models.application.Application", back_populates="business", foreign_keys="models.application.Application.business_email")
+    freelancer_applications = relationship("models.application.Application", back_populates="freelancer", foreign_keys="models.application.Application.freelancer_id")

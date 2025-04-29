@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // Initialize particles.js
-  particlesJS("particles-js", {
+  /*particlesJS("particles-js", {
     "particles": {
         "number": {
             "value": 80,
@@ -190,12 +190,12 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     "retina_detect": true
 });
-
+*/
 
 
   /*----------------------------Login with google--------------------------------------------*/                 
   // Function for business Google Sign-In
-window.handleBusinessGoogleSignIn = function(response) {
+/*window.handleBusinessGoogleSignIn = function(response) {
   // Get the ID token from the response
   const idToken = response.credential;
   console.log("Business Google Sign-In, ID Token:", idToken);
@@ -218,28 +218,28 @@ window.handleBusinessGoogleSignIn = function(response) {
   .catch(error => {
       console.error('Error during Google authentication:', error);
   });
-  */
+  
 }
 // Function for freelancer Google Sign-In
 window.handleFreelancerGoogleSignIn = function(response) {
   const idToken = response.credential;
   console.log("Freelancer Google Sign-In, ID Token:", idToken);
   window.location.href = 'http://localhost:5500/Freelancer_Dashboard.html';
-=======
-const message = document.body.dataset.message;
+
+/*const message = document.body.dataset.message;
 if (message && message.trim() !== "") {
   alert(message); // Show alert
 
-}
+}*/
 
 
 /*-----------------------------------------------Login-alert---------------------------------------------------------------------*/
 
 
-const message1 = document.body.dataset.message1;
+/*const message1 = document.body.dataset.message1;
 if (message1 && message1.trim() !== "") {
     alert(message1); // Show alert
-}
+}*/
   /*----------------------------Login with google--------------------------------------------*/                 
 // Function for business Google Sign-In
 window.handleBusinessGoogleSignIn = function(response) {
@@ -400,6 +400,18 @@ const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const tasksContainer = document.getElementById('tasksContainer');
 
+
+let allTasks = [];
+
+// Function to render tasks to the page
+function renderTasks(filter = {}) {
+    const { search = '', category = '' } = filter;
+    
+    if (!tasksContainer) return;
+    tasksContainer.innerHTML = '';  // Clear the container before re-rendering
+    
+
+
 let allTasks = [];
 
 // Function to render tasks to the page
@@ -409,12 +421,74 @@ function renderTasks(filter = {}) {
     if (!tasksContainer) return;
     tasksContainer.innerHTML = '';  // Clear the container before re-rendering
 
+
     const filteredTasks = allTasks.filter(task => {
         const matchesSearch = task.title.toLowerCase().includes(search.toLowerCase()) ||
                               task.description.toLowerCase().includes(search.toLowerCase());
         const matchesCategory = !category || task.category === category;
         return matchesSearch && matchesCategory;
     });
+
+    
+    if (filteredTasks.length === 0) {
+        tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
+        return;
+    }
+    
+    filteredTasks.forEach(task => {
+        const fileLink = task.file_path ? `
+            <a href="/static/uploaded_files/${task.file_path}" download class="btn btn-sm btn-outline-primary mb-2">
+                Download File
+            </a>` : '';
+        
+        const taskHTML = `
+            <div class="card task-card p-3 mb-3">
+                <div class="d-flex justify-content-between">
+                    <h5>${task.title}</h5>
+                    <span class="badge bg-secondary">${task.category}</span>
+                </div>
+                <p><strong>Budget:</strong> ₹${task.budget}</p>
+                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                <p>${task.description}</p>
+                <div class="mb-2">
+                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                </div>
+                ${fileLink}
+                <form action="/applications/apply/${ task.id }" method="POST" class="apply-task-form" id="data-task-id">
+                   <input type="hidden" name="task_id" value="${ task.id }">
+                   <button type="submit" class="btn btn-dark apply-task-btn">Apply for Task</button>
+                </form>
+            </div>
+        `;
+        tasksContainer.innerHTML += taskHTML;  // Add the task to the container
+    });
+
+    // Now attach event listeners to new buttons after rendering
+    document.querySelectorAll('.apply-task-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.getAttribute('data-task-id');
+            applyForTask(taskId);
+        });
+    });
+}
+
+// Function to get a cookie value by name
+/*function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+*/
+
+function applyForTask(taskId) {
+    console.log("TaskId received:", taskId);
+
+    if (taskId === undefined) {
+        alert("Invalid task ID.");
+        return;
+    }
+
+
 
     if (filteredTasks.length === 0) {
         tasksContainer.innerHTML = '<p class="text-muted">No matching tasks.</p>';
@@ -470,6 +544,7 @@ function applyForTask(taskId) {
         return;
     }
 
+
     fetch('/applications/apply/' + taskId, {
         method: 'POST',
         credentials: 'include'  // Include cookies for authentication
@@ -507,6 +582,7 @@ function applyForTask(taskId) {
             } 
         }
     })
+
     .catch(error => {
         console.error("Error applying for task:", error);
         alert("There was an error applying for this task. Please try again.");
@@ -543,6 +619,34 @@ if (tasksContainer) {
 
 
 
+}
+// Fetch tasks from the backend API and render them
+if (tasksContainer) {
+    fetch('/api/tasks')
+        .then(res => res.json())
+        .then(data => { 
+            allTasks = data;
+            renderTasks();  // Render the tasks once data is loaded
+        })
+        .catch(err => {
+            console.error("Failed to fetch tasks:", err);
+            tasksContainer.innerHTML = '<p class="text-danger">Failed to load tasks.</p>';
+        });
+
+    // Event listener for search input
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            renderTasks({ search: searchInput.value, category: categoryFilter?.value });
+        });
+    }
+    
+    // Event listener for category filter change
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            renderTasks({ search: searchInput?.value, category: categoryFilter.value });
+        });
+    }
+}
 
  /*------------------------------------------------------ Contact Us -----------------------------------------------------------------------*/
 
@@ -594,57 +698,221 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
   }
 });
 
+//Business Dashboard Js
+const businessTasksContainer = document.getElementById('businessTasksContainer');
+    
+    if (businessTasksContainer) {
+        fetch('/api/business/tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    businessTasksContainer.innerHTML = '<p>You have not posted any tasks yet.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary me-2" onclick="editTask(${task.id})">
+                                        Edit Task
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">
+                                        Delete Task
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    businessTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                businessTasksContainer.innerHTML = '<p class="text-danger">Failed to load your tasks. Please try again later.</p>';
+            });
+    }
+
+
+    //Freelancer Dashboard Js
+    const availableTasksContainer = document.getElementById('availableTasksContainer');
+    
+    if (availableTasksContainer) {
+            fetch('/api/freelancer/available-tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    availableTasksContainer.innerHTML = '<p>No tasks available at the moment.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="mb-2">
+                                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                                </div>
+                                <button class="btn btn-primary" onclick="applyToTask(${task.id})">
+                                    Apply for Task
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    availableTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                availableTasksContainer.innerHTML = '<p class="text-danger">Failed to load available tasks. Please try again later.</p>';
+            });
+    }
 
 
 
-/*------------------------------------------------------register-popup---------------------------------------------------------------------*/
-
-  const message = document.body.dataset.message;
-  if (message && message.trim() !== "") {
-    alert(message); // Show alert
-  }
-
-
-/*-----------------------------------------------Login-popup---------------------------------------------------------------------*/
-
-  
-  const message1 = document.body.dataset.message;
-  if (message1 && message.trim() !== "") {
-      alert(message); // You can style this later or use a toast instead
-  }
-
-
-/*Toast message for invalid credentials-----------------------*/
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
-
-  toast.textContent = message;
-  toast.classList.remove("hidden");
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-    toast.classList.add("hidden");
-  }, 4000);
+/*----------------------------Request page authentication with jwt ---------------------------------------------*/
+// Function to get the JWT token from localStorage
+function getAuthToken() {
+    return localStorage.getItem('auth_token');
 }
 
+// Function to handle apply button clicks
+async function handleApply(event) {
+    const taskId = event.target.dataset.taskId;
+    const token = getAuthToken();
+    
+    if (!token) {
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/applications/apply/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.status === 401) {
+            alert('Your session has expired. Please log in again.');
+            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+            return;
+        }
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert('Application submitted successfully!');
+            event.target.disabled = true;
+            event.target.textContent = 'Applied';
+        } else {
+            alert(`Error: ${result.detail || 'Could not submit application'}`);
+        }
+    } catch (error) {
+        console.error('Error applying for task:', error);
+        alert('Error submitting application. Please try again later.');
+    }
+}
 
-/*---------------------------------------------------------------------------------------------------------------------------------- */
-
-/*-----------------------------------------------------Submit Work-------------------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
+// Function to load and render tasks
+async function loadTasks() {
+    const token = getAuthToken();
+    const tasksContainer = document.getElementById('tasksContainer');
+    
+    try {
+        const response = await fetch('/api/tasks', {
+            headers: {
+                'Authorization': token ? `Bearer ${token}` : ''
+            }
+        });
+        
+        if (response.status === 401) {
+            console.log('Please log in to view all available tasks');
+        }
+        
+        const tasks = await response.json();
+        
+        // Clear existing tasks
+        tasksContainer.innerHTML = '';
+        
+        // Render each task
+        tasks.forEach(task => {
+            const taskCard = document.createElement('div');
+            taskCard.className = 'card task-card mb-3';
+            
+            // Format the skills as tags
+            const skillsHtml = task.skills
+                .split(',')
+                .map(skill => `<span class="tag">${skill.trim()}</span>`)
+                .join(' ');
+            
+            taskCard.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">${task.title}</h5>
+                    <p class="card-text">${task.description}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-primary">$${task.budget}</span>
+                        <span class="text-muted">Deadline: ${task.deadline}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Skills:</strong> ${skillsHtml}
+                    </div>
+                    <button class="btn btn-success apply-btn" data-task-id="${task.id}">Apply</button>
+                </div>
+            `;
+            
+            tasksContainer.appendChild(taskCard);
+        });
+        
+        // Add event listeners to all Apply buttons
+        document.querySelectorAll('.apply-btn').forEach(button => {
+            button.addEventListener('click', handleApply);
+        });
+        
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+        tasksContainer.innerHTML = '<div class="alert alert-danger">Error loading tasks. Please try again later.</div>';
+    }
+}
+    
+    // Add search form functionality if needed
+    const searchForm = document.getElementById('searchForm');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your search logic here
+            loadTasks(); // Reload tasks with filters
+        });
+    }
 });
-
-
-
