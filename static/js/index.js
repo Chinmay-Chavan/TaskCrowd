@@ -474,7 +474,6 @@ function applyForTask(taskId) {
         return;
     }
 
-
     fetch('/applications/apply/' + taskId, {
         method: 'POST',
         credentials: 'include'  // Include cookies for authentication
@@ -591,6 +590,106 @@ document.getElementById("uploadBtn").addEventListener("click", function () {
     alert("Please select an image file first.");
   }
 });
+
+//Business Dashboard Js
+const businessTasksContainer = document.getElementById('businessTasksContainer');
+    
+    if (businessTasksContainer) {
+        fetch('/api/business/tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    businessTasksContainer.innerHTML = '<p>You have not posted any tasks yet.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary me-2" onclick="editTask(${task.id})">
+                                        Edit Task
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">
+                                        Delete Task
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    businessTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                businessTasksContainer.innerHTML = '<p class="text-danger">Failed to load your tasks. Please try again later.</p>';
+            });
+    }
+
+
+    //Freelancer Dashboard Js
+    const availableTasksContainer = document.getElementById('availableTasksContainer');
+    
+    if (availableTasksContainer) {
+            fetch('/api/freelancer/available-tasks')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Server error');
+                }
+                return response.json();
+            })
+            .then(tasks => {
+                if (tasks.length === 0) {
+                    availableTasksContainer.innerHTML = '<p>No tasks available at the moment.</p>';
+                    return;
+                }
+                
+                tasks.forEach(task => {
+                    const taskCard = `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description}</p>
+                                <p><strong>Budget:</strong> $${task.budget}</p>
+                                <p><strong>Category:</strong> ${task.category}</p>
+                                <p><strong>Deadline:</strong> ${task.deadline}</p>
+                                <div class="mb-2">
+                                    ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
+                                </div>
+                                <button class="btn btn-primary" onclick="applyToTask(${task.id})">
+                                    Apply for Task
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    availableTasksContainer.innerHTML += taskCard;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching tasks:', error);
+                availableTasksContainer.innerHTML = '<p class="text-danger">Failed to load available tasks. Please try again later.</p>';
+            });
+    }
+
 
 
 /*----------------------------Request page authentication with jwt ---------------------------------------------*/
@@ -709,5 +808,4 @@ async function loadTasks() {
             loadTasks(); // Reload tasks with filters
         });
     }
-
 });
