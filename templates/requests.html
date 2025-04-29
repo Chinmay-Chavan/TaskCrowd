@@ -14,11 +14,31 @@
 
         <link rel="stylesheet" href="/static/css/index.css">
         <style>
-                .no-requests-message {
+            .no-requests-message {
                 color: black;
                 text-align: center;
                 margin-top: 2rem;
-        }
+            }
+            
+            .alert {
+                padding: 10px;
+                background-color: #f44336;
+                color: white;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                display: none;
+                text-align: center;
+            }
+            
+            .alert.success {
+                background-color: #4CAF50;
+            }
+            
+            .alert-close {
+                float: right;
+                cursor: pointer;
+                font-weight: bold;
+            }
         </style>    
     </head>
 
@@ -40,24 +60,28 @@
         <!-- Sidebar -->
         <div id="sidebar" class="sidebar">
             <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
-            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
-            <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-            <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
-            <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+            <a href="/profileb.html"><i class="fa-solid fa-user"></i> Profile</a>
+            <a href="/Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+            <a href="/manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
             <a href="/applications/requests.html"><i class="fa-solid fa-bell"></i> Request</a>
-            <a href="task_review.html"><i class="fa-solid fa-clipboard-check"></i> Task Review</a>
-            <a href="payments.html"><i class="fa-solid fa-credit-card"></i> Payments</a>
-            <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
-            <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+            <a href="/payments.html"><i class="fa-solid fa-credit-card"></i> Payments</a>
+            <a href="/aboutb.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+            <a href="/contactb.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+            <a href="/logout"><i class="fa-solid fa-right-to-bracket"></i> Logout</a>
         </div>
 
         <!-------------------------------------------------------------------------------------------->
+        <!-- Alert Container -->
+        <div id="alertContainer" class="alert">
+            <span class="alert-close" onclick="closeAlert()">&times;</span>
+            <span id="alertMessage"></span>
+        </div>
 
         <div class="container-rqequest">
             {% if applications %}
                 {% for app in applications %}
-                <div class="card-rqequest">
+                <div class="card-rqequest" data-app-id="{{ app.id }}" data-status="{{ app.status }}">
                     <div class="worker-info-rqequest">
                         <h3 class="worker-name-rqequest">{{ app.freelancer.username }} <span class="worker-email-rqequest">{{ app.freelancer.email }}</span></h3>
                         <div class="worker-skills-rqequest">
@@ -100,16 +124,14 @@
                     
                     <div class="action-buttons-rqequest">
                         {% if app.status == 'pending' %}
-                        <form action="/requests/{{ app.id }}/update" method="post" class="d-inline">
+                        <form action="/requests/{{ app.id }}/update" method="post" class="request-form d-inline" data-app-id="{{ app.id }}">
                             <input type="hidden" name="status" value="accepted">
                             <button type="submit" class="btn-rqequest btn-accept-rqequest">Accept</button>
                         </form>
-                        <form action="/requests/{{ app.id }}/update" method="post" class="d-inline">
+                        <form action="/requests/{{ app.id }}/update" method="post" class="request-form d-inline" data-app-id="{{ app.id }}">
                             <input type="hidden" name="status" value="rejected">
                             <button type="submit" class="btn-rqequest btn-reject-rqequest">Reject</button>
                         </form>
-
-                        
                         {% elif app.status == 'accepted' %}
                         <button class="btn-rqequest btn-accepted-rqequest" disabled>Accepted</button>
                         {% elif app.status == 'rejected' %}

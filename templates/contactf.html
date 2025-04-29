@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+
+    <link rel="stylesheet" href="/static/css/index.css">
+    
+    <!-----------------Font Awesome------------------>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+     <!----------------------------------------------------->
+
+</head>
+<body >
+
+    <!---------------------------------------------HEADER--------------------------------------------------->
+
+    <header class="main-header" id="up">
+        <div class="header-container">
+          <div  class="left-section">
+            <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+            <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+            <a href="#" class="brand-name">TaskCrowd</a>
+          </div>
+            <div class="right-section">
+              <button type="button" class="btn"><a href="login.html">Logout</a></button>
+          </div>
+          
+        </div>
+        
+    </header>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="profileb.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+        <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+        <a href="/applications/requests.html"><i class="fa-solid fa-bell"></i> Request</a>
+        <a href=""><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="contact.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+        
+    </div>
+  
+     <!------------------------------------------------------------------------------------------------------------------------------->
+<div class="cot-body">
+    
+
+    <div class="container-cot">
+        <h1 class="cot-h1">Contact Us</h1>
+        
+        <div class="contact-grid-cot">
+            <!-- Contact Form Card -->
+            <div class="contact-card-cot">
+                <h2 class="card-title-cot">Send us a message</h2>
+                <p class="card-subtitle-cot">Fill out the form below and we'll get back to you as soon as possible.</p>
+                
+                <form id="contactForm">
+                    <div class="form-group-cot">
+                        <label class="lbl" for="name">Name</label>
+                        <input class="in" type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    
+                    <div class="form-group-cot">
+                        <label class="lbl" for="email">Email</label>
+                        <input class="in" type="email" id="email" placeholder="Your email" required>
+                    </div>
+                    
+                    <div class="form-group-cot">
+                        <label class="lbl" for="subject">Subject</label>
+                        <input class="in" type="text" id="subject" placeholder="Subject of your message" required>
+                    </div>
+                    
+                    <div class="form-group-cot">
+                        <label class="lbl" for="message">Message</label>
+                        <textarea id="message" placeholder="Your message" required></textarea>
+                    </div>
+                    
+                    <button class="cot-btn" type="submit">Send Message</button>
+                </form>
+                
+                <div id="successMessage" class="success-message">
+                    Your message has been sent successfully! We'll be in touch soon.
+                </div>
+            </div>
+            
+            <!-- Contact Information Card -->
+            <div>
+                <!-- Contact Info -->
+                <div class="contact-card-cot">
+                    <h2 class="card-title-cot">Contact Information</h2>
+                    <p class="card-subtitle-cot">Reach out to us through any of these channels.</p>
+                    
+                    <div class="contact-info-item-cot">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="info-content-cot">
+                            <p class="info-title-cot">Email</p>
+                            <p>support@taskcrowd.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item-cot">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="info-content-cot">
+                            <p class="info-title-cot">Phone</p>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item-cot">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="info-content-cot">
+                            <p class="info-title-cot">Address</p>
+                            <p>123 TaskCrowd Street</p>
+                            <p>San Francisco, CA 94103</p>
+                            <p>United States</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Support Hours -->
+                <div class="contact-card-cot" style="margin-top: 20px;">
+                    <h2 class="card-title-cot">Support Hours</h2>
+                    
+                    <div class="support-hours-cot">
+                        <p>Monday - Friday</p>
+                        <p>9:00 AM - 6:00 PM </p>
+                    </div>
+                    
+                    <div class="support-hours-cot">
+                        <p>Saturday</p>
+                        <p>10:00 AM - 4:00 PM </p>
+                    </div>
+                    
+                    <div class="support-hours-cot">
+                        <p>Sunday</p>
+                        <p>Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+    <script src="/static/js/index.js"></script>
+</body>
+</html>

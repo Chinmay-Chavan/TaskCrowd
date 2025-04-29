@@ -915,4 +915,123 @@ async function loadTasks() {
             loadTasks(); // Reload tasks with filters
         });
     }
+
+
+
+//------------------------------------------------------------------------------------------------------------------
+
+// Object to track application statuses in the current session
+const applicationStatuses = {};
+            
+// Initialize application statuses from the page data
+           
+    const cards = document.querySelectorAll('.card-rqequest');
+    cards.forEach(card => {
+        const appId = card.getAttribute('data-app-id');
+        const status = card.getAttribute('data-status');
+        if (appId) {
+            applicationStatuses[appId] = status;
+        }
+    });
+               
+    // Add event listeners to all request forms
+    const forms = document.querySelectorAll('.request-form');
+    forms.forEach(form => {
+        form.addEventListener('submit', handleRequestUpdate);
+    });
 });
+           
+function handleRequestUpdate(event) {
+    const form = event.currentTarget;
+    const appId = form.getAttribute('data-app-id');
+    const statusInput = form.querySelector('input[name="status"]');
+    const newStatus = statusInput.value;
+               
+    // Check if the application has already been processed
+    if (applicationStatuses[appId] === 'accepted' && newStatus === 'accepted') {
+        event.preventDefault();
+        showAlert('This application has already been accepted.', false);
+        return;
+    }
+               
+    if (applicationStatuses[appId] === 'rejected' && newStatus === 'rejected') {
+        event.preventDefault();
+        showAlert('This application has already been rejected.', false);
+        return;
+    }
+               
+    // If proceeding with the form submission, update our local tracking
+    form.addEventListener('submit', function() {
+        applicationStatuses[appId] = newStatus;
+                   
+        // Use fetch API to submit the form asynchronously
+        event.preventDefault();
+                   
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Update UI after successful response
+                updateUI(appId, newStatus);
+                showAlert(newStatus === 'accepted' ? 
+                    'Application successfully accepted!' : 
+                    'Application successfully rejected!', 
+                    true);
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('There was a problem updating the application status.', false);
+         });
+    });
+}
+           
+function updateUI(appId, status) {
+    const card = document.querySelector(`.card-rqequest[data-app-id="${appId}"]`);
+    if (!card) return;
+               
+    const actionButtons = card.querySelector('.action-buttons-rqequest');
+    const oldButtons = actionButtons.innerHTML;
+               
+    // Update the UI based on new status
+    if (status === 'accepted') {
+            actionButtons.innerHTML = '<button class="btn-rqequest btn-accepted-rqequest" disabled>Accepted</button>';
+        card.setAttribute('data-status', 'accepted');
+    } else if (status === 'rejected') {
+        actionButtons.innerHTML = '<button class="btn-rqequest btn-rejected-rqequest" disabled>Rejected</button>';
+        card.setAttribute('data-status', 'rejected');
+    }
+}
+           
+function showAlert(message, isSuccess) {
+    const alertContainer = document.getElementById('alertContainer');
+    const alertMessage = document.getElementById('alertMessage');
+               
+    alertMessage.textContent = message;
+    alertContainer.style.display = 'block';
+               
+    if (isSuccess) {
+        alertContainer.classList.add('success');
+        alertContainer.classList.remove('error');
+    } else {
+        alertContainer.classList.add('error');
+        alertContainer.classList.remove('success');
+    }
+               
+    // Auto-close after 5 seconds
+    setTimeout(closeAlert, 5000);
+}
+           
+function closeAlert() {
+    const alertContainer = document.getElementById('alertContainer');
+    alertContainer.style.display = 'none';
+}
+
+           

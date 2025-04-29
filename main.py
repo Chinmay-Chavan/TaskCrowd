@@ -67,9 +67,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/about.html", response_class=HTMLResponse)
+@app.get("/aboutb.html", response_class=HTMLResponse)
 async def about(request: Request):
-    return templates.TemplateResponse("about.html", {"request": request})
+    return templates.TemplateResponse("aboutb.html", {"request": request})
+
+@app.get("/aboutf.html", response_class=HTMLResponse)
+async def about(request: Request):
+    return templates.TemplateResponse("aboutf.html", {"request": request})
 
 @app.get("/login.html", response_class=HTMLResponse)
 async def login(request: Request):
@@ -79,9 +83,13 @@ async def login(request: Request):
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-@app.get("/contact.html", response_class=HTMLResponse)
+@app.get("/contactb.html", response_class=HTMLResponse)
 async def contact(request: Request):
-    return templates.TemplateResponse("contact.html", {"request": request})
+    return templates.TemplateResponse("contactb.html", {"request": request})
+
+@app.get("/contactf.html", response_class=HTMLResponse)
+async def contact(request: Request):
+    return templates.TemplateResponse("contactf.html", {"request": request})
 
 @app.get("/Admin_Dashboard.html", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
@@ -114,9 +122,13 @@ async def manage_task(request: Request):
     return templates.TemplateResponse("manage_task.html", {"request": request})
 
 # Route for profile page
-@app.get("/profile.html", response_class=HTMLResponse)
+@app.get("/profileb.html", response_class=HTMLResponse)
 async def profile(request: Request):
-    return templates.TemplateResponse("profile.html", {"request": request})
+    return templates.TemplateResponse("profileb.html", {"request": request})
+
+@app.get("/profilef.html", response_class=HTMLResponse)
+async def profile(request: Request):
+    return templates.TemplateResponse("profilef.html", {"request": request})
 
 # Route for submit_work page
 @app.get("/submit_work.html", response_class=HTMLResponse)
