@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+
+     <!-----------------Font Awesome------------------>
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ 
+      <!----------------------------------------------------->
+
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+
+<body class="Profile-body">
+
+
+ <!---------------------------------------------HEADER--------------------------------------------------->
+
+ <header class="main-header" id="up">
+    <div class="header-container">
+      <div  class="left-section">
+        <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
+        <img src="your-logo.png" alt="TaskCrowd Logo" class="logo">
+        <a href="#" class="brand-name" style="text-decoration: none; color: #ffffff; ">TaskCrowd</a>
+      </div>
+        <div class="right-section">
+          <button class="btn"><a href="">Logout</a></button>
+         
+      </div>
+    </div>
+    
+</header>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
+    <a href="profileb.html"><i class="fa-solid fa-user"></i> Profile</a>
+    <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+    <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
+    <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+    <a href=""><i class="fa-solid fa-credit-card"></i> Payments</a>
+    <a href="aboutb.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+    <a href="contactb.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+   
+</div>
+
+
+<!-------------------------------------------------------------------------------------------->
+
+    <div class="container light-style flex-grow-1 container-p-y mt-0">
+        <h2 class="font-weight-bold py-2 " >
+            Account settings
+        </h2>
+        <div class="card-profile overflow-hidden" style="padding-right: 10rem;" >
+            <div class="row no-gutters row-bordered " >
+                <div class="col-md-3 pt-0">
+                    <div class="list-group list-group-flush account-settings-links">    
+                        <a class="list-group-item list-group-item-action active" data-toggle="list"
+                            href="#account-general">General</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-info">Info</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-social-links">Social links</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="account-general">
+                            <div class="card-body media align-items-center">
+                                <svg id="imageSvg" width="100" height="100" style="border: 1px solid #ccc;">
+                                    <image id="svgImage" href="" width="100" height="100" />
+                                  </svg>
+                                <div class="media-body ml-4">
+                                    <input type="file" id="imageInput" accept="image/*">
+                                    <button id="uploadBtn">Upload</button>
+                                    
+                                 
+                                </div>
+                            </div>
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control mb-1" value="nmaxwell">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" value="Nelle Maxwell">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">E-mail</label>
+                                    <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" value="Company Ltd.">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="account-info">
+                            <div class="card-body pb-0">
+                                <div class="form-group">
+                                    <label class="form-label">Bio</label>
+                                    <textarea class="form-control " placeholder="Tell something about yourself" cols="50"></textarea>
+                                     
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Birthday</label>
+                                    <input type="date" class="form-control" value="1995-05-03">
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Country</label>
+                                    <select class="custom-select">
+                                        <option>USA</option>
+                                        <option selected>Canada</option>
+                                        <option>UK</option>
+                                        <option>Germany</option>
+                                        <option>France</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body pb-2 pt-0">
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" value="+0 (123) 456 7891">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Website</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="account-social-links">
+                            <div class="card-body pb-2">
+                                <div class="form-group">
+                                    <label class="form-label">Twitter</label>
+                                    <input type="text" class="form-control " size="40" value="https://twitter.com/user">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Facebook</label>
+                                    <input type="text" class="form-control" value="https://www.facebook.com/user">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Google+</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">LinkedIn</label>
+                                    <input type="text" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" class="form-control" value="https://www.instagram.com/user">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form method="POST" action="/update-profile">
+                    <!-- All your inputs here -->
+                    <div class="text-right ">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="reset" class="btn btn-default">Cancel</button>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/static/js/index.js"></script>
+</body>
+
+</html>
