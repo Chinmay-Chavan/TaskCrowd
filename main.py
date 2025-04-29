@@ -152,7 +152,7 @@ async def reset_password_get(request: Request, token: str):
         })
 
 #---------- API to fetch tasks ----------
-@app.get("/api/tasks")
+'''@app.get("/api/tasks")
 async def get_tasks(db: Session = Depends(get_db)):
     tasks = db.query(Task).all()  # Fetch all tasks from the database
     
@@ -167,7 +167,7 @@ async def get_tasks(db: Session = Depends(get_db)):
         "file_path": task.file_path
     } for task in tasks]
 
-    return JSONResponse(content=task_data)
+    return JSONResponse(content=task_data)'''
 # ---------- Logout ----------
 @app.get("/logout")
 def logout():
@@ -387,5 +387,22 @@ async def post_task_submit(
             "request": request,
             "message": "There was an error posting your task."
         })
+
+@app.get("/api/tasks")
+async def get_tasks(db: Session = Depends(get_db)):
+    tasks = db.query(Task).all()  # Fetch all tasks from the database
+    
+    task_data = [{
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "budget": task.budget,
+        "category": task.category,
+        "deadline": task.deadline.isoformat() if isinstance(task.deadline, date) else str(task.deadline),  # Ensure date is serialized
+        "skills": task.skills.split(",") if task.skills else [],
+        "file_path": task.file_path
+    } for task in tasks]
+
+    return JSONResponse(content=task_data)
 
 

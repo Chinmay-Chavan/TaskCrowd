@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // Initialize particles.js
-  particlesJS("particles-js", {
+  /*particlesJS("particles-js", {
     "particles": {
         "number": {
             "value": 80,
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     "retina_detect": true
 });
-
+*/
 
 
   /*----------------------------Login with google--------------------------------------------*/                 
