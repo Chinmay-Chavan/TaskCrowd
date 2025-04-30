@@ -84,113 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-  // Initialize particles.js
-  /*particlesJS("particles-js", {
-    "particles": {
-        "number": {
-            "value": 80,
-            "density": {
-                "enable": true,
-                "value_area": 800
-            }
-        },
-        "color": {
-            "value": "#ffffff"
-        },
-        "shape": {
-            "type": "circle",
-            "stroke": {
-                "width": 0,
-                "color": "#000000"
-            },
-            "polygon": {
-                "nb_sides": 5
-            }
-        },
-        "opacity": {
-            "value": 0.5,
-            "random": false,
-            "anim": {
-                "enable": false,
-                "speed": 1,
-                "opacity_min": 0.1,
-                "sync": false
-            }
-        },
-        "size": {
-            "value": 3,
-            "random": true,
-            "anim": {
-                "enable": false,
-                "speed": 40,
-                "size_min": 0.1,
-                "sync": false
-            }
-        },
-        "line_linked": {
-            "enable": true,
-            "distance": 150,
-            "color": "#ffffff",
-            "opacity": 0.4,
-            "width": 1
-        },
-        "move": {
-            "enable": true,
-            "speed": 6,
-            "direction": "none",
-            "random": false,
-            "straight": false,
-            "out_mode": "out",
-            "bounce": false,
-            "attract": {
-                "enable": false,
-                "rotateX": 600,
-                "rotateY": 1200
-            }
-        }
-    },
-    "interactivity": {
-        "detect_on": "window",
-        "events": {
-            "onhover": {
-                "enable": true,
-                "mode": "repulse"
-            },
-            "onclick": {
-                "enable": true,
-                "mode": "push"
-            },
-            "resize": true
-        },
-        "modes": {
-            "grab": {
-                "distance": 400,
-                "line_linked": {
-                    "opacity": 1
-                }
-            },
-            "bubble": {
-                "distance": 400,
-                "size": 40,
-                "duration": 2,
-                "opacity": 8,
-                "speed": 3
-            },
-            "repulse": {
-                "distance": 200,
-                "duration": 0.4
-            },
-            "push": {
-                "particles_nb": 4
-            },
-            "remove": {
-                "particles_nb": 2
-            }
-        }
-    },
-    "retina_detect": true
-});
-*/
+  
 
 
   /*----------------------------Login with google--------------------------------------------*/                 
@@ -335,64 +229,60 @@ function signOutGoogle() {
  // ============ POST TASK LOGIC (for post_task.html) =============
 
 
-const taskForm = document.getElementById('taskForm');
-if (taskForm) {
-    taskForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-
-        // Get form values
-        const title = document.getElementById('title').value.trim();
-        const category = document.getElementById('category').value.trim();
-        const description = document.getElementById('description').value.trim();
-        const budget = document.getElementById('budget').value.trim();
-        const deadline = document.getElementById('deadline').value.trim();
-        const skills = document.getElementById('skills').value.trim();
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput ? fileInput.files[0] : null;
-
-        // Validate fields
-        if (!title || !category || !description || !budget || !deadline || !skills) {
-            alert('Please fill in all fields.');
-            return;
-        }
-
-        // Prepare form data
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('category', category);
-        formData.append('description', description);
-        formData.append('budget', budget);
-        formData.append('deadline', deadline);
-        formData.append('skills', skills);
-        if (file) {
-            formData.append('file', file);
-        }
-
-        // Send data to /post-task endpoint
-        fetch('/post-task', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                return response.text().then(text => {
-                    console.error("Post failed:", text);
-                    alert("There was an error posting your task.");
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error posting your task.');
-        });
-
-       
-
-    });
-}
+ const taskForm = document.getElementById('taskForm');
+ if (taskForm) {
+     taskForm.addEventListener('submit', function (e) {
+         e.preventDefault();
+         
+         // Get form values
+         const title = document.getElementById('title').value.trim();
+         const category = document.getElementById('category').value.trim();
+         const description = document.getElementById('description').value.trim();
+         const budget = document.getElementById('budget').value.trim();
+         const deadline = document.getElementById('deadline').value.trim();
+         const skills = document.getElementById('skills').value.trim();
+         const fileInput = document.getElementById('fileInput');
+         const file = fileInput ? fileInput.files[0] : null;
+         
+         // Validate fields
+         if (!title || !category || !description || !budget || !deadline || !skills) {
+             alert('Please fill in all fields.');
+             return;
+         }
+         
+         // Prepare form data
+         const formData = new FormData();
+         formData.append('title', title);
+         formData.append('category', category);
+         formData.append('description', description);
+         formData.append('budget', budget);
+         formData.append('deadline', deadline);
+         formData.append('skills', skills);
+         if (file) {
+             formData.append('file', file);
+         }
+         
+         // Send data to /post-task endpoint
+         fetch('/post-task', {
+             method: 'POST',
+             body: formData
+         })
+         .then(response => {
+             if (response.redirected) {
+                 window.location.href = response.url;
+             } else {
+                 return response.text().then(text => {
+                     console.error("Post failed:", text);
+                     alert("There was an error posting your task.");
+                 });
+             }
+         })
+         .catch(error => {
+             console.error('Error:', error);
+             alert('There was an error posting your task.');
+         });
+     });
+ }
 
 // ============ BROWSE TASK LOGIC (for browse_task.html) ============
 
