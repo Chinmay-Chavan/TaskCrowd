@@ -243,11 +243,23 @@ async def login_user(
             "message1": "Invalid credentials"
         })
 
-    token_data = {"sub": user.id, "email": user.email, "role": user.role}
+    # Create token with consistent data structure
+    token_data = {"sub": user.email, "role": user.role}
     access_token = create_access_token(data=token_data, expires_delta=timedelta(hours=1))
 
     response = RedirectResponse(
         url=f"/{user.role.capitalize()}_Dashboard.html", status_code=303
+    )
+    
+    # Set the access_token cookie
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        path="/",
+        max_age=3600
     )
 
     # Set user_id cookie separately (for cookie-based parts like apply task)
@@ -260,6 +272,7 @@ async def login_user(
         path="/",
         max_age=3600
     )
+    
     return response
 # ---------- Forgot Password ----------
 @app.post("/forgot-password", response_class=HTMLResponse)
@@ -336,20 +349,37 @@ async def post_task_submit(
 ):
     # Get user from token(Business email fetching to store in db)
     token = request.cookies.get("access_token")
+    
+    # Add token validation check
+    if not token:
+        return templates.TemplateResponse("login.html", {
+            "request": request,
+            "message": "Your session has expired. Please login again."
+        })
+        
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub") 
         role = payload.get("role") # Extract email from token
+        
+        if not email:
+            return templates.TemplateResponse("login.html", {
+                "request": request,
+                "message": "Invalid session. Please login again."
+            })
+            
         if role != "business":
             return templates.TemplateResponse("login.html", {
                 "request": request,
                 "message": "You are not authorized to post tasks."
             })
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT Error: {str(e)}")
         return templates.TemplateResponse("login.html", {
             "request": request,
-            "message": "Please login first."
+            "message": "Your session is invalid. Please login again."
         })
+    
     try:
         # Ensure upload directory exists
         os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -391,13 +421,13 @@ async def post_task_submit(
         )
         db.add(new_task)
         db.commit()
-        return RedirectResponse("/post_task.html?success=true", status_code=303)
+        return RedirectResponse("/manage_task.html", status_code=303)
 
     except Exception as e:
-        print("Error posting task:", e)
+        print(f"Error posting task: {str(e)}")
         return templates.TemplateResponse("post_task.html", {
             "request": request,
-            "message": "There was an error posting your task."
+            "message": f"There was an error posting your task: {str(e)}"
         })
 
 @app.get("/api/tasks")
