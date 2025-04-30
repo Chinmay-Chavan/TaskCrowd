@@ -701,13 +701,13 @@ async function loadTasks() {
 
 
 
-//------------------------------------------------------------------------------------------------------------------
+//----------------------------------------Request Page (Accepted/Rejected)--------------------------------------------------------------------------
 
 // Object to track application statuses in the current session
 const applicationStatuses = {};
-            
+
 // Initialize application statuses from the page data
-           
+document.addEventListener('DOMContentLoaded', function() {
     const cards = document.querySelectorAll('.card-rqequest');
     cards.forEach(card => {
         const appId = card.getAttribute('data-app-id');
@@ -725,6 +725,8 @@ const applicationStatuses = {};
 });
            
 function handleRequestUpdate(event) {
+    event.preventDefault(); // Prevent default form submission
+    
     const form = event.currentTarget;
     const appId = form.getAttribute('data-app-id');
     const statusInput = form.querySelector('input[name="status"]');
@@ -732,47 +734,47 @@ function handleRequestUpdate(event) {
                
     // Check if the application has already been processed
     if (applicationStatuses[appId] === 'accepted' && newStatus === 'accepted') {
-        event.preventDefault();
         showAlert('This application has already been accepted.', false);
         return;
     }
                
     if (applicationStatuses[appId] === 'rejected' && newStatus === 'rejected') {
-        event.preventDefault();
         showAlert('This application has already been rejected.', false);
         return;
     }
                
-    // If proceeding with the form submission, update our local tracking
-    form.addEventListener('submit', function() {
-        applicationStatuses[appId] = newStatus;
+    // Fix #1: Update the form action URL to include the correct prefix
+    // Make sure the form action is correctly set with the /applications prefix
+    const url = `/applications/requests/${appId}/update`;
                    
-        // Use fetch API to submit the form asynchronously
-        event.preventDefault();
-                   
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
+    // Use fetch API to submit the form asynchronously
+    fetch(url, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
             'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                // Update UI after successful response
-                updateUI(appId, newStatus);
-                showAlert(newStatus === 'accepted' ? 
-                    'Application successfully accepted!' : 
-                    'Application successfully rejected!', 
-                    true);
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('There was a problem updating the application status.', false);
-         });
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); // Parse JSON response
+        } else {
+            throw new Error('Network response was not ok');
+        }
+    })
+    .then(data => {
+        // Update our local tracking
+        applicationStatuses[appId] = newStatus;
+        // Update UI after successful response
+        updateUI(appId, newStatus);
+        showAlert(newStatus === 'accepted' ? 
+            'Application successfully accepted!' : 
+            'Application successfully rejected!', 
+            true);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('There was a problem updating the application status.', false);
     });
 }
            
@@ -781,11 +783,11 @@ function updateUI(appId, status) {
     if (!card) return;
                
     const actionButtons = card.querySelector('.action-buttons-rqequest');
-    const oldButtons = actionButtons.innerHTML;
+    if (!actionButtons) return;
                
     // Update the UI based on new status
     if (status === 'accepted') {
-            actionButtons.innerHTML = '<button class="btn-rqequest btn-accepted-rqequest" disabled>Accepted</button>';
+        actionButtons.innerHTML = '<button class="btn-rqequest btn-accepted-rqequest" disabled>Accepted</button>';
         card.setAttribute('data-status', 'accepted');
     } else if (status === 'rejected') {
         actionButtons.innerHTML = '<button class="btn-rqequest btn-rejected-rqequest" disabled>Rejected</button>';
@@ -796,6 +798,11 @@ function updateUI(appId, status) {
 function showAlert(message, isSuccess) {
     const alertContainer = document.getElementById('alertContainer');
     const alertMessage = document.getElementById('alertMessage');
+    
+    if (!alertContainer || !alertMessage) {
+        alert(message); // Fallback if alert container doesn't exist
+        return;
+    }
                
     alertMessage.textContent = message;
     alertContainer.style.display = 'block';
@@ -814,7 +821,8 @@ function showAlert(message, isSuccess) {
            
 function closeAlert() {
     const alertContainer = document.getElementById('alertContainer');
-    alertContainer.style.display = 'none';
+    if (alertContainer) {
+        alertContainer.style.display = 'none';
+    }
 }
-
-           
+});

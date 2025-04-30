@@ -421,7 +421,7 @@ async def post_task_submit(
         )
         db.add(new_task)
         db.commit()
-        return RedirectResponse("/manage_task.html", status_code=303)
+        return RedirectResponse("/Business_DashBoard.html", status_code=303)
 
     except Exception as e:
         print(f"Error posting task: {str(e)}")
