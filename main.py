@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext # type: ignore
 from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
-from routers import auth, business, freelancer, applications
+from routers import auth, business, freelancer, applications, freelancer_dashboard_task
 from sqlalchemy.orm import Session
 import smtplib 
 from email.mime.text import MIMEText
@@ -25,13 +25,14 @@ UPLOAD_DIR = "static/uploaded_files"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Routers
-app.include_router(auth.router)
-app.include_router(business.router)
-app.include_router(freelancer.router)
-app.include_router(business.router, prefix="/business", tags=["business"])
-app.include_router(freelancer.router, prefix="/freelancer", tags=["freelancer"])
+app.include_router(auth)
+app.include_router(business)
+app.include_router(freelancer)
+app.include_router(business, prefix="/business", tags=["business"])
+app.include_router(freelancer, prefix="/freelancer", tags=["freelancer"])
 app.include_router(google_auth_router)
-app.include_router(applications.router)
+app.include_router(applications)
+app.include_router(freelancer_dashboard_task)  # Commented out as freelancer_Dashboard_Task is not defined
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -96,9 +97,9 @@ async def admin_dashboard(request: Request):
     return templates.TemplateResponse("Admin_Dashboard.html", {"request": request})
 
 # Route for Freelancer Dashboard
-@app.get("/Freelancer_Dashboard.html", response_class=HTMLResponse)
-async def freelancer_dashboard(request: Request):
-    return templates.TemplateResponse("Freelancer_Dashboard.html", {"request": request})
+@app.get("/Freelancer_Dashboard.html", include_in_schema=False)
+async def redirect_dashboard():
+    return RedirectResponse(url="/freelancer/dashboard")
 
 # Route for Business Dashboard
 @app.get("/Business_Dashboard.html", response_class=HTMLResponse)
