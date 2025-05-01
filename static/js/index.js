@@ -463,23 +463,7 @@ if (tasksContainer) {
 /*------------------------------------------------------ Profile -----------------------------------------------------------------------*/
 
 
-document.getElementById("uploadBtn").addEventListener("click", function () {
-  const input = document.getElementById("imageInput");
-  const file = input.files[0];
 
-  if (file) {
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      const svgImage = document.getElementById("svgImage");
-      svgImage.setAttribute("href", e.target.result);
-    };
-
-    reader.readAsDataURL(file);
-  } else {
-    alert("Please select an image file first.");
-  }
-});
 
 //Business Dashboard Js
 const businessTasksContainer = document.getElementById('businessTasksContainer');
@@ -825,4 +809,95 @@ function closeAlert() {
         alertContainer.style.display = 'none';
     }
 }
+
+
+
+// ============ SUBMIT WORK LOGIC (for submit_work.html) =============
+
+    const workForm = document.getElementById('workSubmissionForm');
+    const saveDraftBtn = document.getElementById('saveAsDraft');
+    const successMsg = document.getElementById('successMessage');
+    const errorMsg   = document.getElementById('errorMessage');
+  
+    // Utility to clear/hide messages
+    function clearMessages() {
+      if (successMsg) successMsg.style.display = 'none';
+      if (errorMsg)   errorMsg.style.display = 'none';
+    }
+  
+    // Core submit function
+    function sendSubmission(status = 'submitted') {
+      clearMessages();
+  
+      // Gather form values
+      const projectTitle        = document.getElementById('projectTitle').value.trim();
+      const clientName          = document.getElementById('clientName').value.trim();
+      const submissionDate      = document.getElementById('submissionDate').value;
+      const submissionTitle     = document.getElementById('submissionTitle').value.trim();
+      const completionStatus    = document.getElementById('completionStatus').value;
+      const submissionDesc      = document.getElementById('submissionDescription').value.trim();
+      const additionalNotes     = document.getElementById('additionalNotes').value.trim();
+      const fileInput           = document.getElementById('fileInput-submit-task');
+      const files               = fileInput ? Array.from(fileInput.files) : [];
+  
+      // If it’s a “real” submit, validate required fields
+      if (status === 'submitted') {
+        if (!projectTitle || !clientName || !submissionDate ||
+            !submissionTitle || !completionStatus || !submissionDesc) {
+          alert('Please fill in all required fields before submitting.');
+          return;
+        }
+      }
+  
+      // Build FormData
+      const formData = new FormData();
+      formData.append('projectTitle', projectTitle);
+      formData.append('clientName', clientName);
+      formData.append('submissionDate', submissionDate);
+      formData.append('submissionTitle', submissionTitle);
+      formData.append('completionStatus', completionStatus);
+      formData.append('submissionDescription', submissionDesc);
+      formData.append('additionalNotes', additionalNotes);
+      formData.append('status', status);  // 'submitted' or 'draft'
+      files.forEach((file) => formData.append('files', file));
+  
+      // Send to your backend endpoint
+      fetch('/submit-work', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else if (response.ok) {
+          if (successMsg) successMsg.style.display = 'block';
+        } else {
+          return response.text().then(txt => {
+            console.error('Submission error:', txt);
+            if (errorMsg) errorMsg.style.display = 'block';
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Network error:', err);
+        if (errorMsg) errorMsg.style.display = 'block';
+      });
+    }
+  
+    // Handle final Submit
+    if (workForm) {
+      workForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        sendSubmission('submitted');
+      });
+    }
+  
+    // Handle Save as Draft
+    if (saveDraftBtn) {
+      saveDraftBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sendSubmission('draft');
+      });
+    }
+  
 });

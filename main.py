@@ -68,6 +68,10 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/about.html", response_class=HTMLResponse)
+async def about(request: Request):
+    return templates.TemplateResponse("about.html", {"request": request})
+
 @app.get("/aboutb.html", response_class=HTMLResponse)
 async def about(request: Request):
     return templates.TemplateResponse("aboutb.html", {"request": request})
@@ -83,6 +87,10 @@ async def login(request: Request):
 @app.get("/register.html", response_class=HTMLResponse)
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
+
+@app.get("/contact.html", response_class=HTMLResponse)
+async def contact(request: Request):
+    return templates.TemplateResponse("contact.html", {"request": request})
 
 @app.get("/contactb.html", response_class=HTMLResponse)
 async def contact(request: Request):
@@ -422,7 +430,7 @@ async def post_task_submit(
         )
         db.add(new_task)
         db.commit()
-        return RedirectResponse("/Business_DashBoard.html", status_code=303)
+        return RedirectResponse("Business_Dashboard.html", status_code=303)
 
     except Exception as e:
         print(f"Error posting task: {str(e)}")

@@ -17,7 +17,445 @@
  
       <!----------------------------------------------------->
 
-    <link rel="stylesheet" href="/static/css/index.css">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: 'Inter', sans-serif;
+          background-color: #F9FAFB;
+          margin: 0;
+          padding: 0;
+          color: #1F2937;
+        }
+        .header {
+          background: white;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+          padding: 16px;
+        }
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 16px;
+        }
+        .profile-container {
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          margin-top: 32px;
+        }
+        .profile-header {
+          display: flex;
+          gap: 24px;
+          padding: 24px;
+          border-bottom: 1px solid #E5E7EB;
+        }
+        .profile-avatar {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .profile-info h2 {
+          font-size: 30px;
+          margin-bottom: 8px;
+        }
+        .profile-info p {
+          color: #6B7280;
+          margin-bottom: 16px;
+        }
+        .btn {
+          padding: 8px 16px;
+          background-color: #3563E9;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+        }
+        .profile-body {
+          padding: 24px;
+        }
+        .profile-section {
+          margin-bottom: 24px;
+        }
+        .profile-section h2 {
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+        .tags-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .tag {
+          background: #F3F4F6;
+          padding: 4px 8px;
+          border-radius: 9999px;
+          font-size: 12px;
+        }
+        /* Modal styles */
+        /* Modal styles with improved responsiveness */
+#profile-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+#profile-modal .modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+#profile-modal .modal-header {
+  margin-bottom: 20px;
+}
+
+#profile-modal .modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+#profile-modal .close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #4B5563;
+}
+
+#profile-modal .modal-content form > div {
+  margin-bottom: 16px;
+}
+
+#profile-modal input, 
+#profile-modal textarea,
+#profile-modal select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+#profile-modal input:focus, 
+#profile-modal textarea:focus,
+#profile-modal select:focus {
+  outline: none;
+  border-color: #6B7280;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+#profile-modal textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+#profile-modal label {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-footer button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-footer .cancel-btn {
+  background: #F3F4F6;
+  border: 1px solid #D1D5DB;
+  color: #4B5563;
+}
+
+.modal-footer .save-btn {
+  background: #6200EE;
+  border: 1px solid #6200EE;
+  color: white;
+}
+
+.modal-footer .cancel-btn:hover {
+  background: #E5E7EB;
+}
+
+.modal-footer .save-btn:hover {
+  background: #5000C8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #profile-modal {
+    align-items: flex-start;
+    padding: 16px;
+  }
+  
+  #profile-modal .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .modal-footer button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  #profile-modal .modal-content {
+    padding: 16px;
+  }
+  
+  #profile-modal input, 
+  #profile-modal textarea,
+  #profile-modal select {
+    padding: 8px 10px;
+    font-size: 16px; /* Larger font size prevents iOS zoom on focus */
+  }
+  
+  #profile-modal label {
+    font-size: 14px;
+  }
+  
+  .modal-footer {
+    margin-top: 16px;
+  }
+}
+
+/* Laptop/desktop specific optimizations */
+@media (min-width: 1024px) {
+  #profile-modal .modal-content {
+    padding: 28px;
+  }
+  
+  #profile-modal input, 
+  #profile-modal textarea,
+  #profile-modal select {
+    padding: 10px 14px;
+  }
+  
+  .modal-footer button {
+    padding: 10px 20px;
+  }
+}
+
+        /*---------------------------Header-----------------------------*/
+
+
+/* General Header Styles */
+.main-header {  
+  background-color: black;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  z-index: 1001;
+  opacity: 0.9;
+  
+}
+
+/* Header Flex Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+      
+}
+
+/* Logo */
+.logo {
+  height: 3rem;
+  margin-left: 0.5rem;
+}
+
+/* Brand Name */
+.brand-name {
+  font-size: 1.5rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+        margin-left: 0.5rem;
+}
+
+
+/* Buttons */
+.hero-buttons {
+  margin-top: 0.625rem; /* 10px */
+  float: right;
+}
+
+.btn {
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  border: none;
+  font-size: 1rem; /* 16px */
+  cursor: pointer;
+  margin: 0.3125rem; /* 5px */
+  color: rgb(255, 255, 255);
+  background: #6a0dad;
+  border-radius: 0.3125rem; /* 5px */
+
+  
+}
+.btn a{
+  text-decoration: none;
+  color: white;
+}
+
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 1002;
+}
+/* Sidebar Links */
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.right-section {
+  float: right;
+}
+
+.close-btn {
+ position: absolute;
+  top: 10px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile Phones (Small devices) */
+@media screen and (max-width: 460px) {
+  .main-header {
+    padding: 0.5rem;
+  }
+  
+  .logo {
+    height: 2rem;
+  }
+  
+  .brand-name {
+    font-size: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    margin: 0.15rem;
+  }
+  
+  .hero-buttons {
+    margin-top: 0.3rem;
+  }
+  
+  .sidebar a {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+  
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .left-section {
+    margin-bottom: 0.5rem;
+  }
+  
+  .right-section {
+    float: none;
+    text-align: center;
+  }
+}
+
+/* Tablets (Medium devices) */
+@media screen and (min-width: 460px) and (max-width: 768px) {
+  .brand-name {
+    font-size: 2rem;
+  }
+  
+  .logo {
+    height: 2.5rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .header-container {
+    align-items: center;
+  }
+}
+
+/* Laptops (Large devices) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .brand-name {
+    font-size: 2.2rem;
+  }
+  
+  .btn {
+    padding: 0.6rem 1.1rem;
+  }
+}
+
+      </style>
+    
 </head>
 
 <body class="Profile-body">
@@ -29,8 +467,7 @@
     <div class="header-container">
       <div  class="left-section">
         <a href="javascript:void(0);" onclick="openSidebar()"><i class="fa-solid fa-bars fa-xl" style="color: #f7f7f7;"></i></a>
-        <img src="/static/images/logo.jpg" alt="TaskCrowd Logo" class="logo">
-        <a href="#" class="brand-name" style="text-decoration: none; color: #ffffff; ">TaskCrowd</a>
+        <a href="#" class="brand-name">  <div style="transform: scale(1);"><svg width="290.6" height="50" viewBox="0 0 369.9130434782609 76.08695652173914" class="looka-1j8o68f"><defs id="SvgjsDefs1973"></defs><g id="SvgjsG1974" featurekey="symbolFeature-0" transform="matrix(0.8137642408742154,0,0,0.8137642408742154,-2.441292722622646,-2.8481748430597538)" fill="#b469ff"><g xmlns="http://www.w3.org/2000/svg"><g><path d="M95,97H4.5C3.671,97,3,96.328,3,95.5V5c0-0.829,0.671-1.5,1.5-1.5S6,4.171,6,5v89h89c0.828,0,1.5,0.672,1.5,1.5    S95.828,97,95,97z"></path></g><g><path d="M5,82c-0.256,0-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414l38-38c0.391-0.391,1.023-0.391,1.414,0    l15.261,15.261l31.294-34.229c0.373-0.409,1.007-0.436,1.413-0.063c0.407,0.373,0.436,1.005,0.063,1.413l-32,35    c-0.185,0.201-0.443,0.318-0.716,0.325c-0.276,0.006-0.536-0.1-0.729-0.293L43,44.414L5.707,81.707C5.512,81.902,5.256,82,5,82z"></path></g><g><path d="M95,29c-0.26,0-0.516-0.102-0.707-0.293l-8-8c-0.286-0.286-0.372-0.716-0.217-1.09C86.23,19.244,86.596,19,87,19h8    c0.553,0,1,0.448,1,1v8c0,0.404-0.243,0.769-0.617,0.924C95.259,28.975,95.129,29,95,29z M89.414,21L94,25.586V21H89.414z"></path></g></g></g><g id="SvgjsG1975" featurekey="nameFeature-0" transform="matrix(0.7840078209373934,0,0,0.7840078209373934,92.14111430686782,23.01999041075029)" fill="#b469ff"><path d="M23.281 7.5 l11.797 0 l0 -6.0938 l-30.156 0 l0 6.0938 l18.359 0 z M16.719 13.594000000000001 l6.5625 0 l0 25 l-6.5625 0 l0 -25 z M70.703 38.5937 l7.0313 0 l-13.594 -37.266 l-7.1094 0 l7.8906 22.266 z M41.9531 38.5937 l6.875 0 l8.125 -19.844 l-3.3594 -8.9063 z M104.922 1.4059999999999988 c-2.8646 0 -5.5209 0.4686 -7.9688 1.4061 c-2.3959 0.9375 -4.4792 2.2396 -6.2501 3.9063 c-1.7188 1.5625 -3.0729 3.5416 -4.0625 5.9375 c-0.83336 2.0313 -1.3021 4.2448 -1.4063 6.6406 l0 2.3438 l6.875 0 l0 -2.3438 c0.10414 -1.7709 0.39063 -3.2031 0.85938 -4.2969 c0.625 -1.5104 1.4844 -2.8645 2.5781 -4.0624 c1.3021 -1.1979 2.6563 -2.0833 4.0625 -2.6562 c1.6146 -0.625 3.3855 -0.9375 5.3126 -0.9375 l9.8438 0 l0 -5.9375 l-9.8438 0 z M107.89099999999999 18.984 l0.000076294 1.4843 l0.078125 0 c-0.10414 1.6666 -0.41664 3.2031 -0.9375 4.6094 c-0.67711 1.6146 -1.5365 2.9427 -2.5781 3.9844 c-1.1459 1.1459 -2.5 2.0313 -4.0625 2.6563 c-1.6146 0.625 -3.3855 0.9375 -5.3126 0.9375 l-9.8438 0 l0 5.9375 l9.8438 0 c2.8646 0 5.5209 -0.46875 7.9688 -1.4063 c2.3959 -0.9375 4.4792 -2.2396 6.2501 -3.9063 c1.8229 -1.8229 3.177 -3.802 4.0624 -5.9374 c0.9375 -2.0834 1.4063 -4.375 1.4063 -6.875 l0 -1.4844 l-6.875 0 z M156.641 38.5156 l-12.734 -16.25 l-4.4531 4.8438 l9.2969 11.406 l7.8906 0 z M147.969 1.4059999999999988 l-17.734 18.359 l0 -18.359 l-6.4063 0 l0 37.109 l6.4063 0 l0 -8.75 l26.328 -28.359 l-8.5938 0 z M167.2656 12.5 c0.9375 -2.2916 2.2916 -4.2447 4.0624 -5.8593 c1.6146 -1.6146 3.698 -2.9167 6.2501 -3.9063 s5.2344 -1.4844 8.0469 -1.4844 l8.6719 0 l0 5.9375 l-8.5938 0 c-2.0313 0 -3.8281 0.33852 -5.3906 1.0156 c-1.6666 0.67711 -3.0208 1.5625 -4.0624 2.6563 c-1.0938 1.0416 -1.9791 2.3958 -2.6563 4.0624 c-0.625 1.5104 -0.9375 3.2031 -0.9375 5.0781 s0.3125 3.5677 0.9375 5.0781 c0.625 1.5625 1.5104 2.9166 2.6563 4.0625 c1.0416 1.0416 2.3958 1.901 4.0624 2.5781 c1.6666 0.625 3.4635 0.9375 5.3906 0.9375 l8.5938 0 l0 5.9375 l-8.6719 0 c-2.9166 0 -5.5729 -0.46875 -7.9688 -1.4063 c-2.5 -1.0416 -4.6094 -2.3698 -6.3281 -3.9844 c-1.7709 -1.6666 -3.125 -3.6458 -4.0625 -5.9374 c-0.98961 -2.3959 -1.4844 -4.8438 -1.4844 -7.3438 c0 -2.6563 0.49477 -5.1302 1.4844 -7.4219 z M235.781 38.5937 l-10.078 -14.063 c1.3541 -0.41664 2.552 -0.91141 3.5937 -1.4843 c1.1459 -0.72914 2.0834 -1.5364 2.8125 -2.4218 c0.83336 -0.98961 1.4323 -2.0573 1.797 -3.2032 c0.46875 -1.25 0.70313 -2.6563 0.70313 -4.2188 c0 -1.8229 -0.3125 -3.4635 -0.9375 -4.9219 c-0.625 -1.4063 -1.5365 -2.6302 -2.7344 -3.6719 c-1.1459 -0.98961 -2.6042 -1.7709 -4.3751 -2.3438 c-1.8229 -0.57289 -3.75 -0.85938 -5.7813 -0.85938 l-16.563 0 l0 5.9375 l16.016 0 c2.4479 0 4.3489 0.52086 5.703 1.5625 s2.0313 2.6041 2.0313 4.6875 c0 1.9271 -0.67711 3.4375 -2.0313 4.5313 c-1.3541 1.1459 -3.2291 1.7188 -5.625 1.7188 l-16.094 0 l0 18.75 l6.4844 0 l0 -12.969 l8.2031 0 l9.1406 12.969 l7.7344 0 l0 0 z M257.344 32.6562 c-0.78125 -0.15625 -1.5105 -0.3907 -2.1876 -0.7032 c-1.4584 -0.67711 -2.7344 -1.6146 -3.8281 -2.8125 c-1.0416 -1.0938 -1.875 -2.4479 -2.5 -4.0625 c-0.57289 -1.6146 -0.85938 -3.2552 -0.85938 -4.9219 l0 -0.15625 l0 -0.23438 c0 -1.7188 0.28648 -3.3854 0.85938 -5 c0.67711 -1.6666 1.5105 -2.9948 2.5001 -3.9844 c1.0416 -1.1979 2.2916 -2.1094 3.75 -2.7344 c0.88539 -0.41664 1.6406 -0.67703 2.2656 -0.78117 l0 -5.8594 c-1.8229 0.26039 -3.4375 0.70313 -4.8438 1.3281 c-2.2916 0.98961 -4.2448 2.3177 -5.8594 3.9844 s-2.8906 3.6458 -3.8281 5.9374 s-1.4063 4.6875 -1.4063 7.1875 l0 0.15625 l0 0.23438 c0 2.5521 0.46875 4.948 1.4063 7.1876 c0.83336 2.2396 2.0834 4.1927 3.75 5.8594 c1.6666 1.7188 3.6198 3.0469 5.8594 3.9844 c1.4063 0.625 3.0469 1.0677 4.9219 1.3281 l0 -5.9375 z M278.594 20 l0.000076294 -0.23438 c0 -2.5521 -0.46875 -4.948 -1.4063 -7.1876 c-0.9375 -2.2916 -2.2135 -4.2708 -3.8281 -5.9374 c-1.5625 -1.6666 -3.4896 -2.9688 -5.7813 -3.9063 c-1.3021 -0.625 -2.8906 -1.0677 -4.7656 -1.3281 l0 5.9375 l0.9375 0.3125 c0.46875 0.15625 0.83336 0.28648 1.0938 0.39063 c1.4584 0.67711 2.7344 1.6146 3.8281 2.8125 c1.0416 1.0938 1.875 2.4479 2.5 4.0625 c0.57289 1.6146 0.85938 3.2552 0.85938 4.9219 l0 0.15625 l0 0.23438 c0 1.7188 -0.28648 3.3854 -0.85938 5 c-0.67711 1.6666 -1.5105 2.9948 -2.5001 3.9844 c-1.0416 1.1979 -2.2916 2.1094 -3.75 2.7344 c-0.67711 0.3125 -1.3802 0.54688 -2.1094 0.70313 l0 5.9375 c1.5625 -0.20836 3.125 -0.65109 4.6875 -1.3282 c2.1354 -0.88539 4.0885 -2.2135 5.8594 -3.9844 c1.7188 -1.8229 2.9948 -3.802 3.8281 -5.9374 c0.9375 -2.2916 1.4063 -4.6875 1.4063 -7.1875 l0 -0.15625 z M287.5 1.4059999999999988 l-6.0156 0 l7.5781 37.188 l6.5625 0 l-4.8438 -22.891 z M312.813 1.4059999999999988 l-4.375 15.547 l2.9688 11.328 l7.1875 -26.875 l-5.7813 0 z M303.359 12.812000000000001 l-0.46875 -1.9531 l-2.5 -9.4531 l-3.3594 11.094 l-0.15625 0.3125 l-1.25 4.375 l2.3438 10.469 l1.4844 -5.1563 l3.8281 16.094 l6.6406 0 l-5.7813 -22.891 z M352.813 27.344 c-0.98961 2.3959 -2.3438 4.375 -4.0625 5.9375 c-1.7709 1.6666 -3.8542 2.9688 -6.2501 3.9063 s-5.0781 1.4063 -8.0469 1.4063 l-8.6719 0 l0 -5.9375 l8.5938 0 c1.9791 0 3.776 -0.3125 5.3906 -0.9375 c1.5625 -0.625 2.9166 -1.5104 4.0625 -2.6563 s2.0313 -2.5 2.6563 -4.0625 s0.9375 -3.2813 0.9375 -5.1563 c0 -1.8229 -0.3125 -3.5156 -0.9375 -5.0781 c-0.625 -1.6146 -1.5104 -2.9427 -2.6563 -3.9844 c-1.0416 -1.0938 -2.3958 -1.9791 -4.0624 -2.6563 c-1.6666 -0.625 -3.4635 -0.9375 -5.3906 -0.9375 l-8.5938 0 l0 -5.9375 l8.6719 0 c2.7604 0 5.4166 0.49477 7.9688 1.4844 c2.3959 0.88539 4.5052 2.2135 6.3281 3.9844 c1.7709 1.6146 3.125 3.5938 4.0625 5.9375 c0.98961 2.3959 1.4844 4.8438 1.4844 7.3438 c0 2.7084 -0.49477 5.1563 -1.4844 7.3438 z"></path></g></svg></div></a>
       </div>
         <div class="right-section">
           <button class="btn"><a href="">Logout</a></button>
@@ -56,131 +493,180 @@
 
 <!-------------------------------------------------------------------------------------------->
 
-    <div class="container light-style flex-grow-1 container-p-y mt-0">
-        <h2 class="font-weight-bold py-2 " >
-            Account settings
-        </h2>
-        <div class="card-profile overflow-hidden" style="padding-right: 10rem;" >
-            <div class="row no-gutters row-bordered " >
-                <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">    
-                        <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">General</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-info">Info</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-social-links">Social links</a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
-                            <div class="card-body media align-items-center">
-                                <svg id="imageSvg" width="100" height="100" style="border: 1px solid #ccc;">
-                                    <image id="svgImage" href="" width="100" height="100" />
-                                  </svg>
-                                <div class="media-body ml-4">
-                                    <input type="file" id="imageInput" accept="image/*">
-                                    <button id="uploadBtn">Upload</button>
-                                    
-                                 
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Username</label>
-                                    <input type="text" class="form-control mb-1" value="nmaxwell">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" value="Nelle Maxwell">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">E-mail</label>
-                                    <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Company</label>
-                                    <input type="text" class="form-control" value="Company Ltd.">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-pane fade" id="account-info">
-                            <div class="card-body pb-0">
-                                <div class="form-group">
-                                    <label class="form-label">Bio</label>
-                                    <textarea class="form-control " placeholder="Tell something about yourself" cols="50"></textarea>
-                                     
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Birthday</label>
-                                    <input type="date" class="form-control" value="1995-05-03">
-
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Country</label>
-                                    <select class="custom-select">
-                                        <option>USA</option>
-                                        <option selected>Canada</option>
-                                        <option>UK</option>
-                                        <option>Germany</option>
-                                        <option>France</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="card-body pb-2 pt-0">
-                                <div class="form-group">
-                                    <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" value="+0 (123) 456 7891">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Website</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="account-social-links">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">Twitter</label>
-                                    <input type="text" class="form-control " size="40" value="https://twitter.com/user">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Facebook</label>
-                                    <input type="text" class="form-control" value="https://www.facebook.com/user">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Google+</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">LinkedIn</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Instagram</label>
-                                    <input type="text" class="form-control" value="https://www.instagram.com/user">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form method="POST" action="/update-profile">
-                    <!-- All your inputs here -->
-                    <div class="text-right ">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button type="reset" class="btn btn-default">Cancel</button>
-                    </div>
-                  </form>
-            </div>
-        </div>
+<header class="header">
+    <div class="container">
+      <h1>Business Profile</h1>
     </div>
+  </header>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+  <main class="container">
+    <div class="profile-container">
+      <div class="profile-header">
+        <img id="profile-avatar" class="profile-avatar" src="" alt="Avatar" />
+        <div class="profile-info">
+          <h2 id="profile-name"></h2>
+          <p id="profile-title"></p>
+          <button id="edit-profile-btn" class="btn">Edit Profile</button>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="profile-section">
+          <h2>About</h2>
+          <p id="profile-bio"></p>
+        </div>
+        <div class="profile-section">
+          <h2>Project Types</h2>
+          <div id="project-types-list" class="tags-container"></div>
+        </div>
+        <div class="profile-section">
+          <h2>Budget</h2>
+          <p id="profile-budget"></p>
+        </div>
+        <div class="profile-section">
+          <h2>Contact</h2>
+          <p>Location: <span id="profile-location"></span></p>
+          <p>Email: <span id="profile-email"></span></p>
+          <p>Website: <span id="profile-website"></span></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="profile-modal">
+    <div class="modal-content">
+      <h2>Edit Profile</h2>
+      <form id="edit-profile-form">
+        <div>
+          <label for="edit-name">Name</label>
+          <input type="text" id="edit-name" required>
+        </div>
+        <div>
+            <label for="edit-avatar-upload">Upload Avatar</label>
+            <input type="file" id="edit-avatar-upload" accept="image/*" />
+          </div>
+          <input type="hidden" id="edit-avatar" />
+          
+        <div>
+          <label for="edit-title">Title</label>
+          <input type="text" id="edit-title" required>
+        </div>
+        <div>
+          <label for="edit-bio">Bio</label>
+          <textarea id="edit-bio" required></textarea>
+        </div>
+        <div>
+          <label for="edit-location">Location</label>
+          <input type="text" id="edit-location" required>
+        </div>
+        <div>
+          <label for="edit-email">Email</label>
+          <input type="email" id="edit-email" required>
+        </div>
+        <div>
+          <label for="edit-website">Website</label>
+          <input type="url" id="edit-website">
+        </div>
+        <div>
+          <label for="edit-project-types">Project Types (comma separated)</label>
+          <input type="text" id="edit-project-types">
+        </div>
+        <div>
+          <label for="edit-budget">Budget</label>
+          <input type="text" id="edit-budget">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel-edit" class="btn">Cancel</button>
+          <button type="submit" class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Static profile data
+    const profile = {
+      name: 'Acme Corp.',
+      title: 'Project Manager',
+      bio: 'We specialize in building scalable SaaS products for startups.',
+      avatar: 'https://via.placeholder.com/120',
+      location: 'San Francisco, USA',
+      email: 'contact@acmecorp.com',
+      website: 'https://acmecorp.com',
+      projectTypes: ['Web App', 'Mobile App', 'API Development'],
+      budget: '$5,000 – $50,000'
+    };
+
+    function renderProfile() {
+      document.getElementById('profile-name').textContent = profile.name;
+      document.getElementById('profile-title').textContent = profile.title;
+      document.getElementById('profile-bio').textContent = profile.bio;
+      document.getElementById('profile-avatar').src = profile.avatar;
+      document.getElementById('profile-location').textContent = profile.location;
+      document.getElementById('profile-email').textContent = profile.email;
+      document.getElementById('profile-website').textContent = profile.website;
+      document.getElementById('profile-budget').textContent = profile.budget;
+
+      const typesContainer = document.getElementById('project-types-list');
+      typesContainer.innerHTML = '';
+      profile.projectTypes.forEach(type => {
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = type;
+        typesContainer.appendChild(tag);
+      });
+    }
+
+    renderProfile();
+
+    // Open modal
+    document.getElementById('edit-profile-btn').addEventListener('click', () => {
+      document.getElementById('profile-modal').style.display = 'flex';
+      document.getElementById('edit-name').value = profile.name;
+      document.getElementById('edit-title').value = profile.title;
+      document.getElementById('edit-bio').value = profile.bio;
+      document.getElementById('edit-location').value = profile.location;
+      document.getElementById('edit-email').value = profile.email;
+      document.getElementById('edit-website').value = profile.website;
+      document.getElementById('edit-project-types').value = profile.projectTypes.join(', ');
+      document.getElementById('edit-budget').value = profile.budget;
+    });
+
+    // Cancel modal
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+      document.getElementById('profile-modal').style.display = 'none';
+    });
+
+    // Save changes
+    document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      profile.name = document.getElementById('edit-name').value;
+      profile.title = document.getElementById('edit-title').value;
+      profile.bio = document.getElementById('edit-bio').value;
+      profile.location = document.getElementById('edit-location').value;
+      profile.email = document.getElementById('edit-email').value;
+      profile.website = document.getElementById('edit-website').value;
+      profile.projectTypes = document.getElementById('edit-project-types').value.split(',').map(t => t.trim()).filter(t => t);
+      profile.budget = document.getElementById('edit-budget').value;
+
+      renderProfile();
+      document.getElementById('profile-modal').style.display = 'none';
+    });
+
+    document.getElementById('edit-avatar-upload').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result;
+      profile.avatar = base64; // Save it
+      document.getElementById('edit-avatar').value = base64;
+      document.getElementById('profile-avatar').src = base64; // Live preview
+    };
+    reader.readAsDataURL(file);
+  });
+  </script>
 
     <script src="/static/js/index.js"></script>
 </body>
