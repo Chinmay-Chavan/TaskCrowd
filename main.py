@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext # type: ignore
 from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
-from routers import auth, business, freelancer, applications, freelancer_dashboard_task
+from routers import auth, business, freelancer, applications, freelancer_dashboard_task,submit_work
 from sqlalchemy.orm import Session
 import smtplib 
 from email.mime.text import MIMEText
@@ -32,7 +32,9 @@ app.include_router(business, prefix="/business", tags=["business"])
 app.include_router(freelancer, prefix="/freelancer", tags=["freelancer"])
 app.include_router(google_auth_router)
 app.include_router(applications)
-app.include_router(freelancer_dashboard_task)  # Commented out as freelancer_Dashboard_Task is not defined
+app.include_router(freelancer_dashboard_task)
+app.include_router(submit_work)
+  # Commented out as freelancer_Dashboard_Task is not defined
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -171,6 +173,10 @@ async def reset_password_get(request: Request, token: str):
         return templates.TemplateResponse("reset_password.html", {
             "request": request, "error": "Invalid or expired token."
         })
+    
+@app.get("/submit-work", response_class=HTMLResponse)
+async def show_submit_form(request: Request):
+    return templates.TemplateResponse("submit_work.html", {"request": request})
 
 #---------- API to fetch tasks ----------
 '''@app.get("/api/tasks")
