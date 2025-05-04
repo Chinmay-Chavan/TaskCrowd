@@ -18,22 +18,45 @@
 
     <link rel="stylesheet" href="/static/css/index.css">
     <style>
-        /* Reset and base styles */
-        
+        body
+        {
+            overflow-x: hidden;
+      height: 100vh;
+      background: transparent; /* Remove the gradient since particles.js will be the background */
+      color: white !important;
+      position: relative;
+       margin: 0;
+        }
+
+        #particles-js {
+             position: fixed;
+             width: 100%;
+            height: 100%;
+            background-color: #000000;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 50% 50%;
+            z-index: -1;
+        }
+
+        canvas {
+            display: block;
+        }
         
        
         
         .container-submit-task {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
+            background-color: #000000;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+           
+        } 
         
         .page-title-submit-task {
-            color: #2c3e50;
+            color: #ffffff;
             text-align: center;
             margin-bottom: 30px;
         }
@@ -198,6 +221,16 @@
             background-color: #e9f5ff !important;
             border-color: #4a9eff !important;
         }
+        .submit-form-submit-task
+        {
+            background-color: #151515;
+            
+            box-shadow: 0 0px 100px  #4c025f;
+        }
+        label
+        {
+            color: white !important;
+        }
     </style>
 
         
@@ -205,6 +238,9 @@
 
         </head>
         <body class="submit-task">
+
+            <!-- particles.js container --> 
+            <div id="particles-js"></div>
 
              <!---------------------------------------------HEADER--------------------------------------------------->
 
@@ -303,7 +339,7 @@
                     <textarea id="additionalNotes" name="additionalNotes" placeholder="Any extra information you'd like to share with the client..."></textarea>
                 </div>
 
-                <input type="hidden" id="status" name="status" value="submitted">
+                <input type="hidden" id="status" name="submissionstatus" value="submitted">
                   
                 <div class="actions">
                     <button type="button" class="btn-submit-task btn-secondary-submit-task" id="saveAsDraft">Save as Draft</button>
@@ -312,6 +348,126 @@
             </form>
         </div>
     </div>
+
+
+
+    <!--------------------------------------Script ---------------------------------------------->
+
+ <!-- particles.js lib -->
+ <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+
+ <script>
+   // Initialize particles.js
+particlesJS("particles-js", {
+ "particles": {
+     "number": {
+         "value": 80,
+         "density": {
+             "enable": true,
+             "value_area": 800
+         }
+     },
+     "color": {
+         "value": "#ffffff"
+     },
+     "shape": {
+         "type": "circle",
+         "stroke": {
+             "width": 0,
+             "color": "#000000"
+         },
+         "polygon": {
+             "nb_sides": 5
+         }
+     },
+     "opacity": {
+         "value": 0.5,
+         "random": false,
+         "anim": {
+             "enable": false,
+             "speed": 1,
+             "opacity_min": 0.1,
+             "sync": false
+         }
+     },
+     "size": {
+         "value": 3,
+         "random": true,
+         "anim": {
+             "enable": false,
+             "speed": 40,
+             "size_min": 0.1,
+             "sync": false
+         }
+     },
+     "line_linked": {
+         "enable": true,
+         "distance": 150,
+         "color": "#ffffff",
+         "opacity": 0.4,
+         "width": 1
+     },
+     "move": {
+         "enable": true,
+         "speed": 6,
+         "direction": "none",
+         "random": false,
+         "straight": false,
+         "out_mode": "out",
+         "bounce": false,
+         "attract": {
+             "enable": false,
+             "rotateX": 600,
+             "rotateY": 1200
+         }
+     }
+ },
+ "interactivity": {
+     "detect_on": "window",
+     "events": {
+         "onhover": {
+             "enable": true,
+             "mode": "repulse"
+         },
+         "onclick": {
+             "enable": true,
+             "mode": "push"
+         },
+         "resize": true
+     },
+     "modes": {
+         "grab": {
+             "distance": 400,
+             "line_linked": {
+                 "opacity": 1
+             }
+         },
+         "bubble": {
+             "distance": 400,
+             "size": 40,
+             "duration": 2,
+             "opacity": 8,
+             "speed": 3
+         },
+         "repulse": {
+             "distance": 200,
+             "duration": 0.4
+         },
+         "push": {
+             "particles_nb": 4
+         },
+         "remove": {
+             "particles_nb": 2
+         }
+     }
+ },
+ "retina_detect": true
+});
+
+
+
+ </script>
 
     <script>
         // Wait for DOM to be fully loaded before manipulating elements
@@ -624,6 +780,7 @@
         });
     </script>
 
+    
          
             
             <script src="/static/js/index.js" async defer> </script>
