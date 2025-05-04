@@ -251,20 +251,20 @@
         <div class="submit-form-submit-task">
             <h3>Project Details</h3>
 
-            <form id="workSubmissionForm" action="#" method="POST" enctype="multipart/form-data" class="form-submit-task">
+            <form id="workSubmissionForm" action="/submit-work" method="POST" enctype="multipart/form-data" class="form-submit-task">
                 <div class="form-group-submit-task">
                     <label for="projectTitle">Project Title</label>
-                    <input id="projectTitle" class="input1-submit-task" type="text" placeholder="Enter Project Title" required>
+                    <input id="projectTitle" name ="projectTitle" class="input1-submit-task" type="text" placeholder="Enter Project Title" required>
                 </div>
                 
                 <div class="form-group-submit-task">
                     <label for="clientName">Client Name</label>
-                    <input id="clientName" class="input2-label-submit-task" type="text" placeholder="Client Name" required>
+                    <input id="clientName" name="clientName" class="input2-label-submit-task" type="text" placeholder="Client Name" required>
                 </div>
                 
                 <div class="form-group-submit-task">  
                     <label for="submissionDate">Submission Date</label>
-                    <input id="submissionDate" class="input3-label-submit-task" type="date" required>
+                    <input id="submissionDate" name="submissionDate" class="input3-label-submit-task" type="date" required>
                 </div>    
                 
                 <div class="form-group-submit-task">
@@ -293,7 +293,7 @@
                         <div class="file-upload-icon-submit-task">📁</div>
                         <p>Drag & drop files here or click to browse</p>
                         <small>Accepted formats: PDF, ZIP, PNG, JPG, DOC, DOCX (Max 50MB per file)</small>
-                        <input type="file" id="fileInput-submit-task" multiple>
+                        <input type="file" id="fileInput-submit-task" name="files" multiple>
                     </div>
                     <div id="fileList"></div>
                 </div>
@@ -303,6 +303,8 @@
                     <textarea id="additionalNotes" name="additionalNotes" placeholder="Any extra information you'd like to share with the client..."></textarea>
                 </div>
 
+                <input type="hidden" id="status" name="status" value="submitted">
+                  
                 <div class="actions">
                     <button type="button" class="btn-submit-task btn-secondary-submit-task" id="saveAsDraft">Save as Draft</button>
                     <button type="submit" class="btn-submit-task submit-btn-submit-task">Submit Work</button>
@@ -488,20 +490,20 @@
             }
             
             // Form submission handler
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    console.log("Form submitted");
+            //if (form) {
+                //form.addEventListener('submit', function(e) {
+                   // e.preventDefault();
+                    //console.log("Form submitted");
                     
                     // Validate form
-                    if (!validateForm(false)) {
-                        return;
-                    }
+                   // if (!validateForm(false)) {
+                      //  return;
+                  //  }
                     
                     // In a real implementation, you would send the data to a server here
-                    simulateSubmission(false);
-                });
-            }
+                  //  simulateSubmission(false);
+              //  });
+           // }
             
             function validateForm(isDraft) {
                 // Skip validation if this is a draft and not a full submission

@@ -9,7 +9,7 @@ import os
 
 from database import get_db
 from Dependencies.dependencies import get_current_user
-from models import WorkSubmission, SubmissionFile, User  # you’ll need to define these
+from models import WorkSubmission, SubmissionFile, User  
 
 router = APIRouter()
 
@@ -18,12 +18,12 @@ router = APIRouter()
 async def submit_work(
     projectTitle: str                = Form(...),
     clientName: str                  = Form(...),
-    submissionDate: str              = Form(...),   # e.g. "2025-05-01"
+    submissionDate: str              = Form(...),   
     submissionTitle: str             = Form(...),
     completionStatus: str            = Form(...),
     submissionDescription: str       = Form(...),
     additionalNotes: Optional[str]   = Form(None),
-    status: str                      = Form(...),   # "submitted" or "draft"
+    status: str           = Form(...),   
     files: List[UploadFile]          = File(None),
     db: Session                      = Depends(get_db),
     current_user: User               = Depends(get_current_user),
@@ -60,8 +60,8 @@ async def submit_work(
         # record it in a SubmissionFile table (if you have one)
         file_record = SubmissionFile(
             submission_id=submission.id,
-            filename=upload.filename,
-            filepath=dest_path,
+            file_name=upload.filename,
+            file_path=dest_path,
             uploaded_at=datetime.utcnow(),
         )
         db.add(file_record)

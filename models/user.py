@@ -15,3 +15,4 @@ class User(Base):
     tasks_created = relationship("models.task.Task", back_populates="business", foreign_keys="models.task.Task.business_email")
     business_applications = relationship("models.application.Application", back_populates="business", foreign_keys="models.application.Application.business_email")
     freelancer_applications = relationship("models.application.Application", back_populates="freelancer", foreign_keys="models.application.Application.freelancer_id")
+    submissions = relationship("models.work_submission.WorkSubmission", back_populates="freelancer") 

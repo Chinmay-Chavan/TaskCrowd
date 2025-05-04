@@ -1807,13 +1807,13 @@ width: 100%;
 padding: 14px;
 margin: 15px 0;
 border: none;
-background-color: #323232 !important;
+
 border-radius: 4px;
 }
 
 /* When the inputs get focus, do something */
 .form-container-R input[type=text]:focus, .form-container-R input[type=password]:focus {
-  background-color: #323232 !important;
+  
 outline: none;
 }
 
