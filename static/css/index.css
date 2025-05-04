@@ -7,12 +7,14 @@
    
     
 }
-body {
-  
+ body {
+
   
   background-color: #000000;
   color: white;
+
  
+
 }
 
 /*---------------------------Header-----------------------------*/
@@ -1030,7 +1032,10 @@ p {
   text-align: center;
   padding: 20px 10px;
   position: relative;
-  
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
  
 }
 
@@ -1601,7 +1606,7 @@ canvas {
 
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+.form-container input[type=email], .form-container input[type=password] {
   width: 100%;
   padding: 14px;
   margin: 15px 0;
@@ -1616,7 +1621,7 @@ input
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input[type=email]:focus, .form-container input[type=password]:focus {
   background-color: #ffffff !important;
   outline: none;
 }
@@ -1817,6 +1822,21 @@ border-radius: 4px;
 outline: none;
 }
 
+.form-container-R input[type=email] {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border: none;
+  
+  border-radius: 4px;
+  }
+  
+  /* When the inputs get focus, do something */
+  .form-container-R input[type=email]:focus{
+    
+  outline: none;
+  }
+
 .form-container-R .btn-R {
 width: 100%;
 background-color: #0d7af7;
@@ -1974,6 +1994,12 @@ margin-top: 20px;
   width: 100%;
   max-width: 800px; /* Control the maximum width */
   
+}
+.project-card-dashboard-Business:hover {
+  box-shadow: 0 0px 50px  #8006b5;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 /* The rest of your styles remain the same */
@@ -2227,6 +2253,12 @@ margin-top: 20px;
   max-width: 800px; /* Control the maximum width */
   
 }
+.project-card-dashboard:hover {
+  box-shadow: 0 0px 50px  #8006b5;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
 
 /* The rest of your styles remain the same */
 .card-header-dashboard {
@@ -2380,12 +2412,14 @@ margin-top: 20px;
 
  
   
-  height: 100vh;
+  height: 130vh;
   background: transparent  ; /* Remove the gradient since particles.js will be the background */
   color: white !important;
   position: relative;
   margin: 0;
+ 
   
+    
 }
 
 .container-cot {
@@ -2413,7 +2447,7 @@ margin-top: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   padding: 30px;
-  box-shadow: 0 0px 200px  #270143;
+  box-shadow: 0 0px 100px  #270143;
   background: transparent;
 }
 

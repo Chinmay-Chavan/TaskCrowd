@@ -23,7 +23,7 @@ async def submit_work(
     completionStatus: str            = Form(...),
     submissionDescription: str       = Form(...),
     additionalNotes: Optional[str]   = Form(None),
-    status: str           = Form(...),   
+    submissionstatus: str                      = Form(...),   
     files: List[UploadFile]          = File(None),
     db: Session                      = Depends(get_db),
     current_user: User               = Depends(get_current_user),
@@ -38,7 +38,7 @@ async def submit_work(
         completion_status=completionStatus,
         submission_description=submissionDescription,
         additional_notes=additionalNotes,
-        status=status,
+        status=submissionstatus,
         created_at=datetime.utcnow(),
     )
     db.add(submission)
