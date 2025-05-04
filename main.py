@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext # type: ignore
 from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
-from routers import auth, business, freelancer, applications, freelancer_dashboard_task,submit_work
+from routers import auth, business, freelancer, applications, freelancer_dashboard_task,submit_work, business_dashboard_task
 from sqlalchemy.orm import Session
 import smtplib 
 from email.mime.text import MIMEText
@@ -34,6 +34,7 @@ app.include_router(google_auth_router)
 app.include_router(applications)
 app.include_router(freelancer_dashboard_task)
 app.include_router(submit_work)
+app.include_router(business_dashboard_task)
   # Commented out as freelancer_Dashboard_Task is not defined
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -112,9 +113,9 @@ async def redirect_dashboard():
     return RedirectResponse(url="/freelancer/dashboard")
 
 # Route for Business Dashboard
-@app.get("/Business_Dashboard.html", response_class=HTMLResponse)
-async def business_dashboard(request: Request):
-    return templates.TemplateResponse("Business_Dashboard.html", {"request": request})
+@app.get("/Business_Dashboard.html", include_in_schema=False)
+async def redirect_dashboard():
+    return RedirectResponse(url="/business/dashboard")
 
 
 # Route for Browse Task page

@@ -52,14 +52,13 @@
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">☰</a>
-        <a href="profileb.html"><i class="fa-solid fa-user"></i> Profile</a>
-        <a href="Business_Dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-        <a href="post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
-        <a href="manage_task.html"><i class="fa-solid fa-list-check"></i> Manage Task</a>
+        <a href="/profileb.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="/business/dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="/post_task.html"><i class="fa-solid fa-file-lines"></i> Post a Task</a>
         <a href="/applications/requests.html"><i class="fa-solid fa-bell"></i> Request</a>
         <a href=""><i class="fa-solid fa-credit-card"></i> Payments</a>
-        <a href="aboutb.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
-        <a href="contactb.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
+        <a href="/aboutb.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="/contactb.html"><i class="fa-solid fa-phone"></i> Contact Us</a>
        
     </div>
 
@@ -79,119 +78,69 @@
       </div>
   
       <div class="container-dashboard-Business">
-         
         <main class="main-content-dashboard-Business">
           <header class="header-dashboard-2-Business">
             <h3>Review Submission</h3>
           </header>
-         <div class="content-dashboard-Business">
-          <div class="project-card-dashboard-Business">
-              <div class="card-header-dashboard-Business">
-                <div class="freelancer-info-dashboard-Business">
-                  <h3 class="freelancer-name-dashboard-Business">Sarah Johnson</h3>
-                  <span class="freelancer-email-dashboard-Business">sarah.j@example.com</span>
+          <div class="content-dashboard-Business">
+        
+            {% for sub in submissions %}
+              <div class="project-card-dashboard-Business">
+                <div class="card-header-dashboard-Business">
+                  <div class="freelancer-info-dashboard-Business">
+                    <h3 class="freelancer-name-dashboard-Business">
+                      {{ sub.freelancer.username }}
+                    </h3>
+                    <span class="freelancer-email-dashboard-Business">
+                      {{ sub.freelancer.email }}
+                    </span>
+                  </div>
+                  <!-- Optional: list freelancer skills if you track them -->
                 </div>
-                <div class="skill-tags-dashboard-Business">
-                  <span class="skill-tag-dashboard-Business javascript-dashboard-Business">JavaScript</span>
-                  <span class="skill-tag-dashboard-Business react-dashboard-Business">React</span>
-                  <span class="skill-tag-dashboard-Business design-dashboard-Business">UI/UX Design</span>
+        
+                <div class="project-info-dashboard-Business">
+                  <h4 class="project-title-dashboard-Business">
+                    {{ sub.project_title }}
+                  </h4>
+        
+                  <div class="project-meta-dashboard-Business">
+                    <div class="meta-item-dashboard-Business">
+                      <span class="meta-label-dashboard-Business">Submission Date:</span>
+                      <span class="meta-value-dashboard-Business">
+                        {{ sub.submission_date.strftime("%b %d, %Y") }}
+                      </span>
+                    </div>
+                    <div class="meta-item-dashboard-Business">
+                      <span class="meta-label-dashboard-Business">Status:</span>
+                      <span class="meta-value-dashboard-Business">
+                        {{ sub.completion_status|capitalize }}
+                      </span>
+                    </div>
+                  </div>
+        
+                  <p class="project-description-dashboard-Business">
+                    {{ sub.submission_description }}
+                  </p>
+        
+                  <div class="card-actions-dashboard-Business">
+                   <a href="{{ url_for('download_file', file_id=sub.files[0].id) }}"
+                       class="btn-dashboard-Business btn-primary-dashboard-Business">
+                      Review Submission
+                    </a>
+                    <a href="/pay/{{ sub.id }}"
+                       class="btn-dashboard-Business btn-secondary-dashboard-Business">
+                      Pay
+                    </a>
+                  </div>
                 </div>
               </div>
-              
-              <div class="project-info-dashboard-Business">
-                <h4 class="project-title-dashboard-Business">E-commerce Website Redesign</h4>
-                
-                <div class="project-meta-dashboard-Business">
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Category:</span>
-                    <span class="meta-value-dashboard-Business web-dev-dashboard-Business">Web Development</span>
-                  </div>
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Budget:</span>
-                    <span class="meta-value-dashboard-Business">$1,500</span>
-                  </div>
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Deadline:</span>
-                    <span class="meta-value-dashboard-Business">May 15, 2025</span>
-                  </div>
-                </div>
-                
-                <p class="project-description-dashboard-Business">
-                  Redesign our existing e-commerce platform to improve user experience and conversion rates. The project includes updating the product catalog, checkout process, and implementing responsive design.
-                </p>
-                
-                <div class="required-skills-dashboard-Business">
-                  <p class="skills-label-dashboard-Business">Required Skills:</p>
-                  <div class="skill-tags-dashboard-Business">
-                    <span class="skill-tag-dashboard-Business javascript-dashboard-Business">JavaScript</span>
-                    <span class="skill-tag-dashboard-Business react-dashboard-Business">React</span>
-                    <span class="skill-tag-dashboard-Business design-dashboard-Business">UI/UX Design</span>
-                    <span class="skill-tag-dashboard-Business css-dashboard-Business">CSS</span>
-                  </div>
-                </div>
-                
-                <div class="card-actions-dashboard-Business">
-                  <button class="btn-dashboard-Business btn-primary-dashboard-Business">Review Submission</button>
-                  <button class="btn-dashboard-Business btn-secondary-dashboard-Business">Pay</button>
-                </div>
-              </div>
-            </div>
-  
-            <div class="project-card-dashboard-Business">
-              <div class="card-header-dashboard-Business">
-                <div class="freelancer-info-dashboard-Business">
-                  <h3 class="freelancer-name-dashboard-Business">Sarah Johnson</h3>
-                  <span class="freelancer-email-dashboard-Business">sarah.j@example.com</span>
-                </div>
-                <div class="skill-tags-dashboard-Business">
-                  <span class="skill-tag-dashboard-Business javascript-dashboard-Business">JavaScript</span>
-                  <span class="skill-tag-dashboard-Business react-dashboard-Business">React</span>
-                  <span class="skill-tag-dashboard-Business design-dashboard-Business">UI/UX Design</span>
-                </div>
-              </div>
-              
-              <div class="project-info-dashboard-Business">
-                <h4 class="project-title-dashboard-Business">E-commerce Website Redesign</h4>
-                
-                <div class="project-meta-dashboard-Business">
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Category:</span>
-                    <span class="meta-value-dashboardv web-dev-dashboard"-Business>Web Development</span>
-                  </div>
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Budget:</span>
-                    <span class="meta-value-dashboard-Business">$1,500</span>
-                  </div>
-                  <div class="meta-item-dashboard-Business">
-                    <span class="meta-label-dashboard-Business">Deadline:</span>
-                    <span class="meta-value-dashboard-Business">May 15, 2025</span>
-                  </div>
-                </div>
-                
-                <p class="project-description-dashboard-Business">
-                  Redesign our existing e-commerce platform to improve user experience and conversion rates. The project includes updating the product catalog, checkout process, and implementing responsive design.
-                </p>
-                
-                <div class="required-skills-dashboard-Business">
-                  <p class="skills-label-dashboard-Business">Required Skills:</p>
-                  <div class="skill-tags-dashboard-Business">
-                    <span class="skill-tag-dashboard-Business javascript-dashboard-Business">JavaScript</span>
-                    <span class="skill-tag-dashboard-Business react-dashboard-Business">React</span>
-                    <span class="skill-tag-dashboard-Business design-dashboard-Business">UI/UX Design</span>
-                    <span class="skill-tag-dashboard-Business css-dashboard-Business">CSS</span>
-                  </div>
-                </div>
-                
-                <div class="card-actions-dashboard-Business">
-                    <button class="btn-dashboard-Business btn-primary-dashboard-Business">Review Submission</button>
-                    <button class="btn-dashboard-Business btn-secondary-dashboard-Business">Pay</button>
-                  
-                </div>
-              </div>
-            </div>
-  
-         </div>
+            {% else %}
+              <p>You have no submissions to review yet.</p>
+            {% endfor %}
+        
+          </div>
         </main>
+        
       </div>
 
 
