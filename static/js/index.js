@@ -332,21 +332,21 @@ function renderTasks(filter = {}) {
             </a>` : '';
         
         const taskHTML = `
-            <div class="card task-card p-3 mb-3">
-                <div class="d-flex justify-content-between">
+            <div class="card task-card p-3 mb-3 bg-dark text-white  ">
+                <div class="d-flex justify-content-between">    
                     <h5>${task.title}</h5>
                     <span class="badge bg-secondary">${task.category}</span>
                 </div>
                 <p><strong>Budget:</strong> ₹${task.budget}</p>
                 <p><strong>Deadline:</strong> ${task.deadline}</p>
-                <p>${task.description}</p>
-                <div class="mb-2">
+                <p>${task.description}</p>  
+                <div class="mb-2 ">
                     ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
                 </div>
                 ${fileLink}
                 <form action="/applications/apply/${ task.id }" method="POST" class="apply-task-form" id="data-task-id">
                    <input type="hidden" name="task_id" value="${ task.id }">
-                   <button type="submit" class="btn btn-dark apply-task-btn">Apply for Task</button>
+                   <button type="submit" class="btn btn-light  apply-task-btn ">Apply for Task</button>
                 </form>
             </div>
         `;

@@ -1027,7 +1027,8 @@ p {
 
 /* Footer Styles */
 .footer {
-  background: #222;
+  background :#0c0014;
+
   color: #fff;
   text-align: center;
   padding: 20px 10px;
@@ -1035,6 +1036,8 @@ p {
   left: 0;
   bottom: 0;
   width: 100%;
+  box-shadow: inset -1px 0px 10px 7px rgb(0, 0, 0);
+
 
  
 }
@@ -1044,14 +1047,12 @@ p {
   margin: auto;
 }
 
-.footer-content h3 {
-  margin-bottom: 10px;
-  font-size: 22px;
-}
+
 
 .footer-content p {
   font-size: 14px;
   margin-bottom: 15px;
+  margin-top: 12px;
 }
 
 .social-icons a {
@@ -1523,7 +1524,7 @@ canvas {
   border-radius: 20px 20px 20px 20px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 0px 100px  #4c025f;
+  box-shadow: 0 0px 100px  #270143;
   background: transparent;
   
   } 
@@ -1719,7 +1720,7 @@ padding: 40px 30px;
 border-radius: 20px;
 width: 100%;
 max-width: 400px;
-box-shadow: 0 0px 200px  #270143;
+box-shadow: 0 0px 100px  #270143;
 
 
 }
@@ -2151,6 +2152,7 @@ margin-top: 20px;
 
 .Freelancer-dashboard {
   font-family: Arial, sans-serif;
+
  
 }
 

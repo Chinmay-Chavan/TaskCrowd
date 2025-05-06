@@ -11,6 +11,8 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        
         
     </style>
 
@@ -22,6 +24,8 @@
       <!----------------------------------------------------->
 
     <link rel="stylesheet" href="/static/css/index.css">
+
+  
 
   
     
@@ -69,7 +73,7 @@
     <div class="profile-management-card">
       <div class="profile-management-content">
         <h3 class="profile-management-title">Manage your profile</h3>
-        <button class="btn-dashboard btn-back ">Manage Profile</button>
+        <button class="btn-dashboard btn-back " id="free">Manage Profile</button>
       </div>
     </div>
 
@@ -137,6 +141,8 @@
         </div>
       </main>
     </div>
+
+
 
 <!----------------------------------------------------- SCRIPT ----------------------------------------------------------------->
 
@@ -256,6 +262,17 @@ particlesJS("particles-js", {
 
  </script>
 
+
+<script>
+
+  const bs = document.querySelector('#free');
+    if (bs) {
+       bs.addEventListener('click', function() {
+            window.location.href='/profilef.html';
+        });
+    }
+  
+  </script>
 
 
   

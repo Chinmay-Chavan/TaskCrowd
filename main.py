@@ -19,10 +19,12 @@ from typing import List, Optional
 from database import get_db
 from routers.google_auth import google_auth_router 
 
+
 # ---------- App Setup ----------
 app = FastAPI()
 UPLOAD_DIR = "static/uploaded_files"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 # Routers
 app.include_router(auth)
