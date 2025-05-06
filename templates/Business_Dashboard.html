@@ -73,7 +73,7 @@
       <div class="profile-management-card-Business">
         <div class="profile-management-content-Business">
           <h3 class="profile-management-title-Business">Manage your profile</h3>
-          <button class="btn-dashboard btn-back-Business">Manage Profile</button>
+          <button class="btn-dashboard btn-back-Business" id="busy">Manage Profile</button>
         </div>
       </div>
   
@@ -263,7 +263,16 @@ particlesJS("particles-js", {
 
  </script>
       
+<script>
 
+const bs = document.querySelector('#busy');
+  if (bs) {
+     bs.addEventListener('click', function() {
+          window.location.href='/profileb.html';
+      });
+  }
+
+</script>
   
       <script src="/static/js/index.js" defer></script>
   

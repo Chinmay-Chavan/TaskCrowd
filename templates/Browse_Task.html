@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        body { background-color: #ffffff; }
+        body { background-color: #000000; }
         .task-card { margin-bottom: 10px; }
         .tag { background-color: #aaaaaa; border-radius: 5px; padding: 2px 8px; margin-right: 5px; display: inline-block; }
         .input-group .form-control { border-right: 0; }
@@ -29,6 +29,7 @@
         .header-container {
             display: flex;
             justify-content: space-between;
+           
         }
 
         .logo {
@@ -128,70 +129,10 @@
             }
         }
 
-
-         /*-------------------------------------footer--------------------------------------------------------------------*/
-
-/* Footer Styles */
-.footer {
-  background: #222;
-  color: #fff;
-  text-align: center;
-  padding: 20px 10px;
-  position: relative;
-  
- 
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: auto;
-}
-
-.footer-content h3 {
-  margin-bottom: 10px;
-  font-size: 22px;
-}
-
-.footer-content p {
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-
-.social-icons a {
-  color: #fff;
-  margin: 0 10px;
-  font-size: 18px;
-  transition: 0.3s;
-}
-
-.social-icons a:hover {
-  color: #1e90ff;
-}
-
-.footer-links {
-  margin: 15px 0;
-}
-
-.footer-links a {
-  color: #bbb;
-  margin: 0 10px;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.footer-links a:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-.copyright {
-  font-size: 12px;
-  margin-top: 10px;
-}
-
+        
     </style>
 </head>
-<body class="d-flex flex-column h-90">
+<body class="d-flex flex-column h-90" >
 
 <header class="main-header" id="up">
     <div class="header-container">
@@ -221,16 +162,16 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <h2 class="mb-4 text-center">Browse Available Tasks</h2>
+            <h2 class="mb-4 text-center text-white">Browse Available Tasks</h2>
             <form id="searchForm" class="row mb-4 g-2" action="/browse-task" method="get">
                 <div class="col-md-9">
                     <div class="input-group">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search tasks...">
-                        <button class="btn btn-primary custom-btn">Search</button>
+                        <input type="text" id="searchInput" class="form-control bg-dark " placeholder="Search tasks... ">
+                        <button class="btn btn-primary custom-btn bg-dark text-white">Search</button>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <select id="categoryFilter" class="form-select">
+                <div class="col-md-3 " >
+                    <select id="categoryFilter" class="form-select bg-dark text-white" >
                         <option value="">All Categories</option>
                         <option value="Web Development">Web Development</option>
                         <option value="Writing & Translation">Writing & Translation</option>
