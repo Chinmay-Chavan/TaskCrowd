@@ -7,24 +7,27 @@ from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext # type: ignore
 from jose import JWTError, jwt # type: ignore
 from datetime import datetime, timedelta, date
-from routers import auth, business, freelancer, applications, freelancer_dashboard_task,submit_work, business_dashboard_task
+from routers import auth, business, freelancer, applications, freelancer_dashboard_task,submit_work, business_dashboard_task, profile,freelancer_profile,pay
 from sqlalchemy.orm import Session
 import smtplib 
 from email.mime.text import MIMEText
 from database import Base, SessionLocal, engine, User
 import shutil, os
-from models import Task
+from models import Task, Application, Contact
 from pydantic import BaseModel
 from typing import List, Optional
 from database import get_db
 from routers.google_auth import google_auth_router 
-
+from sqladmin import Admin, ModelView  
+from sqladmin.authentication import AuthenticationBackend
+import uvicorn  # Import uvicorn for running the app
+from starlette.middleware.sessions import SessionMiddleware
 
 # ---------- App Setup ----------
 app = FastAPI()
 UPLOAD_DIR = "static/uploaded_files"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
-
+app.add_middleware(SessionMiddleware, secret_key="a2f4c9d84b31e8d5f6d0c7e1a9b8f2a0")
 
 # Routers
 app.include_router(auth)
@@ -37,6 +40,9 @@ app.include_router(applications)
 app.include_router(freelancer_dashboard_task)
 app.include_router(submit_work)
 app.include_router(business_dashboard_task)
+app.include_router(pay,prefix="/pay", tags=["pay"])
+app.include_router(profile)
+app.include_router(freelancer_profile)
   # Commented out as freelancer_Dashboard_Task is not defined
 # Static & Templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -66,6 +72,79 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+#-------------------------------Admin -------------------------------------
+
+# Initialize SQLAdmin
+
+
+class AdminAuth(AuthenticationBackend):
+    async def login(self, request: Request) -> bool:
+        form = await request.form()
+        email = form.get("username")
+        password = form.get("password")
+
+        if email == "admin@taskcrowd.com" and password == "admin@123":
+            request.session.update({"token": "admin_logged_in"})
+            return True
+        return False
+
+    async def logout(self, request: Request) -> bool:
+        request.session.clear()
+        return True
+
+    async def authenticate(self, request: Request) -> bool:
+        return request.session.get("token") == "admin_logged_in"
+
+#
+admin = Admin(app, engine, authentication_backend=AdminAuth(secret_key="a2f4c9d84b31e8d5f6d0c7e1a9b8f2a0"))
+    
+# Define Admin View for User Model
+class UserAdmin(ModelView, model=User):
+    column_list = [User.id, User.username, User.email, User.role]
+    column_searchable_list = [User.username, User.email]
+    column_filters = [User.role]
+    page_size = 20
+
+# Define Admin View for Task Model
+class TaskAdmin(ModelView, model=Task):
+    column_list = [Task.id, Task.title, Task.description, Task.budget, Task.category, Task.deadline, Task.skills, Task.file_path, Task.business_email, Task.created_at]
+    column_searchable_list = [Task.title, Task.description]
+    column_filters = [Task.category]
+    page_size = 20
+
+# Define Admin View for appliction Model
+class ApplicationAdmin(ModelView, model=Application):
+    column_list = [Application.id, Application.task_id, Application.freelancer_id, Application.business_email, Application.status, Application.created_at]
+    column_searchable_list = [Application.task_id, Application.freelancer_id]
+    column_filters = [Application.status]
+    page_size = 20
+
+# Define Admin View for contact Model
+class contacts(ModelView, model=Contact):
+    column_list = [Contact.id, Contact.name, Contact.email, Contact.subject, Contact.message, Contact.created_at]
+    column_searchable_list = [Contact.name, Contact.email]
+    column_filters = [Contact.subject]
+    page_size = 20
+
+
+
+
+# Add the UserAdmin view to the admin interface
+admin.add_view(UserAdmin)
+admin.add_view(TaskAdmin)
+admin.add_view(ApplicationAdmin)
+admin.add_view(contacts)
+
+# Optional: Admin initialization on startup
+@app.on_event("startup")
+async def startup():
+    async def init_admin():
+        print("Admin initialized.")
+    await init_admin()
+
+#---------------------------------------------------------------------------
+
 
 # ---------- Routes ----------
 @app.get("/", response_class=HTMLResponse)
@@ -181,23 +260,10 @@ async def reset_password_get(request: Request, token: str):
 async def show_submit_form(request: Request):
     return templates.TemplateResponse("submit_work.html", {"request": request})
 
-#---------- API to fetch tasks ----------
-'''@app.get("/api/tasks")
-async def get_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(Task).all()  # Fetch all tasks from the database
-    
-    task_data = [{
-        "id": task.id,
-        "title": task.title,
-        "description": task.description,
-        "budget": task.budget,
-        "category": task.category,
-        "deadline": task.deadline.isoformat() if isinstance(task.deadline, date) else str(task.deadline),  # Ensure date is serialized
-        "skills": task.skills.split(",") if task.skills else [],
-        "file_path": task.file_path
-    } for task in tasks]
+@app.get("/contact", response_class=HTMLResponse)
+async def show_contact_form(request: Request):
+    return templates.TemplateResponse("contact.html", {"request": request})
 
-    return JSONResponse(content=task_data)'''
 # ---------- Logout ----------
 @app.get("/logout")
 def logout():
@@ -232,7 +298,7 @@ async def handle_form(
     access_token = create_access_token(data=token_data)
 
     response = RedirectResponse(
-        url=f"/{new_user.role.capitalize()}_Dashboard.html", status_code=303
+        url=f"/{new_user.role}/dashboard", status_code=303
     )
     response.set_cookie(
         key="access_token",
@@ -465,4 +531,36 @@ async def get_tasks(db: Session = Depends(get_db)):
 
     return JSONResponse(content=task_data)
 
+#--------------------------------Contact Form----------------------------------
 
+@app.post("/contact", response_class=HTMLResponse)
+async def submit_contact(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    subject: str = Form(...),
+    message: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    print("Form submitted")
+    print(f"Data: {name}, {email}, {subject}, {message}")
+
+    contact = Contact(name=name, email=email, subject=subject, message=message)
+
+    try:
+        db.add(contact)
+        db.commit()
+        db.refresh(contact)
+        print("Contact saved to DB")
+    except Exception as e:
+        db.rollback()
+        print("Error saving contact:", e)
+
+    return templates.TemplateResponse("contact.html", {"request": request})
+
+
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+  

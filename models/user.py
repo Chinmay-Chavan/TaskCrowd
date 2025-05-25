@@ -16,3 +16,5 @@ class User(Base):
     business_applications = relationship("models.application.Application", back_populates="business", foreign_keys="models.application.Application.business_email")
     freelancer_applications = relationship("models.application.Application", back_populates="freelancer", foreign_keys="models.application.Application.freelancer_id")
     submissions = relationship("models.work_submission.WorkSubmission", back_populates="freelancer") 
+    profile = relationship("models.profile.Profile", back_populates="user", uselist=False)
+    freelancer_profile = relationship("models.FreelancerProfile.FreelancerProfile", back_populates="user", uselist=False)
