@@ -680,91 +680,111 @@
     </footer>
 
 
-
-  <script>
-    // Static profile data
-    const profile = {
-      name: 'Acme Corp.',
-      title: 'Project Manager',
-      bio: 'We specialize in building scalable SaaS products for startups.',
-      avatar: 'https://via.placeholder.com/120',
-      location: 'San Francisco, USA',
-      email: 'contact@acmecorp.com',
-      website: 'https://acmecorp.com',
-      projectTypes: ['Web App', 'Mobile App', 'API Development'],
-      budget: '$5,000 – $50,000'
-    };
-
-    function renderProfile() {
-      document.getElementById('profile-name').textContent = profile.name;
-      document.getElementById('profile-title').textContent = profile.title;
-      document.getElementById('profile-bio').textContent = profile.bio;
-      document.getElementById('profile-avatar').src = profile.avatar;
-      document.getElementById('profile-location').textContent = profile.location;
-      document.getElementById('profile-email').textContent = profile.email;
-      document.getElementById('profile-website').textContent = profile.website;
-      document.getElementById('profile-budget').textContent = profile.budget;
-
-      const typesContainer = document.getElementById('project-types-list');
-      typesContainer.innerHTML = '';
-      profile.projectTypes.forEach(type => {
-        const tag = document.createElement('span');
-        tag.className = 'tag';
-        tag.textContent = type;
-        typesContainer.appendChild(tag);
+    <script>
+      // Fetch and render profile from API
+      async function fetchProfile() {
+        const res = await fetch('/api/profile');
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      }
+  
+      async function saveProfile(data) {
+        const res = await fetch('/api/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      }
+  
+      let profile = {};
+  
+      function renderProfile() {
+        document.getElementById('profile-name').textContent = profile.name || '';
+        document.getElementById('profile-title').textContent = profile.title || '';
+        document.getElementById('profile-bio').textContent = profile.bio || '';
+        document.getElementById('profile-avatar').src = profile.avatar || '';
+        document.getElementById('profile-location').textContent = profile.location || '';
+        document.getElementById('profile-email').textContent = profile.email || '';
+        document.getElementById('profile-website').textContent = profile.website || '';
+        document.getElementById('profile-budget').textContent = profile.budget || '';
+  
+        const container = document.getElementById('project-types-list');
+        container.innerHTML = '';
+        (profile.project_types || []).forEach(type => {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = type;
+          container.appendChild(tag);
+        });
+      }
+  
+      window.addEventListener('DOMContentLoaded', async () => {
+        try {
+          profile = await fetchProfile();
+          renderProfile();
+        } catch (err) {
+          console.error('Failed to load profile:', err);
+        }
       });
-    }
-
-    renderProfile();
-
-    // Open modal
-    document.getElementById('edit-profile-btn').addEventListener('click', () => {
-      document.getElementById('profile-modal').style.display = 'flex';
-      document.getElementById('edit-name').value = profile.name;
-      document.getElementById('edit-title').value = profile.title;
-      document.getElementById('edit-bio').value = profile.bio;
-      document.getElementById('edit-location').value = profile.location;
-      document.getElementById('edit-email').value = profile.email;
-      document.getElementById('edit-website').value = profile.website;
-      document.getElementById('edit-project-types').value = profile.projectTypes.join(', ');
-      document.getElementById('edit-budget').value = profile.budget;
-    });
-
-    // Cancel modal
-    document.getElementById('cancel-edit').addEventListener('click', () => {
-      document.getElementById('profile-modal').style.display = 'none';
-    });
-
-    // Save changes
-    document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      profile.name = document.getElementById('edit-name').value;
-      profile.title = document.getElementById('edit-title').value;
-      profile.bio = document.getElementById('edit-bio').value;
-      profile.location = document.getElementById('edit-location').value;
-      profile.email = document.getElementById('edit-email').value;
-      profile.website = document.getElementById('edit-website').value;
-      profile.projectTypes = document.getElementById('edit-project-types').value.split(',').map(t => t.trim()).filter(t => t);
-      profile.budget = document.getElementById('edit-budget').value;
-
-      renderProfile();
-      document.getElementById('profile-modal').style.display = 'none';
-    });
-
-    document.getElementById('edit-avatar-upload').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result;
-      profile.avatar = base64; // Save it
-      document.getElementById('edit-avatar').value = base64;
-      document.getElementById('profile-avatar').src = base64; // Live preview
-    };
-    reader.readAsDataURL(file);
-  });
-  </script>
+  
+      // Open modal and populate fields
+      document.getElementById('edit-profile-btn').addEventListener('click', () => {
+        document.getElementById('profile-modal').style.display = 'flex';
+        document.getElementById('edit-name').value = profile.name || '';
+        document.getElementById('edit-title').value = profile.title || '';
+        document.getElementById('edit-bio').value = profile.bio || '';
+        document.getElementById('edit-location').value = profile.location || '';
+        document.getElementById('edit-email').value = profile.email || '';
+        document.getElementById('edit-website').value = profile.website || '';
+        document.getElementById('edit-project-types').value = (profile.project_types || []).join(', ');
+        document.getElementById('edit-budget').value = profile.budget || '';
+      });
+  
+      // Cancel edit
+      document.getElementById('cancel-edit').addEventListener('click', () => {
+        document.getElementById('profile-modal').style.display = 'none';
+      });
+  
+      // Submit form to save
+      document.getElementById('edit-profile-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const data = {
+          name: document.getElementById('edit-name').value,
+          title: document.getElementById('edit-title').value,
+          bio: document.getElementById('edit-bio').value,
+          location: document.getElementById('edit-location').value,
+          email: document.getElementById('edit-email').value,
+          website: document.getElementById('edit-website').value,
+          project_types: document.getElementById('edit-project-types').value
+            .split(',')
+            .map(s => s.trim())
+            .filter(s => s),
+          budget: document.getElementById('edit-budget').value,
+          avatar: profile.avatar // updated by file upload handler
+        };
+        try {
+          profile = await saveProfile(data);
+          renderProfile();
+          document.getElementById('profile-modal').style.display = 'none';
+        } catch (err) {
+          console.error('Failed to save profile:', err);
+        }
+      });
+  
+      // Avatar upload handler
+      document.getElementById('edit-avatar-upload').addEventListener('change', e => {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          profile.avatar = reader.result;
+          document.getElementById('profile-avatar').src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      </script>
+  
 
     <script src="/static/js/index.js"></script>
 </body>

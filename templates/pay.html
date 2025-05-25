@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .payment-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        button {
+            background-color: #3399cc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .status-message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .failure {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Make a Payment</h1>
+    
+    <div id="status-message" class="status-message"></div>
+    
+    <div class="payment-form">
+        <div class="form-section">
+            <div class="form-section-title">Customer Information</div>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name*</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+                <div id="fullNameError" class="error">Please enter your full name</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" placeholder="Enter your email address" required>
+                <div id="emailError" class="error">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile">Mobile Number*</label>
+                <input type="tel" id="mobile" placeholder="Enter your mobile number" required>
+                <div id="mobileError" class="error">Please enter a valid mobile number</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address*</label>
+                <textarea id="address" rows="3" placeholder="Enter your full address" required></textarea>
+                <div id="addressError" class="error">Please enter your address</div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="form-section-title">Payment Details</div>
+            
+            <div class="form-group">
+                <label for="amount">Amount*</label>
+                <input type="number" id="amount" min="1" step="1" value="500" placeholder="Enter amount" required>
+                <div id="amountError" class="error">Please enter a valid amount</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="currency">Currency*</label>
+                <select id="currency" required>
+                    <option value="INR">Indian Rupee (INR)</option>
+                    <option value="USD">US Dollar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="GBP">British Pound (GBP)</option>
+                    <option value="AUD">Australian Dollar (AUD)</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="pay-button">Pay Now</button>
+    </div>
+
+    <script>
+        document.getElementById('pay-button').onclick = async function() {
+            
+            // Reset any status messages
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.style.display = 'none';
+            statusMessage.textContent = '';
+            statusMessage.className = 'status-message';
+            
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Get user input values
+            const amount = document.getElementById('amount').value;
+            const currency = document.getElementById('currency').value;
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const address = document.getElementById('address').value;
+            
+            try {
+                // First, create the order by sending the JSON data to the backend
+                const response = await fetch('/pay/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: parseFloat(amount),
+                        currency: currency,
+                        receipt: "order_rcptid_" + Date.now(),
+                        notes: {
+                            "customer_name": fullName,
+                            "customer_email": email,
+                            "customer_mobile": mobile,
+                            "customer_address": address
+                        }
+                    }),
+                });
+
+                // Check if the request was successful
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to create order');
+                }
+
+                // Parse the response
+                const orderData = await response.json();
+                console.log("Order created:", orderData);
+
+                // Configure Razorpay options
+                const options = {
+                    key: orderData.key_id,
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'Your Company Name',
+                    description: 'Test Product Purchase',
+                    order_id: orderData.order_id,
+                    handler: function (response) {
+                        // Handle the payment verification
+                        verifyPayment(response, fullName, email, mobile, address);
+                    },
+                    prefill: {
+                        name: fullName,
+                        email: email,
+                        contact: mobile
+                    },
+                    theme: {
+                        color: '#3399cc'
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            showStatus("Payment cancelled", "failure");
+                        }
+                    }
+                };
+
+                // Initialize Razorpay checkout
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                console.error("Payment error:", error);
+                showStatus(`Error: ${error.message}`, "failure");
+            }
+        };
+        
+        // Function to verify payment
+        async function verifyPayment(response, fullName, email, mobile, address) {
+            try {
+                // Create form data
+                const formData = new FormData();
+                formData.append('razorpay_payment_id', response.razorpay_payment_id);
+                formData.append('razorpay_order_id', response.razorpay_order_id);
+                formData.append('razorpay_signature', response.razorpay_signature);
+                formData.append('customer_name', fullName);
+                formData.append('customer_email', email);
+                formData.append('customer_mobile', mobile);
+                formData.append('customer_address', address);
+                
+                // Call backend to verify payment
+                const verifyResponse = await fetch('/pay/verify-payment', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!verifyResponse.ok) {
+                    const errorData = await verifyResponse.json();
+                    throw new Error(errorData.detail || 'Payment verification failed');
+                }
+                
+                const result = await verifyResponse.json();
+                showStatus("Payment successful! " + result.message, "success");
+                
+                // Reset form
+                document.getElementById('fullName').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('mobile').value = '';
+                document.getElementById('address').value = '';
+                document.getElementById('amount').value = '500';
+            } catch (error) {
+                console.error("Verification error:", error);
+                showStatus(`Verification Error: ${error.message}`, "failure");
+            }
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Scroll to message
+            statusMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Form validation function
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate full name
+            const fullName = document.getElementById('fullName');
+            const fullNameError = document.getElementById('fullNameError');
+            if (!fullName.value.trim()) {
+                fullNameError.style.display = 'block';
+                isValid = false;
+            } else {
+                fullNameError.style.display = 'none';
+            }
+            
+            // Validate email
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) {
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
+            }
+            
+            // Validate mobile
+            const mobile = document.getElementById('mobile');
+            const mobileError = document.getElementById('mobileError');
+            if (!mobile.value.trim() || isNaN(mobile.value)) {
+                mobileError.style.display = 'block';
+                isValid = false;
+            } else {
+                mobileError.style.display = 'none';
+            }
+            
+            // Validate address
+            const address = document.getElementById('address');
+            const addressError = document.getElementById('addressError');
+            if (!address.value.trim()) {
+                addressError.style.display = 'block';
+                isValid = false;
+            } else {
+                addressError.style.display = 'none';
+            }
+            
+            // Validate amount
+            const amount = document.getElementById('amount');
+            const amountError = document.getElementById('amountError');
+            if (!amount.value || parseFloat(amount.value) <= 0) {
+                amountError.style.display = 'block';
+                isValid = false;
+            } else {
+                amountError.style.display = 'none';
+            }
+            
+            return isValid;
+        }
+    </script>
+</body>
+</html>
