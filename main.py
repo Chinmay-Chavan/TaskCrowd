@@ -84,7 +84,7 @@ class AdminAuth(AuthenticationBackend):
         email = form.get("username")
         password = form.get("password")
 
-        if email == "admin@taskcrowd.com" and password == "admin@123":
+        if email == "taskcrowd@gmail.com" and password == "admin@123":
             request.session.update({"token": "admin_logged_in"})
             return True
         return False
