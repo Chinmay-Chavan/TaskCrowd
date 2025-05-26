@@ -330,9 +330,9 @@ function renderTasks(filter = {}) {
                     ${task.skills.map(skill => `<span class="tag">${skill}</span>`).join(' ')}
                 </div>
                 ${fileLink}
-                <form action="/applications/apply/${ task.id }" method="POST" class="apply-task-form" id="data-task-id">
+                <form action="/applications/apply/${ task.id }" method="POST" class="apply-task-form" id="data-task-id" >
                    <input type="hidden" name="task_id" value="${ task.id }">
-                   <button type="submit" class="btn btn-light  apply-task-btn ">Apply for Task</button>
+                   <button type="submit" class="btn btn-light btn-outline-primary w-100 text-center  apply-task-btn ">Apply for Task</button>
                 </form>
             </div>
         `;

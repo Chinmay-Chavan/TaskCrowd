@@ -1551,7 +1551,7 @@ canvas {
     transition: 0.5s;
     background-size: 200% auto;
 
-    padding: 16px 30px;
+    padding: 16px 65px;
     border: none;
     cursor: pointer;
     opacity: 0.8;
@@ -1573,11 +1573,11 @@ canvas {
     text-transform: uppercase;
     transition: 0.5s;
     background-size: 200% auto;
-    padding: 16px 30px;
+    padding: 16px 55px;
     border: none;
     cursor: pointer;
     opacity: 0.8;
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px 20px 20px 0px;
     color: white;
    
   }
@@ -1589,29 +1589,7 @@ canvas {
    
   }
 
-  .open-btn2 {
-   
-    background-image: linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%);
-    text-transform: uppercase;
-    transition: 0.5s;
-    background-size: 200% auto;
-    padding: 16px 30px;
-   
-    border: none;
-    cursor: pointer;
-    opacity: 0.8;
-    border-radius: 0px 20px 20px 0px;
-    color: white;
-    font-size: 13.6px;
-   
-  }
-  .open-btn2:hover {
-    background-position: right center; /* change the direction of the change here */
-    color: #fff;
-    text-decoration: none;
-
-   
-  }
+  
 
   
   .form-popup {
